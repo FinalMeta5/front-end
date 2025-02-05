@@ -1,13 +1,15 @@
 <template>
-    <div class="login">
-        <h1>Login</h1>
-        <div>
-            <p>아이디 : <input type="text"/></p>
-            <p>비밀번호 : <input type="password"/></p>
-            <button>로그인</button>
+    <div class="login phone-main-screen">
+        <h1 class="titleH1">Login</h1>
+        <div class="view-context-contain">
+            <div>
+                <p>아이디 : <input type="text"/></p>
+                <p>비밀번호 : <input type="password"/></p>
+                <button>로그인</button>
+            </div>
+            <hr/>
+            <router-link to="/signup">회원가입</router-link>
         </div>
-        <hr/>
-        <router-link to="/signup">회원가입</router-link>
     </div>
 </template>
 
@@ -18,8 +20,6 @@
 </script>
 
 <style scoped>
-    .login{
-        text-align: center;
-        margin-top: 50px;
-    }
+@import "../style.css";
+@import "../assets/style/phone-main-view-common.css";
 </style>
