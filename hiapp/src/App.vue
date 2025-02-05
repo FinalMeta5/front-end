@@ -1,70 +1,51 @@
 <template>
-  <div id="app">
+  <div id="appo">
+    <div class="container">
+      <!-- 좌측 화면 -->
+      <LeftScreenComponent class="side-content" />
 
-    <HeaderComponent/>
+      <!-- 메인 화면 -->
+      <div class="main-wrapper phone-fix">
+        <!-- 상단 헤더 -->
+        <HeaderComponent />
 
-    <nav>
-      <ul>
-        <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/about">About</router-link></li>
-        <li><router-link to="/mypage">Mypage</router-link></li>
-        <li><router-link to="/login"><i class="bi bi-key">Login</i></router-link></li>
-        <li><router-link to="/signup"><i class="bi bi-person-plus">Signup</i></router-link></li>
-        <li><router-link to="/memberlist">Member List</router-link></li>
-      </ul>
-    </nav>
+        <!-- 상단 네비게이션 (페이지 이동) -->
+        <TopNavComponent/>
 
-    <main>
-      <!--현재 라우트에 따라 해당 컴포넌트 표시-->
-      <router-view/>
-    </main>
+        <!-- 메인 컨텐츠 -->
+        <div class="router-view">
+          <router-view />
+        </div>
 
-    <FooterComponent/>
+        <!-- 하단 네비게이션 (페이지 이동) -->
+        <BottomNavComponent/>
+      </div>
+
+      <!-- 우측 화면 -->
+      <RightScreenComponent class="side-content" />
+    </div>
   </div>
 </template>
 
 <script>
-import HeaderComponent from "./components/HeaderComponent.vue";
-import FooterComponent from "./components/FooterComponent.vue";
+import HeaderComponent from "./components/commons/HeaderComponent.vue";
+import LeftScreenComponent from "./components/layout/LeftScreenComponent.vue";
+import RightScreenComponent from "./components/layout/RightScreenComponent.vue";
+import TopNavComponent from "./components/commons/TopNavComponent.vue"
+import BottomNavComponent from "./components/commons/BottomNavComponent.vue"
 export default {
-  name: 'App',
+  name: "App",
   components: {
+    LeftScreenComponent,
+    RightScreenComponent,
     HeaderComponent,
-    FooterComponent,
+    TopNavComponent,
+    BottomNavComponent,
   },
 };
 </script>
 
-
-<style scoped>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 30px;
-  }
-  nav {
-    margin-bottom: 20px;
-  }
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  nav ul li {
-    display: inline;
-  }
-  nav ul li a {
-    text-decoration: none;
-    color: #42b983;
-  }
-  nav ul li a.router-link-active {
-    font-weight: bold;
-    color: #35495e;
-  }
-  main {
-    padding: 20px;
-  }
+<style>
+@import "style.css";
+@import "/src/assets/style/app-vue-common.css"
 </style>

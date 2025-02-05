@@ -1,7 +1,9 @@
 <template>
-    <div class="memberList">
-        <h1>MemberList</h1>
-        <MemberListComponent />
+    <div class="memberList phone-main-screen">
+        <h1 class="titleH1">MemberList</h1>
+        <div class="view-context-contain">
+            <MemberListComponent /> 
+        </div>
     </div>
 </template>
 
@@ -16,8 +18,12 @@ import MemberListComponent from '../components/MemberListComponent.vue';
 </script>
 
 <style scoped>
-    .memberList{
-        text-align: center;
-        margin-top: 50px;
-    }
+@import "../style.css";
+@import "../assets/style/phone-main-view-common.css";
+.memberList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 </style>
