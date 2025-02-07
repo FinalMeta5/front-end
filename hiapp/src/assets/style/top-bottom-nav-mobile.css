@@ -1,162 +1,162 @@
 /* ✅ 네비게이션 스타일 (페이지 이동) */
 .top-nav {
-    background-color: #d8e9ff;
-    top: 60px;
+  background-color: #d8e9ff;
+  top: 60px;
 }
 
 .bottom-nav {
-    background-color: #4192ff;
-    bottom: 0px;
+  background-color: #4192ff;
+  bottom: 0px;
 }
 
 .top-nav,
 .bottom-nav {
-    height: 50px;
-    display: flex;
-    /* ✅ Flexbox 적용 */
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    position: fixed;
-    width: 100%;
-    z-index: 999;
-    white-space: nowrap;
-    overflow-x: auto;
+  height: 50px;
+  display: flex;
+  /* ✅ Flexbox 적용 */
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  white-space: nowrap;
+  overflow-x: auto;
 }
-
 
 /* ✅ 네비게이션 리스트 */
 .top-nav ul,
 .bottom-nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: nowrap;
-    /* 🚀 줄바꿈 방지 */
-    justify-content: center;
-    gap: 20px;
-    overflow-x: auto;
-    white-space: nowrap;
-    align-items: center;
-    /* ✅ 세로 정렬 보정 */
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  /* 🚀 줄바꿈 방지 */
+  justify-content: center;
+  gap: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  align-items: center;
+  /* ✅ 세로 정렬 보정 */
 }
-
 
 /* ✅ 네비게이션 항목 */
 .top-nav ul li,
 .bottom-nav ul li {
-    display: inline;
-    white-space: nowrap;
+  display: inline;
+  white-space: nowrap;
 }
 
 .top-nav ul li a {
-    color: #4192ff;
+  color: #4192ff;
 }
 
 .bottom-nav ul li a {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .top-nav ul li a,
 .bottom-nav ul li a {
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .top-nav ul li a:hover {
-    color: #0b5cc6;
+  color: #0b5cc6;
 }
 
 .bottom-nav ul li a:hover {
-    color: #0b5cc6;
+  color: #0b5cc6;
+}
+
+.top-nav ul li i {
+  color: #4192ff;
+}
+
+.top-nav ul li i:hover {
+  color: #0b5cc6;
 }
 
 /* ✅ 모바일 반응형 스타일 */
 @media screen and (max-width: 1024px) {
+  /* 태블릿 */
+  .side-content {
+    display: none;
+  }
 
-    /* 태블릿 */
-    .side-content {
-        display: none;
-    }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
 
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-    }
-
-    .main-wrapper {
-        width: 100%;
-        max-width: 800px;
-    }
+  .main-wrapper {
+    width: 100%;
+    max-width: 800px;
+  }
 }
 
 @media screen and (max-width: 820px) {
+  /* iPad Air, Galaxy Tab */
+  .side-content {
+    display: none;
+  }
 
-    /* iPad Air, Galaxy Tab */
-    .side-content {
-        display: none;
-    }
-
-    .main-wrapper {
-        max-width: 700px;
-    }
+  .main-wrapper {
+    max-width: 700px;
+  }
 }
 
 @media screen and (max-width: 768px) {
+  /* 일반적인 태블릿 */
+  .side-content {
+    display: none;
+  }
 
-    /* 일반적인 태블릿 */
-    .side-content {
-        display: none;
-    }
+  .container {
+    justify-content: center;
+  }
 
-    .container {
-        justify-content: center;
-    }
-
-    .main-wrapper {
-        max-width: 600px;
-    }
+  .main-wrapper {
+    max-width: 600px;
+  }
 }
 
 @media screen and (max-width: 600px) {
+  /* 큰 스마트폰 (갤럭시 노트, 아이폰 플러스) */
+  .side-content {
+    display: none;
+  }
 
-    /* 큰 스마트폰 (갤럭시 노트, 아이폰 플러스) */
-    .side-content {
-        display: none;
-    }
-
-    .main-wrapper {
-        max-width: 500px;
-    }
+  .main-wrapper {
+    max-width: 500px;
+  }
 }
 
 @media screen and (max-width: 480px) {
+  /* 일반적인 스마트폰 (아이폰, 갤럭시 S 시리즈) */
+  .side-content {
+    display: none;
+  }
 
-    /* 일반적인 스마트폰 (아이폰, 갤럭시 S 시리즈) */
-    .side-content {
-        display: none;
-    }
-
-    .main-wrapper {
-        max-width: 100%;
-    }
+  .main-wrapper {
+    max-width: 100%;
+  }
 }
 
 @media screen and (max-width: 360px) {
+  /* 작은 스마트폰 (아이폰 SE, 갤럭시 A 시리즈) */
+  .side-content {
+    display: none;
+  }
 
-    /* 작은 스마트폰 (아이폰 SE, 갤럭시 A 시리즈) */
-    .side-content {
-        display: none;
-    }
+  .main-wrapper {
+    max-width: 100%;
+  }
 
-    .main-wrapper {
-        max-width: 100%;
-    }
-
-    .top-nav {
-        font-size: 14px;
-        /* 작은 화면에서는 폰트 크기 조절 */
-    }
+  .top-nav {
+    font-size: 14px;
+    /* 작은 화면에서는 폰트 크기 조절 */
+  }
 }
