@@ -13,12 +13,12 @@
               />
               <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
             </div>
-            <img class="current-location-btn" src="https://ifh.cc/g/FxPhj5.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
+            <img class="current-location-btn" src="https://ifh.cc/g/TaBa4C.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
             <CarShareInformationComponent v-if="selectedCar" :car="selectedCar"/>
             <div v-if="searchResults.length > 0" class="address-list">
               <ul>
                 <li v-for="(result, index) in searchResults" :key="index" @click="selectAddress(result)" class="search-item">
-                  {{result.place_name }} - {{ result.address }}
+                  {{ result.place_name }} ({{ result.address }})
                 </li>
               </ul>
             </div>

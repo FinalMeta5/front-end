@@ -112,7 +112,7 @@ export default {
   position: absolute;
   display: inline-block;
   white-space: nowrap;
-  top: -106px;
+  top: -105px;
   left: 48px;
   font-size: 23px;
   font-weight: bold;
