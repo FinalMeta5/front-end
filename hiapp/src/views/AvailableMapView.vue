@@ -11,11 +11,11 @@
                 :placeholder="isFocused ? '장소 또는 주소 검색' : (address ? address.address.region_2depth_name + ' ' + address.address.region_3depth_name : '장소 또는 주소 검색')"
                 @input="searchPlaces"
                 @focus="clearQuery"
-  @blur="isFocused = false"
+                @blur="isFocused = false"
               />
               <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
             </div>
-            <img class="current-location-btn" src="https://ifh.cc/g/TaBa4C.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
+            <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
             <CarShareInformationComponent v-if="selectedCar" :car="selectedCar"/>
             <div v-if="searchResults.length > 0" class="address-list">
               <ul>
@@ -60,7 +60,7 @@
 
     computed: {
       currentLocationButtonBottom() {
-        return this.selectedCar ? "350px" : "70px"; 
+        return this.selectedCar ? "380px" : "70px"; 
       },
     },
 
@@ -476,7 +476,6 @@
 
 .current-location-btn {
   position: absolute;
-  bottom: 360px;
   right: 12px;
   cursor: pointer;
   z-index: 15;
