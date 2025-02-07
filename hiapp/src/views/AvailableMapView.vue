@@ -13,6 +13,7 @@
               />
               <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
             </div>
+            <img class="current-location-btn" src="https://ifh.cc/g/TaBa4C.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
             <CarShareInformationComponent v-if="selectedCar" :car="selectedCar"/>
             <div v-if="searchResults.length > 0" class="address-list">
               <ul>
@@ -53,6 +54,13 @@
         previousMarker: null,   // 이전에 클릭한 마커 저장
       };
     },
+
+    computed: {
+      currentLocationButtonBottom() {
+        return this.selectedCar ? "350px" : "70px"; 
+      },
+    },
+
     created() {
       if (!("geolocation" in navigator)) {
         alert("위치 정보를 사용할 수 없습니다.");
@@ -312,6 +320,33 @@
   
         this.searchMarkers.push(marker);
       },
+
+      // 현재 위치로 돌아가기
+      moveToCurrentLocation() {
+      if (!("geolocation" in navigator)) {
+        alert("위치 정보를 사용할 수 없습니다.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          this.latitude = pos.coords.latitude;
+          this.longitude = pos.coords.longitude;
+
+          // 지도 중심 이동
+          this.map.setCenter(new kakao.maps.LatLng(this.latitude, this.longitude));
+
+          // 기존 마커 삭제 후 새 마커 추가
+          if (this.marker) {
+            this.marker.setMap(null);
+          }
+          this.createMarker();
+        },
+        (err) => {
+          alert("현재 위치를 가져올 수 없습니다: " + err.message);
+        }
+      );
+    },
     },
   };
   </script>
@@ -426,6 +461,15 @@
 
 .search-item:last-child {
   border-bottom: none; 
+}
+
+.current-location-btn {
+  position: absolute;
+  bottom: 360px;
+  right: 12px;
+  cursor: pointer;
+  z-index: 15;
+  width: 50px;
 }
 </style>
   

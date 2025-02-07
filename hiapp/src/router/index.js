@@ -5,6 +5,7 @@ import MypageView from "../views/MypageView.vue";
 import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
 import MemberListView from '../views/MemberListView.vue';
+import AvailableMapView from '../views/AvailableMapView.vue';
 
 const routes = [
     {path: '/', component: HomeView},
@@ -13,6 +14,7 @@ const routes = [
     {path: '/login', component:LoginView},
     {path: '/signup', component:SignupView},
     {path: '/memberlist', component:MemberListView},
+    {path: '/carshare/list', component: AvailableMapView}
 ];
 
 const router = createRouter({
