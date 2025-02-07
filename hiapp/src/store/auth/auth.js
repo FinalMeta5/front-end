@@ -4,6 +4,13 @@ import { ref } from "vue";
 // 전역 상태
 const isAuthenticated = ref(false);
 const accessToken = ref(null);
+
+const storedToken = localStorage.getItem("accessToken");
+if (storedToken) {
+  accessToken.value = storedToken;
+  isAuthenticated.value = true;
+}
+
 let isRefreshing = false; // 현재 토큰 재발급 중인지 여부
 let refreshQueue = []; // 재발급 동안 대기 중인 요청들을 모아두는 배열
 
@@ -100,6 +107,8 @@ async function login(email, password) {
     if (tokenFromHeader) {
       accessToken.value = tokenFromHeader;
       isAuthenticated.value = true;
+
+      localStorage.setItem("accessToken", tokenFromHeader);
     } else {
       throw new Error("토큰이 응답 헤더에 없습니다.");
     }
@@ -123,6 +132,7 @@ async function logout() {
     // 토큰/상태 초기화
     accessToken.value = null;
     isAuthenticated.value = false;
+    localStorage.removeItem("accessToken");
   }
 }
 
@@ -135,6 +145,7 @@ async function refreshAccessToken() {
     if (newToken) {
       accessToken.value = newToken;
       isAuthenticated.value = true;
+      localStorage.setItem("accessToken", newToken);
       return newToken;
     } else {
       throw new Error("재발급 실패: Access Token이 응답 헤더에 없습니다.");
@@ -143,6 +154,7 @@ async function refreshAccessToken() {
     console.error("토큰 재발급 실패:", error);
     isAuthenticated.value = false;
     accessToken.value = null;
+    localStorage.removeItem("accessToken");
     throw error;
   }
 }
