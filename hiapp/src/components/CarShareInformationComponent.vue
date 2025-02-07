@@ -1,6 +1,6 @@
 <template>
   <div class="result-container">
-    <img id="showInformation" src="https://ifh.cc/g/vASTg1.png" />
+    <img id="showInformation" src="https://ifh.cc/g/355b8J.png" />
     <div class="result-show">
       <div v-if="car">
         <h3 id="driver-nickname">{{ car.nickname }}</h3>
@@ -112,42 +112,46 @@ export default {
   position: absolute;
   display: inline-block;
   white-space: nowrap;
-  top: -104px;
+  top: -107px;
   left: 45px;
+  font-size: 25px;
   font-weight: bold;
 }
 
 #date {
   position: absolute;
-  top: -104px;
-  right: 73px;
+  top: -103px;
+  right: 77px;
   color: #ffffff;
+  font-size: 15px;
 }
 
 #pl1, #pl2 {
   position: absolute;
   white-space: nowrap;
-  top: -36px;
+  top: -26px;
   left: 90px;
 }
 
 #ds1, #ds2 {
   position: absolute;
   white-space: nowrap;
-  bottom: -90px;
+  bottom: -94px;
   left: 90px;
 }
 
 #pl1, #ds1 {
-  font-size: 20px; 
+  font-size: 18px; 
 }
 
 #pl2{
-  margin-top: 33px;
+  margin-top: 31px;
+  font-size: 14px;
 }
 
 #ds2 {
-  margin-bottom: -12px;
+  margin-bottom: -9px;
+  font-size: 14px;
 }
 
 </style>
