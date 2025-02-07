@@ -8,8 +8,10 @@
               <input 
                 type="text" 
                 v-model="query" 
-                :placeholder="address ? address.address.region_2depth_name + ' ' + address.address.region_3depth_name : '주소를 입력하세요'"
+                :placeholder="isFocused ? '장소 또는 주소 검색' : (address ? address.address.region_2depth_name + ' ' + address.address.region_3depth_name : '장소 또는 주소 검색')"
                 @input="searchPlaces"
+                @focus="clearQuery"
+  @blur="isFocused = false"
               />
               <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
             </div>
@@ -52,6 +54,7 @@
         searchMarkers: [],      // 검색 마커 저장
         selectedCar: null,      // 선택한 차량 정보 저장
         previousMarker: null,   // 이전에 클릭한 마커 저장
+        isFocused: false,       // 검색창 포커스 여부 저장
       };
     },
 
@@ -231,6 +234,12 @@
             this.previousMarker = marker;
         });
       },
+
+      // 검색 화면 초기화
+      clearQuery() {
+        this.isFocused = true;
+        this.query = '';
+      },
   
       // 장소 검색
       async searchPlaces() {
@@ -332,6 +341,8 @@
         (pos) => {
           this.latitude = pos.coords.latitude;
           this.longitude = pos.coords.longitude;
+
+          this.query = '';
 
           // 지도 중심 이동
           this.map.setCenter(new kakao.maps.LatLng(this.latitude, this.longitude));
