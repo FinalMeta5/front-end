@@ -5,27 +5,26 @@
             <p>마이페이지입니다 :)</p>
             <router-link to="/">Home으로 이동</router-link>
             <router-link to="/about">About 페이지 보기</router-link>
-            <router-link to="/car-registration"><button class="car-regi-btn">차량 등록</button></router-link>
+            <CarRegiButton/>
+            <CarSearchButton/>
         </div>
     </div>
 </template>
 
 <script>
+import CarRegiButton from '../components/car-share/CarRegiButton.vue';
+import CarSearchButton from '../components/car-share/CarSearchButton.vue';
+
     export default {
         name: 'MypageView',
+        components: {
+            CarRegiButton,
+            CarSearchButton,
+        },
     };
 </script>
 
 <style scoped>
 @import "../style.css";
 @import "../assets/style/phone-main-view-common.css";
-
-.car-regi-btn {
-    background-color: #4192ff;
-    color: white;
-    font-weight: bold;
-    font-family: fantasy;
-    border-radius: 10px;
-    border-color: #000000;
-}
 </style>
