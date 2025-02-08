@@ -4,11 +4,16 @@ import { ref } from "vue";
 // 전역 상태
 const isAuthenticated = ref(false);
 const accessToken = ref(null);
+const memberId = ref(null);
 
 const storedToken = localStorage.getItem("accessToken");
 if (storedToken) {
   accessToken.value = storedToken;
   isAuthenticated.value = true;
+}
+const storedMemberId = localStorage.getItem("memberId");
+if (storedMemberId) {
+  memberId.value = storedMemberId;
 }
 
 let isRefreshing = false; // 현재 토큰 재발급 중인지 여부
@@ -109,6 +114,13 @@ async function login(email, password) {
       isAuthenticated.value = true;
 
       localStorage.setItem("accessToken", tokenFromHeader);
+
+      if (response.data) {
+        memberId.value = response.data;
+        localStorage.setItem("memberId", response.data);
+      } else {
+        throw new Error("로그인 응답에 memberId가 없습니다.");
+      }
     } else {
       throw new Error("토큰이 응답 헤더에 없습니다.");
     }
@@ -119,6 +131,7 @@ async function login(email, password) {
     console.error("로그인 실패:", error);
     isAuthenticated.value = false;
     accessToken.value = null;
+    memberId.value = null;
     throw error;
   }
 }
@@ -132,7 +145,9 @@ async function logout() {
     // 토큰/상태 초기화
     accessToken.value = null;
     isAuthenticated.value = false;
+    memberId.value = null;
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("memberId");
   }
 }
 
@@ -163,6 +178,7 @@ function useAuthState() {
   return {
     isAuthenticated,
     accessToken,
+    memberId,
   };
 }
 
