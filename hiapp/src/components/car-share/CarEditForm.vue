@@ -78,6 +78,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import router from '../../router';
 
 const route = useRoute();
 const mode = ref(route.query.mode || "register"); // 🚀 등록/수정 모드 확인
@@ -275,7 +276,7 @@ const deleteCar = async () => {
         });
 
         alert("🚗 차량이 성공적으로 삭제되었습니다!");
-        location.reload(); // 🚀 삭제 후 페이지 새로고침
+        router.push("/mypage"); // 🚀 삭제 후 마이페이지로
 
     } catch (error) {
         console.error("❌ 차량 삭제 실패:", error);

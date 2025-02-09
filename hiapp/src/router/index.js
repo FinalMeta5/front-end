@@ -12,6 +12,8 @@ import TaxiShareRegist from '../components/taxi-share/TaxiShareRegist.vue';
 import TaxiShareList from '../components/taxi-share/TaxiShareList.vue';
 import MyCarSearchView from '../views/car-share/MyCarSearchView.vue';
 import NoCarInfoView from '../views/car-share/NoCarInfoView.vue';
+import CarShareServiceRegiFirstView from '../views/car-share/CarShareServiceRegiFirstView.vue';
+import CarShareServiceRegiSecondView from '../views/car-share/CarShareServiceRegiSecondView.vue';
 
 const routes = [
     {path: '/', component: HomeView},
@@ -27,6 +29,9 @@ const routes = [
     { path: '/taxi-share/list', component: TaxiShareList },
     { path: '/my-car-search', component: MyCarSearchView },
     {path : '/no-car-info', component : NoCarInfoView},
+    {path : '/car-share/service/registration/first', component : CarShareServiceRegiFirstView},
+    {path : '/car-share/service/registration/second', component : CarShareServiceRegiSecondView},
+
 ];
 
 const router = createRouter({

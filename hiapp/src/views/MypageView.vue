@@ -7,6 +7,7 @@
             <router-link to="/about">About 페이지 보기</router-link>
             <CarRegiButton/>
             <CarSearchButton/>
+            <CarShareServiceRegiButton/>
         </div>
     </div>
 </template>
@@ -14,12 +15,13 @@
 <script>
 import CarRegiButton from '../components/car-share/CarRegiButton.vue';
 import CarSearchButton from '../components/car-share/CarSearchButton.vue';
-
+import CarShareServiceRegiButton from '../components/car-share/CarShareServiceRegiButton.vue';
     export default {
         name: 'MypageView',
         components: {
             CarRegiButton,
             CarSearchButton,
+            CarShareServiceRegiButton,
         },
     };
 </script>
