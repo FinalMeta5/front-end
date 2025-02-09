@@ -1,6 +1,7 @@
 <template>
   <nav class="top-nav phone-fix">
     <ul>
+      <li><font-awesome-icon class="back-button" @click="goBack" :icon="['fas', 'circle-left'] " /></li>
       <li>
         <router-link to="/"><i class="bi bi-house"></i></router-link>
       </li>
@@ -38,6 +39,7 @@
 import { ref } from "vue";
 import LoginModalView from "../../views/LoginModalView.vue";
 import { logout, useAuthState } from "../../store/auth/auth";
+import { useRouter } from "vue-router";
 
 export default {
   name: "TopNavComponent",
@@ -47,10 +49,17 @@ export default {
   setup() {
     const showLoginModal = ref(false);
     const { isAuthenticated } = useAuthState();
+    const router = useRouter();
+
+    const goBack = () => {
+      router.go(-1);
+    };
+
     return {
       isAuthenticated,
       showLoginModal,
       logout,
+      goBack,
     };
   },
 };
