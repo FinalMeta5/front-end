@@ -150,9 +150,8 @@ const registerCar = async () => {
 
         console.log("✅ 차량 등록 성공:", response.data);
         alert("🚗 차량이 성공적으로 등록되었습니다!");
-
-        // ✅ 등록 후 입력 필드 초기화
         resetForm();
+        router.push("/mypage");
 
     } catch (error) {
         console.error("❌ 차량 등록 실패:", error);

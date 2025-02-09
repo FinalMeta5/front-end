@@ -1,6 +1,11 @@
 <template>
     <button @click="goToCarSearch" class="car-search-btn">차량 조회</button>
 
+    <!-- ✅ 로그인 모달 -->
+    <LoginModalView v-if="showLoginModal" 
+        @close="showLoginModal = false"
+        @login-success="handleLoginSuccess"
+        :redirectPath="redirectPath" />
     <!-- ✅ 에러 모달 (`v-model` 적용) -->
     <ErrorModal v-model:show="showErrorModal" :message="errorMessage" />
 </template>
@@ -10,22 +15,27 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { useAuthState } from "../../store/auth/auth";
-import ErrorModal from "../../components/error-modal/ErrorModal.vue"; // ✅ 에러 모달 import
+import LoginModalView from "../../views/LoginModalView.vue";
+import ErrorModal from "../../components/error-modal/ErrorModal.vue";
 
 export default {
     name: "CarSearchButton",
     components: {
+        LoginModalView,
         ErrorModal,
     },
     setup() {
         const router = useRouter();
+        const showLoginModal = ref(false);
         const showErrorModal = ref(false); // ✅ 모달 표시 여부 추가
         const errorMessage = ref(""); // ✅ 에러 메시지 저장 변수 추가
+        const pendingAction = ref(null); // ✅ 로그인 후 실행할 함수 저장
         const { isAuthenticated } = useAuthState();
 
         const goToCarSearch = async () => {
             if (!isAuthenticated.value) {
-                alert("로그인이 필요합니다.");
+                showLoginModal.value = true;
+                pendingAction.value = goToCarSearch;
                 return;
             }
 
@@ -33,7 +43,8 @@ export default {
             const token = localStorage.getItem("accessToken");
 
             if (!memberId) {
-                alert("회원 정보를 확인할 수 없습니다. 다시 로그인해주세요.");
+                errorMessage.value = "회원 정보를 확인할 수 없습니다. 다시 로그인해주세요.";
+                showErrorModal.value = true;
                 return;
             }
 
@@ -70,7 +81,17 @@ export default {
             }
         };
 
-        return { goToCarSearch, showErrorModal, errorMessage };
+        // ✅ 로그인 성공 후 저장된 `pendingAction` 실행
+        const handleLoginSuccess = () => {
+            showLoginModal.value = false;
+            if (pendingAction.value) {
+                const action = pendingAction.value;
+                pendingAction.value = null; // ✅ 실행 후 초기화
+                action(); // ✅ 원래 버튼 클릭 동작 다시 실행
+            }
+        };
+
+        return { goToCarSearch, showErrorModal, errorMessage, handleLoginSuccess, showLoginModal };
     },
 };
 </script>
