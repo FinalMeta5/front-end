@@ -8,7 +8,7 @@
         <label for="departure-time">예상 출발시간</label>
         <input type="text" id="departure-time" v-model="formattedPickupTime" @click="showDateTimeModal = true"
             readonly />
-        <p class="note">도착시간은 교통 상황에 따라 변경될 수 있습니다.</p>
+        <p class="note">⚠️도착시간은 교통 상황에 따라 변경될 수 있습니다.</p>
 
         <div class="checkbox">
             <input type="checkbox" id="time-collaboration" v-model="timeNego" />
@@ -18,13 +18,13 @@
         <label for="estimated-amount">예상 소요금액</label>
         <input type="number" id="estimated-amount" v-model="estimatedAmount" placeholder="₩" />
 
-        <p class="note">예상 소요금액은 차량용에 필요한 총 금액입니다. (1/N 가격 아님)</p>
+        <p class="note">💡예상 소요금액은 차량용에 필요한 총 금액입니다. (1/N 가격 아님)</p>
 
-        <label for="max-passengers">최대 탑승 인원</label>
+        <label for="max-passengers">최대 승차 인원</label>
         <select id="max-passengers" v-model="passengersNum">
             <option v-for="number in [1, 2, 3, 4]" :key="number" :value="number">{{ number }}</option>
         </select>
-        <p class="note">중형택시 기준 최대 탑승인원은 운전자 제외 4명입니다. (3명 권장)</p>
+        <p class="note">⚠️중형택시 기준 최대 승차인원은 운전자 제외 4명입니다. (3명 권장)</p>
 
         <label for="open-kakao-link">오픈 카톡 링크</label>
         <input type="text" id="open-kakao-link" v-model="openchatLink" placeholder="오픈 카톡 링크를 입력하세요." />
@@ -67,7 +67,7 @@ export default {
     },
     data() {
         return {
-            memberId: 1,
+            memberId: 2,
             pickupTime: '',
             timeNego: false,
             estimatedAmount: '',
@@ -199,6 +199,8 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
 }
 
 button:hover {
