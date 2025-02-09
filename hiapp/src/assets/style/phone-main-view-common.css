@@ -38,6 +38,17 @@ main {
     margin-bottom: 100px;
 }
 
+.view-context-contain2{
+    display: column;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 4rem;
+}
+
 .context2 {
     font-weight: bold;
     font-size: 1.4rem;
