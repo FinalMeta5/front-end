@@ -75,6 +75,39 @@
     font-size: 16px;
     cursor: pointer;
 }
+.car-reregister-button, .car-geri-delete-button, .regi-cancel-button,
+.car-geri-edit-button, .car-modify-button {
+    margin: 8px 0;
+    width: 80%;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/*재등록 버튼*/
+.car-reregister-button {
+    background: #21b940;
+}
+
+/*차량 삭제 버튼, 수정 취소 버튼*/
+.car-geri-delete-button, .regi-cancel-button{
+    background: #ff6262;
+}
+
+/*수정 버튼, 수정 완료 버튼*/
+.car-geri-edit-button, .car-modify-button {
+    background: #4192ff;
+}
+
+.two-button-group {
+    display: flex;          /* 가로 정렬 */
+    justify-content: center; /* 가운데 정렬 */
+    gap: 10px;              /* 버튼 간 간격 */
+    margin-top: 10px;
+}
 
 .register-button:hover {
     background: #357abd;
