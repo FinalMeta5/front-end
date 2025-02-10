@@ -3,7 +3,7 @@
         <!-- 🚗 차량 이미지 업로드 -->
         <div class="image-upload">
             <label for="carImage" class="image-placeholder">
-                <input type="file" id="carImage" @change="handleImageUpload" hidden :disabled="!isEditing"/>
+                <input type="file" id="carImage" @change="handleImageUpload" hidden :disabled="!isEditing || isEditing"/>
                 <img v-if="carImageUrl" :src="carImageUrl" alt="차량 이미지" />
                 <div v-else class="icon-container">
                     <FontAwesomeIcon :icon="faCarSide" size="2x" />
@@ -16,7 +16,7 @@
         <div class="max-psg">
             <div class="form-group">
                 <label for="model">차량 모델명</label>
-                <input type="text" id="model" v-model="carModel" :disabled="!isEditing" />
+                <input type="text" id="model" v-model="carModel" :disabled="!isEditing || isEditing" />
             </div>
 
             <div class="form-group">
@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <label for="registration">차량 등록번호</label>
-            <input type="text" id="registration" v-model="carRegistration" :disabled="!isEditing"/>
+            <input type="text" id="registration" v-model="carRegistration" :disabled="!isEditing || isEditing"/>
         </div>
 
         <div class="form-group">
@@ -46,7 +46,7 @@
         <div v-if="!isVerified && fileName" class="file-upload">
             <label for="agreementFile" class="agreement-file-placeholder">
                 <input type="file" id="agreementFile" @change="handleFileUpload" accept="application/pdf" hidden :disabled="!isEditing"/>
-                <p v-if="fileName">{{ fileName }}</p>
+                <p v-if="fileName" style="color: red;">🛑 인증 처리 중입니다.</p>
                 <p v-else>📄 범죄 기록 조회 동의서 제출 (PDF)</p>
             </label>
         </div>
