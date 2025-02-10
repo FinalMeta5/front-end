@@ -19,7 +19,7 @@
         </div>
 
         <div v-else>
-          <p>주소 정보를 불러오는 중..</p>
+          <p>주소 정보를 불러오는 중</p>
         </div>
       </div>
       <div v-else>
