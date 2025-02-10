@@ -41,7 +41,9 @@
     background: white;
     padding: 20px;
     border-radius: 8px;
-    text-align: center;
+    text-align: center;color: #000;
+    max-width : 380px;
+    min-width : 380px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   }
   

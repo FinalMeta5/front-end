@@ -31,7 +31,7 @@ const routes = [
     { path: '/my-car-search', component: MyCarSearchView },
     { path: '/no-car-info', component: NoCarInfoView },
     { path: '/car-share/service/registration/first', component: CarShareServiceRegiFirstView },
-    // { path: '/car-share/service/registration/second', component: CarShareServiceRegiSecondView },
+    { path: '/car-share/service/registration/second', component: CarShareServiceRegiSecondView },
 
     { path: '/taxi-share/regist-complete', component: TaxiShareRegistCompleteView },
 ];

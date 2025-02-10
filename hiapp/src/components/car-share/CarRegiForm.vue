@@ -1,16 +1,22 @@
 <template>
     <div class="car-registration">
 
-        <!-- 차량 이미지 업로드 -->
+        <!-- 🚗 차량 이미지 업로드 -->
         <div class="image-upload">
             <label for="carImage" class="image-placeholder">
-                <input type="file" id="carImage" @change="handleImageUpload" hidden />
-                <img v-if="carImageUrl" :src="carImageUrl" alt="차량 이미지" />
+                <input type="file" id="carImage" ref="carImageInput" @change="handleImageSelection" accept="image/*" :disabled="carImageUploaded" hidden />
+                
+                <!-- ✅ 이미지 미리보기 추가 -->
+                <img v-if="carImagePreview" :src="carImagePreview" alt="선택한 이미지 미리보기" />
+                
                 <div v-else class="icon-container">
                     <FontAwesomeIcon :icon="faCarSide" size="2x" />
                     <p>차량 이미지를 등록해 주세요</p>
                 </div>
             </label>
+            <button @click="uploadCarImage" :disabled="!carImageFile || carImageUploaded">
+                {{ carImageUploaded ? "전송 완료" : "이미지 전송" }}
+            </button>
         </div>
 
         <!-- 입력 필드 -->
@@ -43,13 +49,21 @@
             <textarea id="description" v-model="carDescription"></textarea>
         </div>
 
-        <!-- 범죄 기록 조회 동의서 (PDF) -->
+        <!-- 📄 범죄 기록 조회 동의서 (PDF) -->
         <div class="file-upload">
             <label for="agreementFile" class="agreement-file-placeholder">
-                <input type="file" id="agreementFile" @change="handleFileUpload" accept="application/pdf" hidden />
-                <p v-if="fileName">{{ fileName }}</p>
+                <input type="file" id="agreementFile" ref="agreementFileInput" @change="handleFileSelection" accept="application/pdf" :disabled="agreementFileUploaded" hidden />
+                
+                <!-- ✅ 파일명 표시 추가 -->
+                <div v-if="fileName">
+                    <FontAwesomeIcon :icon="faFilePdf" size="lg" style="color: red;" />
+                    <p>{{ fileName }}</p>
+                </div>
                 <p v-else>📄 범죄 기록 조회 동의서 제출 (PDF)</p>
             </label>
+            <button @click="uploadAgreementFile" :disabled="!agreementFile || agreementFileUploaded">
+                {{ agreementFileUploaded ? "전송 완료" : "파일 전송" }}
+            </button>
         </div>
 
         <!-- 등록 버튼 -->
@@ -69,15 +83,22 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 import AlertModal from "../../components/check-modal/AlertModal.vue";
 import ErrorModal from '../error-modal/ErrorModal.vue';
-
+import { useRouter } from "vue-router"; // ✅ router 추가
+const router = useRouter();
 const carNumber = ref("");
 watch(carNumber, (newVal) => {
     carNumber.value = newVal.replace(/\s+/g, '');
 });
 
-const carImageUrl = ref('');
 const carImageFile = ref(null);
+const carImagePreview = ref(null);
+const carImageUrl = ref(null);
+const carImageUploaded = ref(false);
+
 const agreementFile = ref(null);
+const agreementFileUrl = ref(null);
+const agreementFileUploaded = ref(false);
+
 const carModel = ref('');
 const carColor = ref('');
 const carDescription = ref('');
@@ -91,21 +112,76 @@ const missingFields = ref([]); // ✅ 누락된 필드 저장
 const showErrorModal = ref(false); // 🚨 모달 상태
 const errorMessage = ref(""); // 🚨 에러 메시지 저장
 
-// 🚗 이미지 업로드 핸들러
-const handleImageUpload = (event) => {
+// 🚗 이미지 선택 시 미리보기 표시 (URL은 아직 전송 안 함)
+const handleImageSelection = (event) => {
     const file = event.target.files[0];
     if (file) {
         carImageFile.value = file;
-        carImageUrl.value = URL.createObjectURL(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            carImagePreview.value = reader.result; // ✅ 선택한 이미지 미리보기
+        };
     }
 };
 
-// 📄 파일 업로드 핸들러
-const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        agreementFile.value = file;
-        fileName.value = file.name;
+// 📄 PDF 선택 시 파일명만 표시
+const handleFileSelection = (event) => {
+    agreementFile.value = event.target.files[0];
+    fileName.value = agreementFile.value?.name || "";
+};
+
+// 🚗 차량 이미지 업로드 (URL 저장)
+const uploadCarImage = async () => {
+    if (!carImageFile.value) {
+        alert("🚨 이미지를 선택하세요.");
+        return;
+    }
+
+    const token = localStorage.getItem("accessToken");
+    const formData = new FormData();
+    formData.append("carImage", carImageFile.value);
+
+    try {
+        const response = await axios.post("http://localhost:8080/api/car-registration/upload-car-image", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        carImageUrl.value = response.data; // ✅ 서버에서 받은 URL 저장
+        carImageUploaded.value = true;
+    } catch (error) {
+        console.error("🚨 차량 이미지 업로드 실패:", error.response);
+        alert("🚗 차량 이미지 업로드에 실패했습니다.");
+    }
+};
+
+// 📄 계약서 파일 업로드 (URL 저장)
+const uploadAgreementFile = async () => {
+    if (!agreementFile.value) {
+        alert("🚨 계약서 파일을 선택하세요.");
+        return;
+    }
+
+    const token = localStorage.getItem("accessToken");
+    const formData = new FormData();
+    formData.append("agreementFile", agreementFile.value);
+
+    try {
+        const response = await axios.post("http://localhost:8080/api/car-registration/upload-verified-file", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        agreementFileUrl.value = response.data; // ✅ 서버에서 받은 URL 저장
+        agreementFileUploaded.value = true;
+    } catch (error) {
+        console.error("🚨 계약서 파일 업로드 실패:", error.response);
+        alert("📄 계약서 파일 업로드에 실패했습니다.");
     }
 };
 
@@ -118,11 +194,11 @@ const registerCar = async () => {
     }
     // ✅ 필수 입력 값 체크
     missingFields.value = [];
-    if (!carImageFile.value) missingFields.value.push("차량 이미지");
+    if (!carImageUrl.value) missingFields.value.push("차량 이미지");
     if (!carModel.value) missingFields.value.push("차량 모델");
     if (!carNumber.value) missingFields.value.push("차량 등록번호");
     if (!carColor.value) missingFields.value.push("차량 색상");
-    if (!agreementFile.value) missingFields.value.push("범죄 기록 조회 동의서");
+    if (!agreementFileUrl.value) missingFields.value.push("범죄 기록 조회 동의서");
 
     if (missingFields.value.length > 0) {
         showModal.value = true; // ✅ 모달 표시
@@ -130,10 +206,8 @@ const registerCar = async () => {
     }
 
     const formData = new FormData();
-    if (carImageFile.value) {
-        formData.append("carImage", carImageFile.value);
-    }
-    formData.append("agreementFile", agreementFile.value);
+    formData.append("carImageUrl", carImageUrl.value);
+    formData.append("agreementFile", agreementFileUrl.value);
     formData.append("carNumber", carNumber.value);
     formData.append("carModel", carModel.value);
     formData.append("maxPassengers", maxPassengers.value);
