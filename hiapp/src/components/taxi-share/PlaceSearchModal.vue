@@ -4,8 +4,12 @@
             <h2 class="modal-title">출발지 검색</h2>
 
             <!-- 출발지 입력 -->
-            <input v-model="searchQuery" @input="searchPlaces" placeholder="출발지를 입력하세요." class="search-input" />
-
+            <div class="search-input-container">
+                <input v-model="searchQuery" @input="searchPlaces" placeholder="출발지를 입력하세요." class="search-input" />
+                <span class="search-icon" @click="getCurrentLocation">
+                    <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
+                </span>
+            </div>
             <!-- 검색 결과 -->
             <ul v-if="searchResults.length" class="search-results">
                 <li v-for="(place, index) in searchResults.slice(0, 10)" :key="index" @click="selectPlace(place)">
@@ -18,7 +22,7 @@
             <div ref="mapContainer" class="map-container"></div>
 
             <!-- 닫기 버튼 -->
-            <button @click="closeModal" class="close-button">닫기</button>
+            <button @click="closeModal" class="close-button">확인</button>
         </div>
     </div>
 </template>
@@ -26,14 +30,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 
-// const props = defineProps<{ isOpen: boolean }>();
-const emit = defineEmits(["close", "select"]);
+const emit = defineEmits(["close", "select", "current"]);
 
 const searchQuery = ref("");
 const searchResults = ref<any[]>([]);
 const mapContainer = ref<HTMLElement | null>(null); // ✅ mapContainer 정의
 const userLatitude = ref<number | null>(null); // ✅ 사용자 위치를 반응형으로 변경
 const userLongitude = ref<number | null>(null);
+const userAddress = ref<any | null>(null);
+
 let placesService: any = null;
 let map: any = null;
 let markers: any[] = [];
@@ -88,6 +93,36 @@ const initializeMap = () => {
     placesService = new (window as any).kakao.maps.services.Places();
 };
 
+// 현재 사용자위치 따서 인풋값 넣기
+const getCurrentLocation = () => {
+    if (!userLatitude || !userLongitude) {
+        alert("현재 위치를 가져올 수 없습니다.");
+        return;
+    }
+
+    const geocoder = new kakao.maps.services.Geocoder();
+    const coord = new kakao.maps.LatLng(userLatitude.value, userLongitude.value);
+    console.log(coord);
+
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
+        if (status === kakao.maps.services.Status.OK && result[0]) {
+            const address = result[0].road_address?.address_name || result[0].address.address_name;
+
+            // 입력 필드에 즉시 반영
+            searchQuery.value = address;
+            userAddress.value = address;
+
+            // 지도 위치 이동 및 마커 표시
+            const position = new kakao.maps.LatLng(userLatitude.value, userLongitude.value);
+            selectCurrentPlace(position);
+            displayMarker(position);
+        } else {
+            console.error("주소를 가져올 수 없습니다.");
+            alert("🚨현재 위치를 가져올 수 없습니다.");
+        }
+    });
+};
+
 // ✅ 장소 검색
 const searchPlaces = () => {
     if (!searchQuery.value.trim()) {
@@ -123,10 +158,24 @@ const clearMarkers = () => {
 // ✅ 장소 선택
 const selectPlace = (place: any) => {
     const position = new (window as any).kakao.maps.LatLng(place.y, place.x);
+    console.log(place);
     displayMarker(position);
     console.log(position);
+    // 검색 결과를 숨김
+    searchResults.value = [];
     emit("select", place);
-    closeModal();
+};
+// 현재 위치 장소로 선택
+const selectCurrentPlace = (coord: any) => {
+    displayMarker(coord);
+
+    const currentInfo = {
+        searchQuery: searchQuery,
+        userAddress: userAddress,
+        coord: coord,
+    }
+
+    emit("current", currentInfo);
 };
 
 // ✅ 모달 닫기
@@ -165,9 +214,25 @@ const closeModal = () => {
     margin-bottom: 12px;
 }
 
+.search-input-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .search-input {
     width: 100%;
-    padding: 10px;
+    padding: 10px 40px 10px 10px;
+    /* 오른쪽 여백을 늘려서 아이콘 위치 공간 확보 */
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
