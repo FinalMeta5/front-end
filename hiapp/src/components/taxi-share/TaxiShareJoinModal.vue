@@ -6,7 +6,7 @@
             <p v-else-if="errorMessage">{{ errorMessage }}</p>
             <div v-else-if="detail" class="modal-text">
                 <div id="destination"><b>도착</b>&emsp;{{ detail.destination }}</div>
-                <h2 class="modal-title">{{ detail.pickupTime }}&ensp;출발</h2>
+                <h2 class="modal-title">{{ detail.pickupTime }}&nbsp;{{ detail.pickupTimeOnly }}&ensp;출발</h2>
                 <div id="passenger-number">현재인원&ensp;{{ detail.currentPassengerNum }} / {{ detail.passengersNum }}</div>
                 <div id="estimated-amount">
                     {{ detail.passengersNum }}명 모이면,
@@ -21,23 +21,27 @@
                 <div>약 {{ (detail.estimatedAmount - Math.round(detail.estimatedAmount /
                     detail.passengersNum)).toLocaleString() }}원을 절약해보세요!</div>
             </div>
-
-            <!-- 닫기 버튼 -->
-            <button @click="joinApply" class="close-button">신청</button>
+            <!-- 내가 올린 게시글이면 "삭제하기" 버튼, 아니면 "신청" 버튼 -->
+            <button v-if="detail && detail.memberId === memberId" @click="deletePost"
+                class="delete-button">삭제하기</button>
+            <button v-else @click="joinApply" class="apply-button">신청</button>
         </div>
+        <!-- 로그인 모달 -->
+        <LoginModalView v-if="showLoginModal" @close="closeLoginModal" />
     </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted, computed, watchEffect, defineProps, defineEmits } from "vue";
 import axios from "axios";
+import LoginModalView from "../../views/LoginModalView.vue";
 
 //부모한테 받은 props
 const props = defineProps<{
     taxiShareId: number | null;
 }>();
 
-//기타 변수들
-const memberId = ref<number>(4); //일단 4번 회원... 나중에 바꿔야됨!!localStorage에서가져옴!
+//멤버 아이디 local storage에서 가져오기
+const memberId = ref<number | null>(null); // null 또는 number를 허용
 
 
 // 닫기 이벤트 전달
@@ -49,6 +53,14 @@ const load = ref(false);
 const errorMessage = ref("");
 //신청버튼 클릭시 로딩상태
 const isSubmitting = ref(false);
+//로그인 모달 여는 변수
+const showLoginModal = ref(false);
+
+// localStorage에서 memberId를 가져오는 함수
+const getMemberIdFromLocalStorage = () => {
+    const storedMemberId = localStorage.getItem('memberId');
+    return storedMemberId ? parseInt(storedMemberId) : null;
+};
 
 //서버에서 택시 디테일 가져오기
 const fetchTaxiDetail = async () => {
@@ -66,7 +78,10 @@ const fetchTaxiDetail = async () => {
     }
 
 }
-onMounted(fetchTaxiDetail);
+onMounted(() => {
+    memberId.value = getMemberIdFromLocalStorage();
+    fetchTaxiDetail();
+})
 // 모달 닫기 함수
 const closeModal = () => {
     emit("close");
@@ -74,9 +89,16 @@ const closeModal = () => {
 
 // 신청 버튼 클릭 핸들러 (예제)
 const joinApply = async () => {
+    console.log(memberId.value);
+    if (!memberId.value | memberId.value === null) {
+        showLoginModal.value = true;
+        alert("🚨 택시 공유에 참여하시려면 로그인을 해주세요!")
+        return;
+    }
+
     console.log(`택시 공유 ${props.taxiShareId} 신청`);
     if (!props.taxiShareId) {
-        alert("택시 공유 ID가 유효하지 않습니다.");
+        alert("🚨 택시 공유 ID가 유효하지 않습니다.");
         return;
     }
     if (isSubmitting.value) return;
@@ -84,8 +106,7 @@ const joinApply = async () => {
 
     const taxiShareJoinRequest = {
         taxiShareId: props.taxiShareId,
-        memberId: 2 //하드코딩 - 나중에 session에서 가져오기!!!
-        // const memberId = ref<number>(parseInt(localStorage.getItem("memberId") || "0"));
+        memberId: memberId.value,
     };
     try {
         const response = await axios.post("http://localhost:8080/api/taxi/join/insert", taxiShareJoinRequest);
@@ -105,6 +126,48 @@ const joinApply = async () => {
         isSubmitting.value = false;
         closeModal();
     }
+};
+
+const deletePost = async () => {
+
+    if (detail.value.memberId !== memberId.value) {
+        console.log("당신의 게시물이 아닙니다");
+        return;
+    }
+    // 삭제 확인 창
+    const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+    if (!isConfirmed) return;
+
+
+    const taxiShareJoinRequest = {
+        taxiShareId: props.taxiShareId,
+        memberId: memberId.value,
+    };
+
+    try {
+        const response = await axios.delete("http://localhost:8080/api/taxi/delete", {
+            data: taxiShareJoinRequest,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (response.status === 201) {
+            alert("택시 공유 게시글 삭제가 완료되었습니다.");
+        } else {
+            alert("택시 공유 게시글 삭제가 정상적으로 처리되지 않았습니다.");
+        }
+
+        // 모달 닫기 및 부모 컴포넌트에 삭제 이벤트 전달
+        closeModal();
+    } catch (error) {
+        if (error.response) {
+            console.error("삭제 오류:", error);
+            alert(`🚨 ${error.response.data.message || "삭제에 실패했습니다. 다시 시도해주세요."}`);
+        } else {
+            alert("🚨 서버와의 통신 중 오류가 발생했습니다.");
+        }
+    }
+
 };
 
 </script>
@@ -155,7 +218,7 @@ const joinApply = async () => {
     /* 텍스트 자체도 가운데 정렬 */
 }
 
-.close-button {
+.apply-button {
     margin-top: 12px;
     padding: 10px;
     width: 100%;
@@ -167,7 +230,23 @@ const joinApply = async () => {
     font-size: 16px;
 }
 
-.close-button:hover {
+.apply-button:hover {
     background-color: #0056b3;
+}
+
+.delete-button {
+    margin-top: 12px;
+    padding: 10px;
+    width: 100%;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
 }
 </style>
