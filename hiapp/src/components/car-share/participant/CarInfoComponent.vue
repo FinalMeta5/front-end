@@ -1,7 +1,7 @@
 <template>
   <div class="taxi-share-list">
       <div class="max-w-md mx-auto p-4">
-        <span id="driver-info">운전자 정보</span>
+        <span id="driver-info">운전자정보</span>
       <!-- <img id="showDetail" src="https://ifh.cc/g/OaJOh2.png" /> -->
       <div v-if="carInfo && Object.keys(carInfo).length > 0">
         <div v-if="carInfo.imageUrl">

@@ -1,10 +1,12 @@
 <template>
     <div class="home phone-main-screen">
         <h1 class="titleH1">Home</h1>
+
         <div class="view-context-contain">
             <TodayReservationListComponent/>
             <WeekReservationListComponent/>
             <BannerComponent/>
+            <router-link to="/carshare/list"><i class="bi bi-house"></i></router-link>
         </div>
     </div>
 </template>
