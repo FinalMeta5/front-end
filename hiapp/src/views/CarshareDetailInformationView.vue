@@ -5,7 +5,7 @@
             <DriverInfoComponent :driver-id="driverId"/>
             <CarInfoComponent :driver-id="driverId"/>
             <DrivingInfoComponent :driver-id="driverId" :carShareRegiId="carShareRegiId"/>
-            <button>예 약 해주라</button>
+            <button>예 약 live 지움</button>
             <button>취 소 꼬옥</button>
         </div>
     </div>
