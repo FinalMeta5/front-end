@@ -16,9 +16,10 @@
                     <img :src="activeImage.mypage" alt="My Page" />
                 </router-link>
             </li>
-            <li @click="changeImage('login')">
-                <router-link to="/login">
-                    <img :src="activeImage.login" alt="Login" />
+            <li @click="changeImage('noti')">
+                <router-link class="position-relative" to="/notification">
+                    <img :src="activeImage.noti" alt="Notification" />
+                    <span v-if="notifications.length" class="position-absolute top-0 start-75 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </router-link>
             </li>
             <li @click="changeImage('signup')" class="right-space">
@@ -26,13 +27,12 @@
                     <img :src="activeImage.signup" alt="Sign Up" />
                 </router-link>
             </li>
-            <NotificationIconComponent />
         </ul>
     </nav>
 </template>
 
 <script>
-import NotificationIconComponent from '../NotificationIconComponent.vue';
+import { mapState } from 'vuex';
 export default {
     name: "BottomNavComponent",
     data() {
@@ -41,20 +41,20 @@ export default {
                 home: "https://ifh.cc/g/VDLMLo.png",
                 about: "https://ifh.cc/g/FA32vo.png",
                 mypage: "https://ifh.cc/g/zMf5Tv.png",
-                login: "https://ifh.cc/g/1mDQnF.png",
+                noti: "https://ifh.cc/g/1mDQnF.png",
                 signup: "https://ifh.cc/g/f05JYD.png",
             },
             activeImage: {
                 home: "https://ifh.cc/g/VDLMLo.pngg",
                 about: "https://ifh.cc/g/FA32vo.png",
                 mypage: "https://ifh.cc/g/zMf5Tv.png",
-                login: "https://ifh.cc/g/1mDQnF.png",
+                noti: "https://ifh.cc/g/1mDQnF.png",
                 signup: "https://ifh.cc/g/f05JYD.png",
             },
         };
     },
-    components: {
-        NotificationIconComponent,
+    computed: {
+        ...mapState('websocket', ['notifications']),
     },
     methods: {
         changeImage(section) {
@@ -68,7 +68,7 @@ export default {
                 this.activeImage[section] = "https://ifh.cc/g/jKyFNf.png";
             } else if (section === 'mypage') {
                 this.activeImage[section] = "https://ifh.cc/g/KvrqV6.png";
-            } else if (section === 'login') {
+            } else if (section === 'noti') {
                 this.activeImage[section] = "https://ifh.cc/g/ChYpjd.png";
             } else if (section === 'signup') {
                 this.activeImage[section] = "https://ifh.cc/g/xRYLly.png";
