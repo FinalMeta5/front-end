@@ -76,20 +76,26 @@ async function handleLogin() {
 
     emit("login-success"); // ✅ 부모 컴포넌트에게 로그인 성공 알림
     
-    // ✅1. 로그인 후 이동할 페이지로 리디렉트
-    if (props.redirectPath) {
-      router.push(props.redirectPath); 
-      return;
-    } 
+    // ✅ 새로고침 후 실행되도록 로직 저장
+    setTimeout(() => {
+      // ✅1. 로그인 후 이동할 페이지로 리디렉트
+      if (props.redirectPath) {
+        router.push(props.redirectPath);
+        return;
+      }
 
-    // ✅2. 로그인 후 실행할 함수
-    if (props.pendingAction){
-      props.pendingAction();
-      return;
-    }
+      // ✅2. 로그인 후 실행할 함수
+      if (props.pendingAction) {
+        props.pendingAction();
+        return;
+      }
 
-    // ✅3. 기본으로 "/" 홈으로 이동
-    router.push("/");
+      // ✅3. 기본으로 "/" 홈으로 이동
+      router.push("/");
+    }, 500); // 새로고침 후 0.5초 뒤 실행
+
+    // ✅ 새로고침 실행
+    window.location.reload();
 
     
   } catch (err) {

@@ -2,11 +2,14 @@
     <div class="modal-overlay" @click.self="closeModal">
         <div class="modal-content">
 
-            <p v-if="load">🚖로딩 중...</p>
+            <p v-if="load || isSubmitting">🚖 로딩 중...</p>
             <p v-else-if="errorMessage">{{ errorMessage }}</p>
+
             <div v-else-if="detail" class="modal-text">
                 <div id="destination"><b>도착</b>&emsp;{{ detail.destination }}</div>
                 <h2 class="modal-title">{{ detail.pickupTime }}&nbsp;{{ detail.pickupTimeOnly }}&ensp;출발</h2>
+                <div :class="['time-negotiation', detail.timeNego === 'true' ? 'true' : 'false']">{{ detail.timeNego
+                    === 'true' ? '(시간협의 가능)' : '(시간협의 불가)' }}</div>
                 <div id="passenger-number">현재인원&ensp;{{ detail.currentPassengerNum }} / {{ detail.passengersNum }}</div>
                 <div id="estimated-amount">
                     {{ detail.passengersNum }}명 모이면,
@@ -21,48 +24,47 @@
                 <div>약 {{ (detail.estimatedAmount - Math.round(detail.estimatedAmount /
                     detail.passengersNum)).toLocaleString() }}원을 절약해보세요!</div>
             </div>
+
             <!-- 내가 올린 게시글이면 "삭제하기" 버튼, 아니면 "신청" 버튼 -->
-            <button v-if="detail && detail.memberId === memberId" @click="deletePost"
-                class="delete-button">삭제하기</button>
-            <button v-else @click="joinApply" class="apply-button">신청</button>
+            <button v-if="detail && detail.memberId === memberId" @click="deletePost" class="delete-button"
+                :disabled="isSubmitting">
+                {{ isSubmitting ? "삭제 중..." : "삭제하기" }}
+            </button>
+            <button v-else @click="joinApply" class="apply-button" :disabled="isSubmitting">
+                {{ isSubmitting ? "신청 중..." : "신청" }}
+            </button>
         </div>
         <!-- 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" @close="closeLoginModal" />
     </div>
 </template>
+
 <script setup lang="ts">
-import { ref, onMounted, computed, watchEffect, defineProps, defineEmits } from "vue";
+import { ref, onMounted, defineProps, defineEmits } from "vue";
 import axios from "axios";
 import LoginModalView from "../../views/LoginModalView.vue";
 
-//부모한테 받은 props
-const props = defineProps<{
-    taxiShareId: number | null;
-}>();
+// 부모에게 받은 props
+const props = defineProps<{ taxiShareId: number | null }>();
 
-//멤버 아이디 local storage에서 가져오기
-const memberId = ref<number | null>(null); // null 또는 number를 허용
-
-
-// 닫기 이벤트 전달
-const emit = defineEmits(["close"]);
-
-//통신할때 쓰는 변수
-const detail = ref<any[]>();
-const load = ref(false);
-const errorMessage = ref("");
-//신청버튼 클릭시 로딩상태
-const isSubmitting = ref(false);
-//로그인 모달 여는 변수
-const showLoginModal = ref(false);
-
-// localStorage에서 memberId를 가져오는 함수
+// LocalStorage에서 멤버 ID 가져오기
+const memberId = ref<number | null>(null);
 const getMemberIdFromLocalStorage = () => {
     const storedMemberId = localStorage.getItem('memberId');
     return storedMemberId ? parseInt(storedMemberId) : null;
 };
 
-//서버에서 택시 디테일 가져오기
+// 닫기 이벤트 전달
+const emit = defineEmits(["close"]);
+
+// 통신 관련 상태
+const detail = ref<any | null>(null);
+const load = ref(false);
+const errorMessage = ref("");
+const isSubmitting = ref(false); // 신청/삭제 요청 로딩 상태
+const showLoginModal = ref(false);
+
+// 🚀 서버에서 택시 디테일 가져오기
 const fetchTaxiDetail = async () => {
     load.value = true;
     errorMessage.value = "";
@@ -76,27 +78,25 @@ const fetchTaxiDetail = async () => {
     } finally {
         load.value = false;
     }
+};
 
-}
 onMounted(() => {
     memberId.value = getMemberIdFromLocalStorage();
     fetchTaxiDetail();
-})
-// 모달 닫기 함수
+});
+
+// 모달 닫기
 const closeModal = () => {
     emit("close");
 };
 
-// 신청 버튼 클릭 핸들러 (예제)
+// 🚖 신청 버튼 클릭
 const joinApply = async () => {
-    console.log(memberId.value);
-    if (!memberId.value | memberId.value === null) {
+    if (!memberId.value) {
         showLoginModal.value = true;
-        alert("🚨 택시 공유에 참여하시려면 로그인을 해주세요!")
+        alert("🚨 택시 공유에 참여하시려면 로그인을 해주세요!");
         return;
     }
-
-    console.log(`택시 공유 ${props.taxiShareId} 신청`);
     if (!props.taxiShareId) {
         alert("🚨 택시 공유 ID가 유효하지 않습니다.");
         return;
@@ -104,12 +104,11 @@ const joinApply = async () => {
     if (isSubmitting.value) return;
     isSubmitting.value = true;
 
-    const taxiShareJoinRequest = {
-        taxiShareId: props.taxiShareId,
-        memberId: memberId.value,
-    };
     try {
-        const response = await axios.post("http://localhost:8080/api/taxi/join/insert", taxiShareJoinRequest);
+        const response = await axios.post("http://localhost:8080/api/taxi/join/insert", {
+            taxiShareId: props.taxiShareId,
+            memberId: memberId.value,
+        });
 
         if (response.status === 201) {
             alert("택시 공유 신청이 완료되었습니다! 🚖");
@@ -117,60 +116,47 @@ const joinApply = async () => {
             alert("택시 공유 신청이 정상적으로 처리되지 않았습니다.");
         }
     } catch (error) {
-        if (error.response) {
-            alert(`🚨 ${error.response.data.message || "신청에 실패했습니다."}`);
-        } else {
-            alert("🚨 서버와의 통신 중 오류가 발생했습니다.");
-        }
+        alert(`🚨 ${error.response?.data?.message || "신청에 실패했습니다."}`);
     } finally {
         isSubmitting.value = false;
         closeModal();
     }
 };
 
+// 🚮 삭제 버튼 클릭
 const deletePost = async () => {
-
-    if (detail.value.memberId !== memberId.value) {
-        console.log("당신의 게시물이 아닙니다");
+    if (!detail.value || detail.value.memberId !== memberId.value) {
+        alert("🚨 당신의 게시물이 아닙니다.");
         return;
     }
-    // 삭제 확인 창
+
     const isConfirmed = confirm("정말로 삭제하시겠습니까?");
     if (!isConfirmed) return;
+    if (isSubmitting.value) return;
 
-
-    const taxiShareJoinRequest = {
-        taxiShareId: props.taxiShareId,
-        memberId: memberId.value,
-    };
+    isSubmitting.value = true;
 
     try {
-        const response = await axios.delete("http://localhost:8080/api/taxi/delete", {
-            data: taxiShareJoinRequest,
-            headers: {
-                "Content-Type": "application/json",
-            },
+        const response = await axios.post("http://localhost:8080/api/taxi/delete", {
+            taxiShareId: props.taxiShareId,
+            memberId: memberId.value,
         });
-        if (response.status === 201) {
-            alert("택시 공유 게시글 삭제가 완료되었습니다.");
+
+        if (response.status === 200) {
+            alert("🚖 택시 공유 게시글이 삭제되었습니다.");
         } else {
-            alert("택시 공유 게시글 삭제가 정상적으로 처리되지 않았습니다.");
+            alert("🚨 삭제가 정상적으로 처리되지 않았습니다.");
         }
 
-        // 모달 닫기 및 부모 컴포넌트에 삭제 이벤트 전달
         closeModal();
     } catch (error) {
-        if (error.response) {
-            console.error("삭제 오류:", error);
-            alert(`🚨 ${error.response.data.message || "삭제에 실패했습니다. 다시 시도해주세요."}`);
-        } else {
-            alert("🚨 서버와의 통신 중 오류가 발생했습니다.");
-        }
+        alert(`🚨 ${error.response?.data?.message || "삭제에 실패했습니다. 다시 시도해주세요."}`);
+    } finally {
+        isSubmitting.value = false;
     }
-
 };
-
 </script>
+
 <style scoped>
 .modal-overlay {
     position: fixed;
@@ -195,39 +181,28 @@ const deletePost = async () => {
     text-align: center;
 }
 
-.modal-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
+.time-negotiation .true {
+    color: #007bff;
 }
 
-#estimated-amount {
-    display: flex;
-    align-items: center;
-    /* 수직 가운데 정렬 */
-    justify-content: center;
-    /* 가로 중앙 정렬 */
-    gap: 8px;
-    /* 요소 간격 */
-    white-space: nowrap;
-    /* 줄 바꿈 방지 */
-    font-size: 14px;
-    width: 100%;
-    /* 부모 요소 기준으로 중앙 정렬 */
-    text-align: center;
-    /* 텍스트 자체도 가운데 정렬 */
+.time-negotiation .false {
+    color: #c82333;
 }
 
-.apply-button {
+.apply-button,
+.delete-button {
     margin-top: 12px;
     padding: 10px;
     width: 100%;
-    background-color: #007bff;
-    color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+}
+
+.apply-button {
+    background-color: #007bff;
+    color: white;
 }
 
 .apply-button:hover {
@@ -235,18 +210,16 @@ const deletePost = async () => {
 }
 
 .delete-button {
-    margin-top: 12px;
-    padding: 10px;
-    width: 100%;
     background-color: #dc3545;
     color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
 }
 
 .delete-button:hover {
     background-color: #c82333;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 </style>
