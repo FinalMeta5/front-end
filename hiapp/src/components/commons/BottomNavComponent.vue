@@ -1,22 +1,121 @@
 <template>
     <nav class="bottom-nav phone-fix">
-        <ul>
-            <li><router-link to="/"><i class="bi bi-house"></i></router-link></li>
-            <li><router-link to="/about"><i class="bi bi-info-circle"></i></router-link></li>
-            <li><router-link to="/mypage"><i class="bi bi-person"></i></router-link></li>
-            <li><router-link to="/login"><i class="bi bi-key"></i></router-link></li>
-            <li><router-link to="/signup"><i class="bi bi-person-plus"></i></router-link></li>
-            <li><router-link to="/memberlist"><i class="bi bi-list">Member List</i></router-link></li>
-        </ul>
+      <ul>
+        <li @click="changeImage('home')" class="left-space">
+          <router-link to="/">
+            <img :src="activeImage.home" alt="Home" />
+          </router-link>
+        </li>
+        <li @click="changeImage('about')">
+          <router-link to="/about">
+            <img :src="activeImage.about" alt="About" />
+          </router-link>
+        </li>
+        <li @click="changeImage('mypage')">
+          <router-link to="/mypage">
+            <img :src="activeImage.mypage" alt="My Page" />
+          </router-link>
+        </li>
+        <li @click="changeImage('login')">
+          <router-link to="/login">
+            <img :src="activeImage.login" alt="Login" />
+          </router-link>
+        </li>
+        <li @click="changeImage('signup')" class="right-space">
+          <router-link to="/signup">
+            <img :src="activeImage.signup" alt="Sign Up" />
+          </router-link>
+        </li>
+      </ul>
     </nav>
-</template>
-
-<script>
-export default {
+  </template>
+  
+  <script>
+  export default {
     name: "BottomNavComponent",
-};
-</script>
+    data() {
+      return {
+        defaultImages: {
+          home: "https://ifh.cc/g/VDLMLo.png",
+          about: "https://ifh.cc/g/FA32vo.png",
+          mypage: "https://ifh.cc/g/zMf5Tv.png",
+          login: "https://ifh.cc/g/1mDQnF.png",
+          signup: "https://ifh.cc/g/f05JYD.png",
+        },
+        activeImage: {
+          home: "https://ifh.cc/g/VDLMLo.pngg",
+          about: "https://ifh.cc/g/FA32vo.png",
+          mypage: "https://ifh.cc/g/zMf5Tv.png",
+          login: "https://ifh.cc/g/1mDQnF.png",
+          signup: "https://ifh.cc/g/f05JYD.png",
+        },
+      };
+    },
+    methods: {
+      changeImage(section) {
+        for (let key in this.activeImage) {
+          this.activeImage[key] = this.defaultImages[key];
+        }
+        
+        if (section === 'home') {
+        this.activeImage[section] = "https://ifh.cc/g/0VJVvz.png"; 
+      } else if (section === 'about') {
+        this.activeImage[section] = "https://ifh.cc/g/jKyFNf.png"; 
+      } else if (section === 'mypage') {
+        this.activeImage[section] = "https://ifh.cc/g/KvrqV6.png"; 
+      } else if (section === 'login') {
+        this.activeImage[section] = "https://ifh.cc/g/ChYpjd.png"; 
+      } else if (section === 'signup') {
+        this.activeImage[section] = "https://ifh.cc/g/xRYLly.png"; 
+      }
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  @import "../../assets/style/top-bottom-nav-mobile.css";
+  
+  .bottom-nav ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+  }
+  
+  .bottom-nav ul li {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-top: 3px;
+  }
+  
+  .bottom-nav ul li img {
+    width: 50%;
+  }
+  
+  .phone-fix {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-<style scoped>
-    @import "../../assets/style/top-bottom-nav-mobile.css"
-</style>
+  .left-space {
+    margin-left: 25px;  /* 왼쪽에 10px 여백 */
+  }
+
+  .right-space {
+    margin-right: 20px; /* 오른쪽에 10px 여백 */
+  }
+
+
+
+
+  </style>
+  

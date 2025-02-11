@@ -481,5 +481,23 @@
   z-index: 15;
   width: 50px;
 }
+
+@media screen and (max-width: 600px) {
+
+  .search-container {
+    width: 85%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    font-size: 14px;
+  }
+
+  .result-container {
+    width: 85%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+}
 </style>
   
