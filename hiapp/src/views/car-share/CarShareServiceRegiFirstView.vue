@@ -1,49 +1,47 @@
 <template>
-  <div class="path-view">
-      <div class="header">
-          <h1>경로 등록</h1>
+  <div class="phone-main-screen">
+    <h1 class="titleH2">차량 공유 서비스 등록</h1>
+        <div class="view-context-contain">
+          <div>
+            <!-- 출발지 입력 -->
+            <div class="input-group">
+                <font-awesome-icon :icon="['fas', 'location-arrow']" class="icon" />
+                <input v-model="startLocation" @input="searchPlaces('start')" placeholder="출발지를 입력하세요." />
+                <span class="search-icon" @click="getCurrentLocation('start')">
+                    <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
+                </span>
+                <ul v-if="startSearchResults.length" class="search-results">
+                    <li v-for="(place, index) in startSearchResults.slice(0, 7)" :key="index"
+                        @click="selectPlace('start', place)">
+                        {{ place.place_name }}({{ place.road_address_name }})
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 도착지 입력 -->
+            <div class="input-group">
+                <font-awesome-icon :icon="['fas', 'location-dot']" class="icon" />
+                <input v-model="endLocation" @input="searchPlaces('end')" placeholder="도착지를 입력하세요." />
+                <span class="search-icon" @click="getCurrentLocation('end')">
+                    <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
+                </span>
+                <ul v-if="endSearchResults.length" class="search-results">
+                    <li v-for="(place, index) in endSearchResults.slice(0, 7)" :key="index"
+                        @click="selectPlace('end', place)">
+                        {{ place.place_name }}({{ place.road_address_name }})
+                    </li>
+                </ul>
+            </div>
+        </div>
+          <!-- 카카오 지도 -->
+          <div id="mapContainer" ref="mapContainer" class="map-container"></div>
+        <!-- 선택된 주소 정보 -->
+        <div v-if="startAddress || endAddress " class="address-info">
+          <div v-if="startAddress" class="final-loca"><img class="loca-mark" src="../../assets/images/출발마크.png"><p class="final-addr">{{ startAddress ? ` ${startAddress}` : '' }}</p></div>
+          <div class="final-loca"><img class="loca-mark" src="../../assets/images/도착마크.png"><p class="final-addr">{{ endAddress ? ` ${endAddress}` : '' }}</p></div>
+        </div>
+        <button class="next-button" @click="nextStep">다음</button>
       </div>
-
-      <!-- 출발지 입력 -->
-      <div class="input-group">
-          <font-awesome-icon :icon="['fas', 'location-arrow']" class="icon" />
-          <input v-model="startLocation" @input="searchPlaces('start')" placeholder="출발지를 입력하세요." />
-          <span class="search-icon" @click="getCurrentLocation('start')">
-              <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
-          </span>
-          <ul v-if="startSearchResults.length" class="search-results">
-              <li v-for="(place, index) in startSearchResults.slice(0, 7)" :key="index"
-                  @click="selectPlace('start', place)">
-                  {{ place.place_name }}({{ place.road_address_name }})
-              </li>
-          </ul>
-      </div>
-
-      <!-- 도착지 입력 -->
-      <div class="input-group">
-          <font-awesome-icon :icon="['fas', 'location-dot']" class="icon" />
-          <input v-model="endLocation" @input="searchPlaces('end')" placeholder="도착지를 입력하세요." />
-          <span class="search-icon" @click="getCurrentLocation('end')">
-              <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
-          </span>
-          <ul v-if="endSearchResults.length" class="search-results">
-              <li v-for="(place, index) in endSearchResults.slice(0, 7)" :key="index"
-                  @click="selectPlace('end', place)">
-                  {{ place.place_name }}({{ place.road_address_name }})
-              </li>
-          </ul>
-      </div>
-
-      <!-- 카카오 지도 -->
-      <div id="mapContainer" ref="mapContainer" class="map-container"></div>
-
-      <!-- 선택된 주소 정보 -->
-      <div class="address-info">
-        <div class="final-loca"><img class="loca-mark" src="../../assets/images/출발마크.png"><p class="final-addr">{{ startAddress ? ` ${startAddress}` : '' }}</p></div>
-        <div class="final-loca"><img class="loca-mark" src="../../assets/images/도착마크.png"><p class="final-addr">{{ endAddress ? ` ${endAddress}` : '' }}</p></div>
-      </div>
-
-      <button class="next-button" @click="nextStep">다음</button>
   </div>
 </template>
 
@@ -278,6 +276,8 @@ export default {
 </script>
 
 <style scoped>
+@import "../../style.css";
+@import "../../assets/style/phone-main-view-common.css";
 .final-loca{
   display: flex;
   justify-content: space-between;
@@ -334,6 +334,7 @@ export default {
   padding: 12px;
   display: flex;
   align-items: center;
+  height: 4rem;
   gap: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -425,12 +426,14 @@ export default {
   margin: 0;
   font-size: 16px;
   color: #555;
+  min-width: 350px;
+  max-width: 350px;
 }
 
 .next-button {
-  width: 100%;
+  width: 80%;
   padding: 12px;
-  background: #007bff;
+  background: #7f8790;
   color: #fff;
   border: none;
   border-radius: 25px;
@@ -442,6 +445,6 @@ export default {
 }
 
 .next-button:hover {
-  background: #0056b3;
+  background: #4192ff;
 }
 </style>

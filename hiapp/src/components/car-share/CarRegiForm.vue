@@ -14,8 +14,8 @@
                     <p>차량 이미지를 등록해 주세요</p>
                 </div>
             </label>
-            <button @click="uploadCarImage" :disabled="!carImageFile || carImageUploaded">
-                {{ carImageUploaded ? "전송 완료" : "이미지 전송" }}
+            <button class="carimg-send-btn" @click="uploadCarImage" :disabled="!carImageFile || carImageUploaded">
+                {{ carImageUploaded ? "전송 완료" : "전송" }}
             </button>
         </div>
 
@@ -61,7 +61,7 @@
                 </div>
                 <p v-else>📄 범죄 기록 조회 동의서 제출 (PDF)</p>
             </label>
-            <button @click="uploadAgreementFile" :disabled="!agreementFile || agreementFileUploaded">
+            <button class="carimg-send-btn2" @click="uploadAgreementFile" :disabled="!agreementFile || agreementFileUploaded">
                 {{ agreementFileUploaded ? "전송 완료" : "파일 전송" }}
             </button>
         </div>
