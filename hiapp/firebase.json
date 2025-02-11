@@ -11,6 +11,7 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "site": "www.hifive5.shop"
   }
 }
