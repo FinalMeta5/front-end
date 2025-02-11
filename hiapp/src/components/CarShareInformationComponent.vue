@@ -82,12 +82,12 @@ export default {
       }
     },
     goToDetailPage() {
-      console.log('driverId:', this.car.driverId);
+      console.log('driverId:', this.car.memberId);
       console.log('carShareRegiId:', this.car.carShareRegiId);
       this.$router.push({ 
         path: '/carshare/detail', 
         query: { 
-          driverId: this.car.driverId ,
+          driverId: this.car.memberId ,
           carShareRegiId: this.car.carShareRegiId
         }  
       });
