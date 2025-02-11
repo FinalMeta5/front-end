@@ -8,6 +8,7 @@
             <CarRegiButton/>
             <CarSearchButton/>
             <CarShareServiceRegiButton/>
+            <MyCarShareSearchButton/>
         </div>
     </div>
 </template>
@@ -16,12 +17,14 @@
 import CarRegiButton from '../components/car-share/CarRegiButton.vue';
 import CarSearchButton from '../components/car-share/CarSearchButton.vue';
 import CarShareServiceRegiButton from '../components/car-share/CarShareServiceRegiButton.vue';
+import MyCarShareSearchButton from '../components/car-share/MyCarShareSearchButton.vue';
     export default {
         name: 'MypageView',
         components: {
             CarRegiButton,
             CarSearchButton,
             CarShareServiceRegiButton,
+            MyCarShareSearchButton,
         },
     };
 </script>

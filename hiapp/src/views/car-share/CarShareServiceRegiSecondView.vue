@@ -278,47 +278,49 @@ export default {
       this.showFinalCheckPopup = true;
     }, 
     goToCarServiceFinalRegi() {
-      
-      this.pickupDate = `${this.selectedDate}T${this.selectedTime}`;
+  this.pickupDate = `${this.selectedDate}T${this.selectedTime}`;
 
-      const requestData = {
-        //출발지
-        pickupLoc : this.latLngInfo.startLocation,
-        latitudePl : this.latLngInfo.startLat,
-        longitudePl : this.latLngInfo.startLng,
-        sidoPl: this.addressInfo.startSido,
-        sigunguPl: this.addressInfo.startSigungu,
-        roadnamePl: this.addressInfo.startRoadName,
-        //도착지
-        destination: this.latLngInfo.endLocation,
-        latitudeDs: this.latLngInfo.endLat,
-        longitudeDs: this.latLngInfo.endLng,
-        sidoDs: this.addressInfo.endSido,
-        sigunguDs: this.addressInfo.endSigungu,
-        roadnameDs: this.addressInfo.endRoadName,
-        // 그 외
-        passengersNum : this.selectedPassengers,
-        pickupDate : this.pickupDate,
-        category : this.selectedShareType
-      };
-      
-      console.log("🚀 [전송 데이터]:", requestData);
+  const requestData = {
+    // 출발지
+    pickupLoc: this.latLngInfo.startLocation,
+    latitudePl: Number(this.latLngInfo.startLat),  // 🔥 숫자로 변환
+    longitudePl: Number(this.latLngInfo.startLng), // 🔥 숫자로 변환
+    sidoPl: this.addressInfo.startSido,
+    sigunguPl: this.addressInfo.startSigungu,
+    roadnamePl: this.addressInfo.startRoadName,
 
-      axios.post("http://localhost:8080/api/car-share/register", requestData, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("accessToken")}` // JWT 토큰 추가
-          }
-      })
-        .then(response => {
-          alert("차량 공유 서비스가 등록되었습니다.");
-          this.$router.push("/mypage");
-        })
-        .catch(error => {
-          console.error(" 등록 실패 : ", error);
-          alert("등록 실패. 다시 시도.")
-        })
-    },
+    // 도착지
+    destination: this.latLngInfo.endLocation,
+    latitudeDs: Number(this.latLngInfo.endLat),  // 🔥 숫자로 변환
+    longitudeDs: Number(this.latLngInfo.endLng), // 🔥 숫자로 변환
+    sidoDs: this.addressInfo.endSido,
+    sigunguDs: this.addressInfo.endSigungu,
+    roadnameDs: this.addressInfo.endRoadName,
+
+    // 기타 정보
+    passengersNum: this.selectedPassengers,
+    pickupDate: this.pickupDate,
+    category: this.selectedShareType
+  };
+
+  console.log("🚀 [전송 데이터]:", requestData); // ✅ 확인용 콘솔 로그
+
+  axios.post("http://localhost:8080/api/car-share/register", requestData, {  
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+    }
+  })
+  .then(response => {
+    alert("차량 공유 서비스가 등록되었습니다.");
+    this.$router.push("/mypage");
+  })
+  .catch(error => {
+    console.error("❌ 등록 실패:", error.response ? error.response.data : error);
+    alert("등록 실패. 다시 시도하세요.");
+  });
+}
+,
 
   // ✅ 요일 선택 (토글 방식)
   toggleDay(day) {
