@@ -7,13 +7,19 @@
             <li><router-link to="/login"><i class="bi bi-key"></i></router-link></li>
             <li><router-link to="/signup"><i class="bi bi-person-plus"></i></router-link></li>
             <li><router-link to="/memberlist"><i class="bi bi-list">Member List</i></router-link></li>
+            <NotificationIconComponent/>
         </ul>
     </nav>
 </template>
 
 <script>
+import NotificationIconComponent from '../NotificationIconComponent.vue';
+
 export default {
     name: "BottomNavComponent",
+    components: {
+        NotificationIconComponent,
+    },
 };
 </script>
 
