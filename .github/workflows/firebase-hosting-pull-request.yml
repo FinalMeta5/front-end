@@ -26,7 +26,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           echo "${FIREBASE_SERVICE_ACCOUNT}" > "${HOME}/firebase-service-account.json"
-          firebase use --add --project bururung-2911d --token "${{ secrets.FIREBASE_DEPLOY_TOKEN }}"
+          firebase use --add --project bururung-2911d
 
       - name: Deploy to Firebase
         run: firebase deploy --token ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
