@@ -5,8 +5,8 @@
             <DriverInfoComponent :driver-id="driverId"/>
             <CarInfoComponent :driver-id="driverId"/>
             <DrivingInfoComponent :driver-id="driverId" :carShareRegiId="carShareRegiId"/>
-            <button>예 약 제발</button>
-            <button>취 소 제발</button>
+            <button>예 약 꼬옥</button>
+            <button>취 소 꼬옥</button>
         </div>
     </div>
 </template>
