@@ -82,8 +82,8 @@ export default {
       }
     },
     goToDetailPage() {
-      console.log('driverId:', this.car.memberId);
-      console.log('carShareRegiId:', this.car.carShareRegiId);
+      console.log('driverId :', this.car.memberId);
+      console.log('carShareRegiId :', this.car.carShareRegiId);
       this.$router.push({ 
         path: '/carshare/detail', 
         query: { 
