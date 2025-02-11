@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "hiapp/build",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
