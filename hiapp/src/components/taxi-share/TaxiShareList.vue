@@ -212,7 +212,6 @@ const setCurrentDeparture = (currentInfo: any) => {
     departure.value = currentInfo.userAddress.value;
     departureLat.value = currentInfo.coord.getLat();
     departureLng.value = currentInfo.coord.getLng();
-    console.log(departureLng.value);
 }
 
 const goToRegist = () => {
