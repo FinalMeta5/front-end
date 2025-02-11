@@ -1,5 +1,5 @@
 <template>
-  <div class="result-container">
+  <div class="result-container" @click="goToDetailPage">
     <img id="showInformation" src="https://ifh.cc/g/OslxBJ.png" />
     <div class="result-show">
       <div v-if="car">
@@ -19,7 +19,7 @@
         </div>
 
         <div v-else>
-          <p>주소 정보를 불러오는 중..</p>
+          <p>주소 정보를 불러오는 중</p>
         </div>
       </div>
       <div v-else>
@@ -34,12 +34,7 @@ import axios from 'axios';
 
 export default {
   name: 'CarShareInformationComponent',
-  props: {
-    car: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ['car'],
   data() {
     return {
       addressPl: null, 
@@ -86,6 +81,17 @@ export default {
         console.error('주소 정보를 가져오는 중 오류가 발생했습니다.', error);
       }
     },
+    goToDetailPage() {
+      console.log('driverId:', this.car.driverId);
+      console.log('carShareRegiId:', this.car.carShareRegiId);
+      this.$router.push({ 
+        path: '/carshare/detail', 
+        query: { 
+          driverId: this.car.driverId ,
+          carShareRegiId: this.car.carShareRegiId
+        }  
+      });
+  }
   },
 };
 </script>
@@ -94,6 +100,7 @@ export default {
 .result-container {
   position: relative;
   color: #5D5D5D;
+  cursor: pointer;
 }
 
 .result-show {
@@ -170,5 +177,19 @@ export default {
 
 #end {
   top: 44px;
+}
+
+@media screen and (max-width: 600px) {
+
+  #driver-nickname {
+    font-size: 22px;
+    top: -100px;
+  }
+
+  #date {
+    top: -93px;
+    right: 59px;
+    font-size: 12px;
+}
 }
 </style>

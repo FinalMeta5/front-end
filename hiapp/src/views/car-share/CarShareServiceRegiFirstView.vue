@@ -1,49 +1,50 @@
 <template>
+  <div class="path-view">
+      <div class="header">
+          <h1>경로 등록</h1>
+      </div>
 
-<div class="mypage phone-main-screen">
-        <h1 class="titleH2">차량 공유 경로 등록</h1>
-        <div class="view-context-contain2">
-          <div class="input-back">
-            <!-- 출발지 입력 -->
-            <div class="input-group">
-              <font-awesome-icon :icon="['fas', 'location-arrow']" class="input-icon"/>
-              <input v-model="startLocation" @input="searchPlaces('start')" placeholder="출발지를 입력하세요." />
-              <img src="../../assets/images/현위치.png" class="geo-icon" @click="getUserLocation('start')" />
-              <ul v-if="startSearchResults.length" class="search-results">
-                    <li v-for="(place, index) in startSearchResults.slice(0, 7)" :key="index"
-                        @click="selectPlace('start', place)">
-                        {{ place.place_name }}({{ place.road_address_name }})
-                    </li>
-                </ul>
-            </div>
-            <div class="divider"></div>
-            <!-- 도착지 입력 -->
-            <div class="input-group">
-              <font-awesome-icon :icon="['fas', 'location-dot']" class="input-icon"/>
-                <input v-model="endLocation" @input="searchPlaces('end')" placeholder="도착지를 입력하세요." />
-                <img src="../../assets/images/현위치.png" class="geo-icon" @click="getUserLocation('end')" />
-                <ul v-if="endSearchResults.length" class="search-results">
-                    <li v-for="(place, index) in endSearchResults.slice(0, 7)" :key="index"
-                        @click="selectPlace('end', place)">
-                        {{ place.place_name }}({{ place.road_address_name }})
-                    </li>
-                </ul>
-            </div>
-          </div>
-          <!-- 카카오 지도 -->
-          <div id="mapContainer" ref="mapContainer" class="map-container"></div>
-            <!-- 선택된 주소 정보 -->
-              <div class="address-info">
-                <p>{{ startLocation }}</p>
-                <font-awesome-icon :icon="['fas', 'route']" class="farout-icn" />
-                <p>{{ endLocation }}</p>
-              </div>
+      <!-- 출발지 입력 -->
+      <div class="input-group">
+          <font-awesome-icon :icon="['fas', 'location-arrow']" class="icon" />
+          <input v-model="startLocation" @input="searchPlaces('start')" placeholder="출발지를 입력하세요." />
+          <span class="search-icon" @click="getCurrentLocation('start')">
+              <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
+          </span>
+          <ul v-if="startSearchResults.length" class="search-results">
+              <li v-for="(place, index) in startSearchResults.slice(0, 7)" :key="index"
+                  @click="selectPlace('start', place)">
+                  {{ place.place_name }}({{ place.road_address_name }})
+              </li>
+          </ul>
+      </div>
 
+      <!-- 도착지 입력 -->
+      <div class="input-group">
+          <font-awesome-icon :icon="['fas', 'location-dot']" class="icon" />
+          <input v-model="endLocation" @input="searchPlaces('end')" placeholder="도착지를 입력하세요." />
+          <span class="search-icon" @click="getCurrentLocation('end')">
+              <img src="../../assets/images/현위치.png" alt="현재 위치 아이콘">
+          </span>
+          <ul v-if="endSearchResults.length" class="search-results">
+              <li v-for="(place, index) in endSearchResults.slice(0, 7)" :key="index"
+                  @click="selectPlace('end', place)">
+                  {{ place.place_name }}({{ place.road_address_name }})
+              </li>
+          </ul>
+      </div>
+
+      <!-- 카카오 지도 -->
+      <div id="mapContainer" ref="mapContainer" class="map-container"></div>
+
+      <!-- 선택된 주소 정보 -->
+      <div class="address-info">
+        <div class="final-loca"><img class="loca-mark" src="../../assets/images/출발마크.png"><p class="final-addr">{{ startAddress ? ` ${startAddress}` : '' }}</p></div>
+        <div class="final-loca"><img class="loca-mark" src="../../assets/images/도착마크.png"><p class="final-addr">{{ endAddress ? ` ${endAddress}` : '' }}</p></div>
+      </div>
 
       <button class="next-button" @click="nextStep">다음</button>
-        </div> 
-
-    </div>
+  </div>
 </template>
 
 <script>
@@ -51,22 +52,24 @@ export default {
   name: "CarShareServiceRegiFirstView",
   data() {
       return {
-          map:null,
-          latitude : 0,
-          longitude : 0,
-          startLocation: "",
-          endLocation: "",
+          startLocation: "", // 출발지
+          endLocation: "", // 도착지
           startSearchResults: [],
           endSearchResults: [],
-          userLatitude: null,
-          userLongitude: null,
-          map: null,
+          userLatitude: null, // 사용자 위도
+          userLongitude: null, // 사용자 경도
+          userAddress: "", // 사용자 주소
+          map: null, 
+          geocoder: null,
           markers: [],
-          marker: null,
-          address: null,
           placesService: null,
-          startLatLng: null,
-          endLatLng: null,
+          startLatLng: null, // 출발지 위도
+          endLatLng: null, // 도착지 위도
+          startAddress: "",
+          endAddress: "",
+          startSido: "",
+          startSigungu: "",
+          startRodName: ""
       };
   },
   mounted() {
@@ -79,9 +82,6 @@ export default {
       }
   },
   methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
       // Kakao 지도 API 스크립트 로드
       loadScript() {
           const script = document.createElement("script");
@@ -93,73 +93,104 @@ export default {
           document.head.appendChild(script);
       },
 
-      initMap() {
-          if (this.map) return;
+      // 지도 초기화
+      initializeMap() {
+          const lat = this.userLatitude || 37.5665; // 기본 서울 좌표
+          const lng = this.userLongitude || 126.9780;
 
-          const container = document.getElementById("map");                
-          const options = {
-            center: new kakao.maps.LatLng(this.latitude, this.longitude),  
-            level: 2,
-          };
+          this.map = new kakao.maps.Map(this.$refs.mapContainer, {
+              center: new kakao.maps.LatLng(lat, lng),
+              level: 2,
+          });
 
-          this.map = new kakao.maps.Map(container, options);
-          this.createMarker();
-        },
+          this.placesService = new kakao.maps.services.Places();
+          this.geocoder = new kakao.maps.services.Geocoder();
+      },
 
       // 사용자 현재 위치 가져오기
-      async getUserLocation(type) {
+      getUserLocation() {
           if (!navigator.geolocation) {
               alert("위치 정보를 사용할 수 없습니다.");
               return;
           }
 
           navigator.geolocation.getCurrentPosition(
-              async (pos) => {
-                const latitude = pos.coords.latitude;
-                const longitude = pos.coords.longitude;
-                console.log(`현재 위치 : ${latitude}, ${longitude}`)
-                
-                // 카카오 API 이용해 좌표 -> 주소 
-                const address = await this.convertCoordsToAddress(latitude, longitude)
-                console.log(`🏠 변환된 주소: ${address}`);
+              (pos) => {
+                  console.log(pos.coords);
+                  this.userLatitude = pos.coords.latitude;
+                  this.userLongitude = pos.coords.longitude;
 
-                if (address) {
-                  if(type === 'start') {
-                    this.startLocation = address;
-                    this.startLatLng = new kakao.maps.LatLng(latitude, longitude);
-                  } else if (type === 'end') {
-                    this.endLocation = address;
-                    this.endLatLng = new kakao.maps.LatLng(latitude, longitude);
+                  if (this.map) {
+                      this.map.setCenter(new kakao.maps.LatLng(this.userLatitude, this.userLongitude));
                   }
-                  // 마커 업데이트
-                  this.displayMarker(new kakao.maps.LatLng(latitude, longitude));
-                }
               },
               (err) => {
-            alert("현재 위치를 가져올 수 없습니다: " + err.message);
-        }
-      );
+                  console.error("위치 정보를 가져올 수 없습니다: ", err.message);
+              }
+          );
       },
+      getCurrentLocation(type) {
+          if (!this.userLatitude || !this.userLongitude) {
+              alert("현재 위치를 가져올 수 없습니다.");
+              return;
+          }
 
-      // kakao API 로 좌표 -> 주로 변환
-      async convertCoordsToAddress(lat, lng) {
-            return new Promise((resolve, reject) => {
-                const geocoder = new kakao.maps.services.Geocoder();
-                const coord = new kakao.maps.LatLng(lat, lng);
+          const coord = new kakao.maps.LatLng(this.userLatitude, this.userLongitude);
 
-                geocoder.coord2Address(lng, lat, (result, status) => {
-                    if (status === kakao.maps.services.Status.OK) {
-                        const address = result[0].road_address
-                            ? result[0].road_address.address_name  // 도로명 주소
-                            : result[0].address.address_name;  // 지번 주소
-                        resolve(address);
-                    } else {
-                        reject("주소 변환 실패");
-                    }
-                });
-            });
-        },
+          this.geocoder.coord2Address(coord.getLng(), coord.getLat(), (result, status) => {
+              if (status === kakao.maps.services.Status.OK && result[0]) {
+                  const address = result[0].road_address?.address_name || result[0].address.address_name;
 
+                  // 입력 필드에 즉시 반영
+                  if (type === "start") {
+                      this.startLocation = address;
+                      this.startAddress = address;
+                      console.log(coord);
+                      this.startLatLng = coord;
+                      this.startRoadName = result[0].road_address?.road_name || ""; // ✅ 도로명 저장
+                      this.searchPlacesByAddress("start", address);
+                  } else {
+                      this.endLocation = address;
+                      this.endAddress = address;
+                      this.endLatLng = coord;
+                      this.endRoadName = result[0].road_address?.road_name || "";
+                      this.searchPlacesByAddress("end", address);
+                  }
+
+                  // 지도 위치 이동 및 마커 표시
+                  const position = new kakao.maps.LatLng(this.userLatitude, this.userLongitude);
+                  this.displayMarker(position);
+              } else {
+                  console.error("주소를 가져올 수 없습니다.");
+              }
+          });
+                // ✅ 2. 시도/시군구 변환
+              this.geocoder.coord2RegionCode(coord.getLng(), coord.getLat(), (result, status) => {
+                if (status === kakao.maps.services.Status.OK && result.length > 0) {
+                  if (type === "start") {
+                    this.startSido = result[0].region_1depth_name; // ✅ 시도 저장
+                    this.startSigungu = result[0].region_2depth_name; // ✅ 시군구 저장
+                  } else {
+                    this.endSido = result[0].region_1depth_name;
+                    this.endSigungu = result[0].region_2depth_name;
+                  }
+                }
+              });
+              
+            },
+            searchPlacesByAddress(type, address) {
+    if (!address) return;
+
+      this.placesService.keywordSearch(address, (data, status) => {
+              if (status === kakao.maps.services.Status.OK && data.length > 0) {
+                  // 🔹 검색된 첫 번째 장소명을 사용
+                  this[`${type}Location`] = data[0].place_name;
+              } else {
+                  console.warn("📌 해당 주소로 장소명을 찾을 수 없음:", address);
+              }
+          });
+      },
+      
       // 장소 검색
       searchPlaces(type) {
           const query = type === "start" ? this.startLocation : this.endLocation;
@@ -182,9 +213,22 @@ export default {
           this[`${type}Location`] = place.place_name;
           this[`${type}SearchResults`] = [];
           this[`${type}LatLng`] = new kakao.maps.LatLng(place.y, place.x);
-
+          this[`${type}Address`] = place.road_address_name || place.address_name;
           const position = new kakao.maps.LatLng(place.y, place.x);
           this.displayMarker(position);
+        // ✅ 선택한 장소의 상세 주소 (도로명, 시도, 시군구 가져오기)
+        this.geocoder.coord2Address(place.x, place.y, (result, status) => {
+            if (status === kakao.maps.services.Status.OK && result[0]) {
+                this[`${type}RoadName`] = result[0].road_address?.road_name || "";
+            }
+        });
+
+        this.geocoder.coord2RegionCode(place.x, place.y, (result, status) => {
+            if (status === kakao.maps.services.Status.OK && result.length > 0) {
+                this[`${type}Sido`] = result[0].region_1depth_name;
+                this[`${type}Sigungu`] = result[0].region_2depth_name;
+            }
+        });
       },
 
       // 지도에 마커 표시
@@ -210,52 +254,45 @@ export default {
               return;
           }
 
-          this.$router.push({
-              path: "/car-share/service/registration/second",
-              state: {
-                  latLngInfo: {
-                      startLocation: this.startLocation,
-                      endLocation: this.endLocation,
-                      startLat: this.startLatLng.getLat(),
-                      startLng: this.startLatLng.getLng(),
-                      endLat: this.endLatLng.getLat(),
-                      endLng: this.endLatLng.getLng(),
-                  },
 
-              },
-          });
+        this.$router.push({
+            path: "/car-share/service/registration/second",
+            query: {
+                startLocation: this.startLocation,
+                endLocation: this.endLocation,
+                startLat: this.startLatLng?.getLat(),
+                startLng: this.startLatLng?.getLng(),
+                endLat: this.endLatLng?.getLat(),
+                endLng: this.endLatLng?.getLng(),
+                startSido: this.startSido,
+                startSigungu: this.startSigungu,
+                startRoadName: this.startRoadName,
+                endSido: this.endSido,
+                endSigungu: this.endSigungu,
+                endRoadName: this.endRoadName
+            }
+        });
       },
   },
 };
 </script>
 
 <style scoped>
-@import "../../style.css";
-@import "../../assets/style/phone-main-view-common.css";
-.farout-icn {
-  width: 22px;
-  height: 22px;;
+.final-loca{
+  display: flex;
+  justify-content: space-between;
+  padding: 2px;
 }
 
-/* 🔹 구분선 */
-.divider {
-  background: #ccc;
-  margin: 5px 0;
+.final-addr{
+  font-weight: bold;
+  font-size: 0.1rem;
 }
 
-/* 📍 아이콘 스타일 */
-.input-icon {
+.loca-mark{
   width: 30px;
-  margin-right: 10px;
+  height: 40px;
 }
-
-/* 🎯 위치 아이콘 */
-.geo-icon {
-  width: 24px;
-  margin-left: auto;
-  cursor: pointer;
-}
-
 .path-view {
   padding: 24px;
   margin-top: 110px;
@@ -281,47 +318,72 @@ export default {
 }
 
 .back-button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+  position: absolute;
+  left: 480px;
+  text-decoration: none;
+  font-size: 24px;
+  color: #007bff;
 }
 
 .input-group {
-  min-width: 380px;
-  max-width: 380px;
-  justify-self: center;
-  align-items: center;
-  background: white;
+  position: relative;
+  /* 상대 위치 지정 (search-results 위치 조정용) */
+  margin-bottom: 15px;
+  background: #f3f3f3;
+  border-radius: 10px;
   padding: 12px;
-  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.input-group input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
-}
-
-/* 🏷 입력창 */
-input {
+.input-group input {
   flex: 1;
-  font-size: 16px;
   border: none;
+  background: transparent;
+  padding: 10px;
+  font-size: 16px;
   outline: none;
+  color: #333;
+}
+
+.input-group input::placeholder {
+  color: #aaa;
+}
+
+.input-group .icon {
+  font-size: 18px;
+  color: #777;
+}
+
+.input-group .search-icon {
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 18px;
+  color: #777;
+  transition: color 0.3s;
+}
+
+.input-group .search-icon:hover {
+  color: #333;
 }
 
 .search-results {
   position: absolute;
+  top: 100%;
+  /* input-group 바로 아래 배치 */
+  left: 0;
   width: 100%;
   background: white;
   border: 1px solid #ddd;
   border-radius: 10px;
   list-style: none;
   padding: 0;
-  margin: 50px 0 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  margin: 5px 0 0;
+  /* 입력창과 간격 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
 }
 
 .search-results li {
@@ -334,10 +396,17 @@ input {
   background: #f0f8ff;
 }
 
+.search-icon img {
+  width: 24px;
+  /* 원하는 크기로 조정 */
+  height: 24px;
+  cursor: pointer;
+  /* 클릭 가능하게 설정 */
+}
+
 .map-container {
-  justify-self: center;
   width: 100%;
-  height: 400px;
+  height: 450px;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -345,8 +414,6 @@ input {
 
 .address-info {
   margin-top: 20px;
-  display: flex;
-  justify-content: space-evenly;
   padding: 15px;
   background: #fff;
   border-radius: 10px;
@@ -355,7 +422,6 @@ input {
 }
 
 .address-info p {
-  flex : 1;
   margin: 0;
   font-size: 16px;
   color: #555;
@@ -377,24 +443,5 @@ input {
 
 .next-button:hover {
   background: #0056b3;
-}
-
-.input-back {
-  background-color: #ccc;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-
-}
-
-/* 📌 입력 박스 배경 */
-.input-back {
-  background-color: #e9e9e9;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 150px;
 }
 </style>

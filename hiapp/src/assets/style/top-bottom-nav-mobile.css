@@ -24,6 +24,20 @@
   overflow-x: auto;
 }
 
+.bottom-nav {
+  height: 70px;
+  display: flex;
+  /* ✅ Flexbox 적용 */
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
 /* ✅ 네비게이션 리스트 */
 .top-nav ul,
 .bottom-nav ul {
