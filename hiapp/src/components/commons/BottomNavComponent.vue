@@ -1,19 +1,19 @@
 <template>
     <nav class="bottom-nav phone-fix">
         <ul>
-            <li @click="changeImage('home')" class="left-space">
+            <li @click="changeImage('taxi')" class="left-space">
+                <router-link to="/">
+                    <img :src="activeImage.taxi" alt="Taxi" />
+                </router-link>
+            </li>
+            <li @click="changeImage('car')">
+                <router-link to="/about">
+                    <img :src="activeImage.car" alt="Car" />
+                </router-link>
+            </li>
+            <li @click="changeImage('home')">
                 <router-link to="/">
                     <img :src="activeImage.home" alt="Home" />
-                </router-link>
-            </li>
-            <li @click="changeImage('about')">
-                <router-link to="/about">
-                    <img :src="activeImage.about" alt="About" />
-                </router-link>
-            </li>
-            <li @click="changeImage('mypage')">
-                <router-link to="/mypage">
-                    <img :src="activeImage.mypage" alt="My Page" />
                 </router-link>
             </li>
             <li @click="changeImage('noti')">
@@ -22,9 +22,9 @@
                     <span v-if="notifications.length" class="position-absolute top-0 start-75 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </router-link>
             </li>
-            <li @click="changeImage('signup')" class="right-space">
-                <router-link to="/signup">
-                    <img :src="activeImage.signup" alt="Sign Up" />
+            <li @click="changeImage('mypage')" class="right-space">
+                <router-link to="/mypage">
+                    <img :src="activeImage.mypage" alt="MyPage" />
                 </router-link>
             </li>
         </ul>
@@ -38,18 +38,18 @@ export default {
     data() {
         return {
             defaultImages: {
-                home: "https://ifh.cc/g/VDLMLo.png",
-                about: "https://ifh.cc/g/FA32vo.png",
-                mypage: "https://ifh.cc/g/zMf5Tv.png",
+                taxi: "https://ifh.cc/g/VDLMLo.png",
+                car: "https://ifh.cc/g/FA32vo.png",
+                home: "https://ifh.cc/g/zMf5Tv.png",
                 noti: "https://ifh.cc/g/1mDQnF.png",
-                signup: "https://ifh.cc/g/f05JYD.png",
+                mypage: "https://ifh.cc/g/f05JYD.png",
             },
             activeImage: {
-                home: "https://ifh.cc/g/VDLMLo.pngg",
-                about: "https://ifh.cc/g/FA32vo.png",
-                mypage: "https://ifh.cc/g/zMf5Tv.png",
+                taxi: "https://ifh.cc/g/VDLMLo.pngg",
+                car: "https://ifh.cc/g/FA32vo.png",
+                home: "https://ifh.cc/g/zMf5Tv.png",
                 noti: "https://ifh.cc/g/1mDQnF.png",
-                signup: "https://ifh.cc/g/f05JYD.png",
+                mypage: "https://ifh.cc/g/f05JYD.png",
             },
         };
     },
@@ -62,15 +62,15 @@ export default {
                 this.activeImage[key] = this.defaultImages[key];
             }
 
-            if (section === 'home') {
+            if (section === 'taxi') {
                 this.activeImage[section] = "https://ifh.cc/g/0VJVvz.png";
-            } else if (section === 'about') {
+            } else if (section === 'car') {
                 this.activeImage[section] = "https://ifh.cc/g/jKyFNf.png";
-            } else if (section === 'mypage') {
+            } else if (section === 'home') {
                 this.activeImage[section] = "https://ifh.cc/g/KvrqV6.png";
             } else if (section === 'noti') {
                 this.activeImage[section] = "https://ifh.cc/g/ChYpjd.png";
-            } else if (section === 'signup') {
+            } else if (section === 'mypage') {
                 this.activeImage[section] = "https://ifh.cc/g/xRYLly.png";
             }
         },
@@ -87,7 +87,8 @@ export default {
     padding: 0;
     margin: 0;
     list-style: none;
-    width: 100%;
+    min-width: 80%;
+    max-width: 80%;
 }
 
 .bottom-nav ul li {
@@ -100,7 +101,7 @@ export default {
 }
 
 .bottom-nav ul li img {
-    width: 50%;
+    width: 2.5rem;
 }
 
 .phone-fix {
@@ -112,12 +113,10 @@ export default {
 }
 
 .left-space {
-    margin-left: 25px;
-    /* 왼쪽에 10px 여백 */
+    margin-left: 1rem;
 }
 
 .right-space {
-    margin-right: 20px;
-    /* 오른쪽에 10px 여백 */
+    margin-right: 1rem;
 }
 </style>

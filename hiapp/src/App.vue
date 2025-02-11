@@ -49,7 +49,7 @@ export default {
   },
   created() {
     // 웹소켓 연결
-    this.connectWebSocket();
+    //this.connectWebSocket();
   },
 
 };
