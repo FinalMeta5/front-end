@@ -25,10 +25,10 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          echo "${FIREBASE_SERVICE_ACCOUNT}" > "${HOME}/firebase-service-account.json"
+          firebase use --add --project bururung-2911d
 
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project bururung-2911d --token ${{ secrets.FIREBASE_DEPLOY_TOKEN }} --non-interactive
+        run: firebase deploy --only hosting --project bururung-2911d --non-interactive
         working-directory: hiapp
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
