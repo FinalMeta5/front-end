@@ -16,6 +16,7 @@ import CarShareServiceRegiFirstView from '../views/car-share/CarShareServiceRegi
 import CarShareServiceRegiSecondView from '../views/car-share/CarShareServiceRegiSecondView.vue';
 import TaxiShareRegistCompleteView from '../views/taxi-share/TaxiShareRegistCompleteView.vue';
 import CarshareDetailInformationView from '../views/CarshareDetailInformationView.vue';
+import NotificationView from '../views/NotificationView.vue';
 
 const routes = [
     { path: '/', component: HomeView },
@@ -38,6 +39,7 @@ const routes = [
     {path : '/car-share/service/registration/second', component : CarShareServiceRegiSecondView},
     {path: '/carshare/detail', component: CarshareDetailInformationView},
     { path: '/taxi-share/regist-complete', component: TaxiShareRegistCompleteView },
+    {path : '/notification', component:NotificationView},
 ];
 
 const router = createRouter({
