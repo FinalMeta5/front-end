@@ -6,6 +6,7 @@ const isAuthenticated = ref(false);
 const accessToken = ref(null);
 const memberId = ref(0);
 const nickname = ref(null);
+const role = ref(null);
 
 const storedToken = localStorage.getItem("accessToken");
 if (storedToken) {
@@ -19,6 +20,10 @@ if (storedMemberId) {
 const storedNickname = localStorage.getItem("nickname");
 if (storedNickname) {
   nickname.value = storedNickname;
+}
+const storedRole = localStorage.getItem("role");
+if (storedRole) {
+  role.value = storedRole;
 }
 
 let isRefreshing = false; // 현재 토큰 재발급 중인지 여부
@@ -121,8 +126,9 @@ async function login(email, password) {
         memberId.value = response.data.memberId;
         localStorage.setItem("memberId", response.data.memberId);
         localStorage.setItem("nickname", response.data.nickname);
+        localStorage.setItem("role", response.data.role);
       } else {
-        throw new Error("로그인 응답에 memberId가 없습니다.");
+        throw new Error("로그인 응답이 없습니다.");
       }
     } else {
       throw new Error("토큰이 응답 헤더에 없습니다.");
@@ -153,6 +159,7 @@ async function logout() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("memberId");
     localStorage.removeItem("nickname");
+    localStorage.removeItem("role");
   }
 }
 
@@ -185,6 +192,7 @@ function useAuthState() {
     accessToken,
     memberId,
     nickname,
+    role,
   };
 }
 
