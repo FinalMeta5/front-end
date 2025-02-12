@@ -1,6 +1,6 @@
 <template>
     <div class="about phone-main-screen">
-        <h1 class="titleH1">About</h1>
+        <h1 class="titleH1">{{ $t('about') }}</h1>
         <div class="view-context-contain">
             <p>홈페이지에 대해서 ...</p>
             <router-link to="/">Home으로 이동</router-link>

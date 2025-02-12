@@ -22,7 +22,12 @@
                     <span v-if="notifications.length" class="position-absolute top-0 start-75 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
                 </router-link>
             </li>
-            <li @click="changeImage('mypage')" class="right-space">
+            <li v-if="role === 'OPERATOR'" @click="changeImage('mypage')" class="right-space">
+                <router-link to="/admin/home">
+                    <img :src="activeImage.mypage" alt="MyPage" />
+                </router-link>
+            </li>
+            <li v-else @click="changeImage('mypage')" class="right-space">
                 <router-link to="/mypage">
                     <img :src="activeImage.mypage" alt="MyPage" />
                 </router-link>
@@ -33,6 +38,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { useAuthState } from "../../store/auth/auth";
 export default {
     name: "BottomNavComponent",
     data() {
@@ -75,6 +81,13 @@ export default {
             }
         },
     },
+    setup() {
+        const { role } = useAuthState();
+
+        return {
+            role,
+        };
+    }
 };
 </script>
 

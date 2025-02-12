@@ -16,9 +16,7 @@
 
       <LoginModalView v-if="showLoginModal" @close="showLoginModal = false" />
 
-      <router-link to="/about">
-        <i class="bi bi-info-circle icon-button"></i>
-      </router-link>
+      <LanguageSwitcher/>
     </div>
   </nav>
 </template>
@@ -28,11 +26,13 @@ import { ref } from "vue";
 import LoginModalView from "../../views/LoginModalView.vue";
 import { logout, useAuthState } from "../../store/auth/auth";
 import { useRouter } from "vue-router";
+import LanguageSwitcher from "../LanguageSwitcher.vue";
 
 export default {
   name: "TopNavComponent",
   components: {
     LoginModalView,
+    LanguageSwitcher,
   },
   setup() {
     const showLoginModal = ref(false);
