@@ -113,6 +113,4 @@ export default {
   gap: 15px;
   flex: 1;
 }
-
-
 </style>
