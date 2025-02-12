@@ -34,7 +34,7 @@ const actions = {
         if (state.stompClient) return; // 이미 연결되어 있는 경우 중복 연결 방지
 
         const stompClient = new Client({
-            webSocketFactory: () => new SockJS('https://localhost:8443/wss'),
+            webSocketFactory: () => new SockJS('https://api.hifive5.shop/wss'),
             reconnectDelay: 5000,
             debug: (msg) => console.log(msg),
         });
