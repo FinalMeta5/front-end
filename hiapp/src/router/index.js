@@ -19,7 +19,8 @@ import NotificationView from '../views/NotificationView.vue';
 import NoCarShareServiceView from '../views/car-share/NoCarShareServiceView.vue';
 import MyCarShareServiceView from '../views/car-share/MyCarShareServiceView.vue'; 
 import CarshareDetailInformationView from '../views/car-share/participant/CarshareDetailInformationView.vue';
-import AllCarShareListView from '../views/car-share/participant/AllCarShareListView.vue'
+import AllCarShareListView from '../views/car-share/participant/AllCarShareListView.vue';
+import CarShareHomeView from '../views/car-share/participant/CarShareHomeView.vue';
 
 const routes = [
     { path: '/', component: HomeView },
@@ -46,6 +47,7 @@ const routes = [
     {path : '/notification', component:NotificationView},
     {path : '/my-car-share-service/list', component : MyCarShareServiceView},
     {path: '/carshare/list', component: AllCarShareListView},
+    {path: '/carshare/home', component: CarShareHomeView},
 ];
 
 const router = createRouter({
