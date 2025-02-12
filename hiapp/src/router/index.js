@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from "vue-router";
 import AboutView from "../views/AboutView.vue";
 import HomeView from "../views/HomeView.vue";
 import MypageView from "../views/MypageView.vue";
@@ -32,6 +32,11 @@ import AdminTaxiShareView from '../views/admin/AdminTaxiShareView.vue';
 import AdminCarShareView from '../views/admin/AdminCarShareView.vue';
 import LodingView1 from '../views/LodingView1.vue';
 import LodingView2 from '../views/LodingView2.vue';
+import PurchaseCreditView from "../views/credit/PurchaseCreditView.vue";
+import CreditHistoryView from "../views/credit/CreditHistoryView.vue";
+import PaymentView from "../views/payment/PaymentView.vue";
+import PaymentSuccessView from "../views/payment/PaymentSuccessView.vue";
+import PaymentFailView from "../views/payment/PaymentFailView.vue";
 
 const routes = [
     { path: '/', component: HomeView },
@@ -69,12 +74,17 @@ const routes = [
     {path : '/admin/services/taxi', component:AdminTaxiShareView},
     {path : '/admin/services/car', component:AdminCarShareView},
     {path: '/loading1', component: LodingView1},
-    {path: '/loading2', component: LodingView2}
+    {path: '/loading2', component: LodingView2},
+    { path: "/purchase-credit", component: PurchaseCreditView },
+    { path: "/credit-history", component: CreditHistoryView },
+    { path: "/payment", component: PaymentView },
+    { path: "/success", component: PaymentSuccessView },
+    { path: "/fail", component: PaymentFailView },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;

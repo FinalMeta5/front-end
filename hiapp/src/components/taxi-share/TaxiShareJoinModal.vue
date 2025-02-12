@@ -6,10 +6,11 @@
             <p v-else-if="errorMessage">{{ errorMessage }}</p>
 
             <div v-else-if="detail" class="modal-text">
-                <div id="destination"><b>도착</b>&emsp;{{ detail.destination }}</div>
+                <div id="destination"><b>도착&emsp;{{ detail.destination }}</b></div>
                 <h2 class="modal-title">{{ detail.pickupTime }}&nbsp;{{ detail.pickupTimeOnly }}&ensp;출발</h2>
-                <div :class="['time-negotiation', detail.timeNego === 'true' ? 'true' : 'false']">{{ detail.timeNego
-                    === 'true' ? '(시간협의 가능)' : '(시간협의 불가)' }}</div>
+                <div :class="['time-negotiation', detail.timeNego === 'true' ? 'possible' : 'impossible']">{{
+                    detail.timeNego
+                        === 'true' ? '(시간협의 가능)' : '(시간협의 불가)' }}</div>
                 <div id="passenger-number">현재인원&ensp;{{ detail.currentPassengerNum }} / {{ detail.passengersNum }}</div>
                 <div id="estimated-amount">
                     {{ detail.passengersNum }}명 모이면,
@@ -111,7 +112,7 @@ const joinApply = async () => {
         });
 
         if (response.status === 201) {
-            alert("택시 공유 신청이 완료되었습니다! 🚖");
+            alert("🚖택시 공유 신청이 완료되었습니다! \n (캐시 🪙2 차감)");
         } else {
             alert("택시 공유 신청이 정상적으로 처리되지 않았습니다.");
         }
@@ -181,11 +182,18 @@ const deletePost = async () => {
     text-align: center;
 }
 
-.time-negotiation .true {
-    color: #007bff;
+.time-negotiation {
+    font-size: 12px;
+    text-align: center;
+    margin: 5px;
+    font-weight: bold;
 }
 
-.time-negotiation .false {
+.time-negotiation.possible {
+    color: #0056b3;
+}
+
+.time-negotiation.impossible {
     color: #c82333;
 }
 

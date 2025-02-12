@@ -4,7 +4,9 @@ import { ref } from "vue";
 // 전역 상태
 const isAuthenticated = ref(false);
 const accessToken = ref(null);
-const memberId = ref(null);
+const memberId = ref(0);
+const nickname = ref(null);
+const role = ref(null);
 
 const storedToken = localStorage.getItem("accessToken");
 if (storedToken) {
@@ -14,6 +16,14 @@ if (storedToken) {
 const storedMemberId = localStorage.getItem("memberId");
 if (storedMemberId) {
   memberId.value = storedMemberId;
+}
+const storedNickname = localStorage.getItem("nickname");
+if (storedNickname) {
+  nickname.value = storedNickname;
+}
+const storedRole = localStorage.getItem("role");
+if (storedRole) {
+  role.value = storedRole;
 }
 
 let isRefreshing = false; // 현재 토큰 재발급 중인지 여부
@@ -27,7 +37,6 @@ const authAxios = axios.create({
 authAxios.interceptors.request.use(
   (config) => {
     if (accessToken.value) {
-      console.log(accessToken.value);
       config.headers.Authorization = `Bearer ${accessToken.value}`;
     }
     return config;
@@ -106,8 +115,6 @@ async function login(email, password) {
       }
     );
 
-    console.log(response.data);
-
     const tokenFromHeader = response.headers["accesstoken"];
     if (tokenFromHeader) {
       accessToken.value = tokenFromHeader;
@@ -116,10 +123,12 @@ async function login(email, password) {
       localStorage.setItem("accessToken", tokenFromHeader);
 
       if (response.data) {
-        memberId.value = response.data;
-        localStorage.setItem("memberId", response.data);
+        memberId.value = response.data.memberId;
+        localStorage.setItem("memberId", response.data.memberId);
+        localStorage.setItem("nickname", response.data.nickname);
+        localStorage.setItem("role", response.data.role);
       } else {
-        throw new Error("로그인 응답에 memberId가 없습니다.");
+        throw new Error("로그인 응답이 없습니다.");
       }
     } else {
       throw new Error("토큰이 응답 헤더에 없습니다.");
@@ -132,6 +141,7 @@ async function login(email, password) {
     isAuthenticated.value = false;
     accessToken.value = null;
     memberId.value = null;
+    nickname.value = null;
     throw error;
   }
 }
@@ -148,6 +158,8 @@ async function logout() {
     memberId.value = null;
     localStorage.removeItem("accessToken");
     localStorage.removeItem("memberId");
+    localStorage.removeItem("nickname");
+    localStorage.removeItem("role");
   }
 }
 
@@ -179,6 +191,8 @@ function useAuthState() {
     isAuthenticated,
     accessToken,
     memberId,
+    nickname,
+    role,
   };
 }
 

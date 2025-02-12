@@ -6,7 +6,7 @@
                 <li v-for="(registration, index) in registrations" :key="index" class="list-group-item">
                     <div class="d-flex justify-content-between">
                         <div class="align-self-center">
-                            <img class="border border-secondary-subtle border-2 rounded" src="../../assets/images/BURURUNG_BLUE.png" alt="car">
+                            <img class="border border-secondary-subtle border-2 rounded" :src=registration.imageUrl alt="car">
                         </div>
                         <div class="text-start">
                             <div class="fs-3 fw-bolder mb-2">
