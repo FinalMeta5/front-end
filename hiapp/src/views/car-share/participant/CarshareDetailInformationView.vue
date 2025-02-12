@@ -18,8 +18,20 @@
             <button>취소</button>
         </div>
         
-        <SuccessModal v-if="showSuccessModal" @close="showSuccessModal = false" @confirm="handleCreditDeduction" />
-        <FailModal v-if="showFailModal" @close="showFailModal = false" @confirm="handleCreditDeduction" />
+      <SuccessModal 
+        v-if="showSuccessModal" 
+        @close="handleModalClose"
+        :title="modalTitleS" 
+        :textLine1="modalTextLine1S" 
+        :textLine2="modalTextLine2S"
+        :close="closeS" />
+      <FailModal 
+        v-if="showFailModal" 
+        @close="handleModalClose"
+        :title="modalTitleF" 
+        :textLine1="modalTextLine1F" 
+        :textLine2="modalTextLine2F"
+        :close="closeF" />
     </div>
 </template>
 
@@ -50,6 +62,14 @@ export default {
             showSuccessModal: false,
             showFailModal: false,
             nickname: '',
+            modalTitleS: '',            
+            modalTextLine1S: '',       
+            modalTextLine2S: '',        
+            closeS: '',      
+            modalTitleF: '',
+            modalTextLine1F:'',
+            modalTextLine2F: '',
+            closeF: '',       
         };
     },
     created() {
@@ -81,16 +101,22 @@ export default {
         if (response.data) {
             if (response.data === "차량 공유 예약에 성공했습니다.") {
             await this.handleCreditDeduction();
-        } else {
-
-            if(response.data) {
+          } else {
+            this.modalTitleF = '🚨';
+            this.modalTextLine1F = '크레딧이 부족합니다';
+            this.modalTextLine2F = '차량 탑승을 위해서는 7 크레딧이 필요합니다';
+            this.closeF = '크레딧 구매하기';
             this.showFailModal = true;
-        }
-        }
+          }
+    
         }
       } catch (error) {
         alert('예약에 실패했습니다. 콘솔에서 에러를 확인해 주세요.');
       }
+    },
+    handleModalClose() {
+      this.showSuccessModal = false;
+      this.showFailModal = false;
     },
 
     async handleCreditDeduction() {
@@ -100,7 +126,17 @@ export default {
         const response = await axios.post(url);
 
         if(response.data) {
+            this.modalTitleS = '💡';
+            this.modalTextLine1S = '탑승 예약이 완료되었습니다';
+            this.modalTextLine2S = '약속 시간에 맞춰 출발지에 도착해주세요';
+            this.closeS = '확인';
             this.showSuccessModal = true;
+        } else {
+          this.modalTitleF = '🚨';
+          this.modalTextLine1F = '크레딧이 부족합니다';
+          this.modalTextLine2F = '차량 탑승을 위해서는 7 크레딧이 필요합니다';
+          this.closeF = '크레딧 구매하기';
+          this.showFailModal = true;
         }
         
       } catch (error) {

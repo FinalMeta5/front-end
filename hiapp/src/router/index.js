@@ -30,6 +30,8 @@ import AdminPaymentView from '../views/admin/AdminPaymentView.vue';
 import StatisticsView from '../views/statistics/StatisticsView.vue';
 import AdminTaxiShareView from '../views/admin/AdminTaxiShareView.vue';
 import AdminCarShareView from '../views/admin/AdminCarShareView.vue';
+import LodingView1 from '../views/LodingView1.vue';
+import LodingView2 from '../views/LodingView2.vue';
 
 const routes = [
     { path: '/', component: HomeView },
@@ -66,6 +68,8 @@ const routes = [
     {path : '/admin/statistics', component:StatisticsView},
     {path : '/admin/services/taxi', component:AdminTaxiShareView},
     {path : '/admin/services/car', component:AdminCarShareView},
+    {path: '/loading1', component: LodingView1},
+    {path: '/loading2', component: LodingView2}
 ];
 
 const router = createRouter({

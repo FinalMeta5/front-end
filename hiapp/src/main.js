@@ -18,3 +18,4 @@ app.component('font-awesome-icon', FontAwesomeIcon); // ✅ mount() 전에 등�
 app.use(router);
 app.use(store);
 app.mount('#app');
+// router.push('/loading1');
