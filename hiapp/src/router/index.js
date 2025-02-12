@@ -15,7 +15,6 @@ import NoCarInfoView from '../views/car-share/NoCarInfoView.vue';
 import CarShareServiceRegiFirstView from '../views/car-share/CarShareServiceRegiFirstView.vue';
 import CarShareServiceRegiSecondView from '../views/car-share/CarShareServiceRegiSecondView.vue';
 import TaxiShareRegistCompleteView from '../views/taxi-share/TaxiShareRegistCompleteView.vue';
-import CarshareDetailInformationView from '../views/CarshareDetailInformationView.vue';
 import NotificationView from '../views/NotificationView.vue';
 import NoCarShareServiceView from '../views/car-share/NoCarShareServiceView.vue';
 import MyCarShareServiceView from '../views/car-share/MyCarShareServiceView.vue'; 
