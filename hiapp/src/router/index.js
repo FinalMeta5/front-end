@@ -21,6 +21,15 @@ import MyCarShareServiceView from '../views/car-share/MyCarShareServiceView.vue'
 import CarshareDetailInformationView from '../views/car-share/participant/CarshareDetailInformationView.vue';
 import AllCarShareListView from '../views/car-share/participant/AllCarShareListView.vue';
 import CarShareHomeView from '../views/car-share/participant/CarShareHomeView.vue';
+import AdminHomeView from '../views/admin/AdminHomeView.vue';
+import AdminMembersView from '../views/admin/AdminMembersView.vue';
+import AdminReportsView from '../views/admin/AdminReportsView.vue';
+import AdminRegistrationView from '../views/admin/AdminRegistrationView.vue';
+import AdminServicesView from '../views/admin/AdminServicesView.vue';
+import AdminPaymentView from '../views/admin/AdminPaymentView.vue';
+import StatisticsView from '../views/statistics/StatisticsView.vue';
+import AdminTaxiShareView from '../views/admin/AdminTaxiShareView.vue';
+import AdminCarShareView from '../views/admin/AdminCarShareView.vue';
 
 const routes = [
     { path: '/', component: HomeView },
@@ -48,6 +57,15 @@ const routes = [
     {path : '/my-car-share-service/list', component : MyCarShareServiceView},
     {path: '/carshare/list', component: AllCarShareListView},
     {path: '/carshare/home', component: CarShareHomeView},
+    {path : '/admin/home', component:AdminHomeView},
+    {path : '/admin/members', component:AdminMembersView},
+    {path : '/admin/reports', component:AdminReportsView},
+    {path : '/admin/registrations', component:AdminRegistrationView},
+    {path : '/admin/services', component:AdminServicesView},
+    {path : '/admin/payment', component:AdminPaymentView},
+    {path : '/admin/statistics', component:StatisticsView},
+    {path : '/admin/services/taxi', component:AdminTaxiShareView},
+    {path : '/admin/services/car', component:AdminCarShareView},
 ];
 
 const router = createRouter({

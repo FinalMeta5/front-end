@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { Bar } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import { authAxios } from '../../store/auth/auth';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -47,7 +47,7 @@ export default {
     },
     methods: {
         fetchChartData() {
-            axios.get('http://localhost:8080/api/statistics/age-ratio')
+            authAxios.get('/api/statistics/age-ratio')
                 .then(response => {
                     const data = response.data;
                     this.chartData.labels = data.map(ageGroup => ageGroup.ageGroup);

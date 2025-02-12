@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { Doughnut } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { authAxios } from '../../store/auth/auth';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         fetchChartData() {
-            axios.get('http://localhost:8080/api/statistics/gender-ratio')
+            authAxios.get('/api/statistics/gender-ratio')
                 .then(response => {
                     const data = response.data;
                     this.chartData.labels = data.map(genderRatio => genderRatio.gender);
