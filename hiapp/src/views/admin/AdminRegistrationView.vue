@@ -31,7 +31,7 @@
                                 <button @click="approveRegistraion(registration.carId, registration.memberId)" type="button" class="btn btn-success btn-sm px-3 mx-1">
                                     승인
                                 </button>
-                                <button @click="requestUpdateRegistration(registration.memberId)" type="button" class="btn btn-danger btn-sm px-3 mx-1">
+                                <button @click="requestUpdateRegistration(registration.carId, registration.memberId)" type="button" class="btn btn-danger btn-sm px-3 mx-1">
                                     반려
                                 </button>
                             </div>
@@ -40,7 +40,13 @@
                 </li>
             </ul>
         </div>
-        <SuccessModal v-if="showSuccessModal" @close="showSuccessModal = false"/>
+        <SuccessModal 
+        v-if="showSuccessModal" 
+        @close="handleModalClose"
+        :title="modalTitleS" 
+        :textLine1="modalTextLine1S" 
+        :textLine2="modalTextLine2S"
+        :close="closeS" />
     </div>
 </template>
 
@@ -53,6 +59,10 @@ export default {
         return {
             registrations: [],
             showSuccessModal: false,
+            modalTitleS: '',            
+            modalTextLine1S: '',       
+            modalTextLine2S: '',        
+            closeS: '',
         }
     },
     components: {
@@ -78,12 +88,27 @@ export default {
                 memberId: memberId
             });
             this.fetchData('/api/admin/registrations', 'registrations');
+            this.modalTitleS = '성공';
+            this.modalTextLine1S = '승인 완료';
+            this.modalTextLine2S = '성공적으로 처리되었습니다.';
+            this.closeS = '확인';
             this.showSuccessModal = true;
         },
-        async requestUpdateRegistration(memberId) {
-            await authAxios.post(`/api/admin/reqUpdateRegi/${memberId}`);
+        async requestUpdateRegistration(carId, memberId) {
+            await authAxios.post('/api/admin/reqUpdateRegi', {
+                carId: carId,
+                memberId: memberId
+            });
+            this.modalTitleS = '성공';
+            this.modalTextLine1S = '승인 취소';
+            this.modalTextLine2S = '성공적으로 취소되었습니다.';
+            this.closeS = '확인';
             this.showSuccessModal = true;
-        }
+        },
+        handleModalClose() {
+            this.showSuccessModal = false;
+            this.showFailModal = false;
+        },
     },
     mounted() {
         this.fetchData('/api/admin/registrations', 'registrations');
