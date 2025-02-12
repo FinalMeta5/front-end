@@ -1,5 +1,5 @@
 <template>
-    <div class="path-view">
+    <div class="path-view main-wrapper">
         <!-- 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" @close="closeLoginModal" />
         <div class="header">
@@ -54,7 +54,7 @@ import LoginModalView from "../../views/LoginModalView.vue";
 
 export default {
     name: "PathView",
-    components:{
+    components: {
         LoginModalView,
     },
     data() {
@@ -251,13 +251,14 @@ export default {
 <style scoped>
 .path-view {
     padding: 24px;
-    margin-top: 110px;
+    margin-top: 140px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     background: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 }
 
 .header {
