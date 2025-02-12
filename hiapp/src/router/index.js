@@ -20,6 +20,7 @@ import NoCarShareServiceView from '../views/car-share/NoCarShareServiceView.vue'
 import MyCarShareServiceView from '../views/car-share/MyCarShareServiceView.vue'; 
 import CarshareDetailInformationView from '../views/car-share/participant/CarshareDetailInformationView.vue';
 import AllCarShareListView from '../views/car-share/participant/AllCarShareListView.vue';
+import CarShareHomeView from '../views/car-share/participant/CarShareHomeView.vue';
 import AdminHomeView from '../views/admin/AdminHomeView.vue';
 import AdminMembersView from '../views/admin/AdminMembersView.vue';
 import AdminReportsView from '../views/admin/AdminReportsView.vue';
@@ -55,6 +56,7 @@ const routes = [
     {path : '/notification', component:NotificationView},
     {path : '/my-car-share-service/list', component : MyCarShareServiceView},
     {path: '/carshare/list', component: AllCarShareListView},
+    {path: '/carshare/home', component: CarShareHomeView},
     {path : '/admin/home', component:AdminHomeView},
     {path : '/admin/members', component:AdminMembersView},
     {path : '/admin/reports', component:AdminReportsView},
