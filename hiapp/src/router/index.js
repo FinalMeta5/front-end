@@ -5,7 +5,7 @@ import MypageView from "../views/MypageView.vue";
 import LoginView from '../views/LoginView.vue';
 import SignupView from '../views/SignupView.vue';
 import MemberListView from '../views/MemberListView.vue';
-import AvailableMapView from '../views/AvailableMapView.vue';
+import AvailableMapView from '../views/car-share/participant/AvailableMapView.vue';
 import CarRegistrationView from '../views/car-share/CarRegistrationView.vue';
 import PathView from '../views/taxi-share/PathView.vue';
 import TaxiShareRegist from '../components/taxi-share/TaxiShareRegist.vue';
@@ -19,6 +19,8 @@ import CarshareDetailInformationView from '../views/CarshareDetailInformationVie
 import NotificationView from '../views/NotificationView.vue';
 import NoCarShareServiceView from '../views/car-share/NoCarShareServiceView.vue';
 import MyCarShareServiceView from '../views/car-share/MyCarShareServiceView.vue'; 
+import CarshareDetailInformationView from '../views/car-share/participant/CarshareDetailInformationView.vue';
+import AllCarShareListView from '../views/car-share/participant/AllCarShareListView.vue'
 
 const routes = [
     { path: '/', component: HomeView },
@@ -27,7 +29,7 @@ const routes = [
     { path: '/login', component: LoginView },
     { path: '/signup', component: SignupView },
     { path: '/memberlist', component: MemberListView },
-    { path: '/carshare/list', component: AvailableMapView },
+    { path: '/carshare/map', component: AvailableMapView },
     { path: '/car-registration', component: CarRegistrationView },
     { path: '/taxi-share', component: PathView },
     { path: '/taxi-share/regist', component: TaxiShareRegist },
@@ -44,6 +46,7 @@ const routes = [
     { path: '/taxi-share/regist-complete', component: TaxiShareRegistCompleteView },
     {path : '/notification', component:NotificationView},
     {path : '/my-car-share-service/list', component : MyCarShareServiceView},
+    {path: '/carshare/list', component: AllCarShareListView},
 ];
 
 const router = createRouter({

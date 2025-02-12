@@ -59,6 +59,7 @@ export default {
 
 <style scoped>
 @import "../../assets/style/top-bottom-nav-mobile.css";
+<<<<<<< HEAD
 .top-nav {
   display: flex;
   justify-content: space-between; /* 왼쪽-오른쪽 정렬 */
@@ -115,4 +116,15 @@ export default {
 }
 
 
+=======
+.btn-grp1, .btn-grp2{
+  display: flex;
+  flex : row;
+  align-items: center;
+}
+
+.btn-grp1{
+
+}
+>>>>>>> 7456d91 (Feat: 차량 공유 예약 기능 구현)
 </style>

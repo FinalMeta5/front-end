@@ -2,7 +2,7 @@
   <div class="result-container" @click="goToDetailPage">
     <img id="showInformation" src="https://ifh.cc/g/OslxBJ.png" />
     <div class="result-show">
-      <div v-if="car">
+      <div v-if="car && addressPl && addressDs">
         <h3 id="driver-nickname">{{ car.nickname }}</h3>
         <span id="date">{{ car.pickupDate }}</span>
 
@@ -21,9 +21,6 @@
         <div v-else>
           <p>주소 정보를 불러오는 중</p>
         </div>
-      </div>
-      <div v-else>
-        <p>No car information available.</p>
       </div>
     </div>
   </div>
@@ -81,14 +78,20 @@ export default {
         console.error('주소 정보를 가져오는 중 오류가 발생했습니다.', error);
       }
     },
-    goToDetailPage() {
-      console.log('driverId :', this.car.memberId);
-      console.log('carShareRegiId :', this.car.carShareRegiId);
+    async goToDetailPage() {
+      const { memberId, carShareRegiId, latitudePl, longitudePl } = this.car;
+
       this.$router.push({ 
         path: '/carshare/detail', 
         query: { 
-          driverId: this.car.memberId ,
-          carShareRegiId: this.car.carShareRegiId
+          driverId: memberId ,
+          carShareRegiId: carShareRegiId,
+          startRoadAddress: this.addressPl?.road_address?.address_name || '',
+          startAddress: this.addressPl?.address?.address_name || '',
+          endRoadAddress: this.addressDs?.road_address?.address_name || '',
+          endAddress: this.addressDs?.address?.address_name || '',
+          latitudePl: latitudePl || '',
+          longitudePl: longitudePl || ''
         }  
       });
   }
