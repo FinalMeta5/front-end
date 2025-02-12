@@ -2,30 +2,51 @@
     <div class="about phone-main-screen">
         <h1 class="titleH1 mb-2">회원 관리</h1>
         <div class="view-context-contain">
-            <ul class="list-group list-group-flush w-75">
-                <li v-for="(member, index) in members" :key="index" class="list-group-item">
-                    <div class="row">
-                        <div class="col-4">
-                            {{ member.memberId }}
-                        </div>
-                        <div class="col-4">
-                            {{ member.name }}
-                        </div>
-                        <div class="col-4">
-                            {{ member.gender }}
-                        </div>
-                        <div class="col-3">
-                            {{ member.roleName }}
-                        </div>
-                        <div class="col-4">
-                            {{ member.joinDate }}
-                        </div>
-                        <div class="col-5">
-                            {{ member.nickname }}
+            <div class="accordion w-75" id="accordionExample">
+                <div class="accordion-item" v-for="(member, index) in members" :key="index">
+                    <h2 class="accordion-header" :id="'heading' + index">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            :data-bs-target="'#collapse' + index" aria-expanded="true"
+                            :aria-controls="'collapse' + index">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="img-div">
+                                    <img :src=member.imageUrl alt="profile">
+                                </div>
+                                <div class="fs-3 fw-bolder ms-5">
+                                    {{ member.name }}
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div :id="'collapse' + index" class="accordion-collapse collapse"
+                        :aria-labelledby="'heading' + index" data-bs-parent="#accordionExample">
+                        <div class="accordion-body text-start">
+                            <div>
+                                닉네임: {{ member.nickname }}
+                            </div>
+                            <div>
+                                성별: <span v-if="member.gender === 'M'">남</span>
+                                <span v-else>여</span>
+                            </div>
+                            <div>
+                                등급: {{ member.roleName }}
+                            </div>
+                            <div>
+                                이메일: {{ member.email }}
+                            </div>
+                            <div>
+                                전화번호: {{ member.phone }}
+                            </div>
+                            <div>
+                                크레딧 수: {{ member.creditCount }}
+                            </div>
+                            <div>
+                                생성 날짜: {{ member.joinDate }}
+                            </div>
                         </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -62,4 +83,14 @@ export default {
 
 <style scoped>
 @import "../../assets/style/phone-main-view-common.css";
+.img-div {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+}
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 </style>
