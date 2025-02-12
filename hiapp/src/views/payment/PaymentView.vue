@@ -182,7 +182,7 @@ export default {
               method: "CARD", // 카드 및 간편결제
               amount,
               orderId: orderId,
-              orderName: `크래딧 ${this.creditCount}개`,
+              orderName: `크레딧 ${this.creditCount}개`,
               successUrl: window.location.origin + "/success", // 결제 요청이 성공하면 리다이렉트되는 URL
               failUrl: window.location.origin + "/fail", // 결제 요청이 실패하면 리다이렉트되는 URL
               card: {
@@ -198,7 +198,7 @@ export default {
               method: "TRANSFER", // 계좌이체 결제
               amount,
               orderId: orderId,
-              orderName: `크래딧 ${this.creditCount}개`,
+              orderName: `크레딧 ${this.creditCount}개`,
               successUrl: window.location.origin + "/success",
               failUrl: window.location.origin + "/fail",
               transfer: {
@@ -214,7 +214,7 @@ export default {
               method: "VIRTUAL_ACCOUNT", // 가상계좌 결제
               amount,
               orderId: orderId,
-              orderName: `크래딧 ${this.creditCount}개`,
+              orderName: `크레딧 ${this.creditCount}개`,
               successUrl: window.location.origin + "/success",
               failUrl: window.location.origin + "/fail",
               virtualAccount: {
@@ -231,7 +231,7 @@ export default {
               method: "MOBILE_PHONE", // 휴대폰 결제
               amount,
               orderId: orderId,
-              orderName: `크래딧 ${this.creditCount}개`,
+              orderName: `크레딧 ${this.creditCount}개`,
               successUrl: window.location.origin + "/success",
               failUrl: window.location.origin + "/fail",
             });
@@ -241,7 +241,7 @@ export default {
               method: "CULTURE_GIFT_CERTIFICATE", // 문화상품권 결제
               amount,
               orderId: orderId,
-              orderName: `크래딧 ${this.creditCount}개`,
+              orderName: `크레딧 ${this.creditCount}개`,
               successUrl: window.location.origin + "/success",
               failUrl: window.location.origin + "/fail",
             });
