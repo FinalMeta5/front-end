@@ -7,7 +7,7 @@
                 </router-link>
             </li>
             <li @click="changeImage('car')">
-                <router-link to="/about">
+                <router-link to="/carshare/home">
                     <img :src="activeImage.car" alt="Car" />
                 </router-link>
             </li>

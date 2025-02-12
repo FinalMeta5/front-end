@@ -14,4 +14,6 @@ export default {
 <style scoped>
 @import "../../../style.css";
 @import "../../../assets/style/phone-main-view-common.css";
+
+
 </style>

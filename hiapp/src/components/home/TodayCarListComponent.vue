@@ -1,81 +1,157 @@
 <template>
   <div class="today-car-container">
-    <!-- 오늘 탑승 내역이 없을 때 -->
     <div v-if="!todayParticipationList">
       <div class="message">오늘은 예약이 없습니다.</div>
       <img src="https://ifh.cc/g/KAROcS.png" alt="이미지" class="image" />
       <div class="title">차량 경로 등록</div>
       <div class="subtitle">여러 사람과 함께 차량을 이용해 보세요</div>
-      <button class="button" @click="hostAction">운전자로 이용하기</button>
-      <button class="button" @click="guestAction">탑승자로 이용하기</button>
+      <button class="button">운전자로 이용하기</button>
+      <button class="button">탑승자로 이용하기</button>
     </div>
 
-    <!-- 오늘 탑승 내역이 있을 때 -->
     <div v-else>
+      <div class="message">오늘의 예약 내역</div>
+      <hr class="divider"> 
       <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
-        <div class="message">오늘 탑승 예정:</div>
         <DetailInfoComponent
           :pickupLoc="item.pickupLoc"
           :destination="item.destination"
-          :pickupDate="item.pickupDate"
+          :pickupDate="formatTime(item.pickupDate)"
           :expectedNum="item.expectedNum"
-          @click="openModal(item)"
+          :state="item.state"
+          :carShareJoinId="item.carShareJoinId"
+          @click="openModal(item)" 
         />
+
+        <div v-if="selectedCar && selectedCar.carShareJoinId === item.carShareJoinId" class="action-buttons">
+          <div class="button-container2">
+            <div class="ride" @click="updateStateOK(item.carShareJoinId)">
+              <img class="moving-image1" src="https://ifh.cc/g/ch51wM.png" alt="움직이는 이미지">
+              <button id="map-btn">
+                탑승 신청
+              </button>
+            </div>
+
+            <div class="unride" @click="updateStateNO(item.carShareJoinId)">
+              <img class="moving-image2" src="https://ifh.cc/g/ch51wM.png" alt="움직이는 이미지">
+              <button id="map-btn">
+                탑승 취소
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+      <button class="button">운전자로 이용하기</button>
+      <button class="button">탑승자로 이용하기</button>
+      <hr class="divider"> 
     </div>
 
-    <!-- 모달창 -->
-    <div v-if="isModalOpen" class="modal-overlay" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <h3>탑승 여부 선택</h3>
-        <p>이 차량을 이용하시겠습니까?</p>
-        <button class="confirm-btn" @click="selectOption(true)">탄다</button>
-        <button class="cancel-btn" @click="selectOption(false)">안 탄다</button>
-        <button class="close-btn" @click="closeModal">닫기</button>
-      </div>
-    </div>
+    <SuccessModal 
+      v-if="showSuccessModal" 
+      @close="handleModalClose"
+      :title="modalTitleS" 
+      :textLine1="modalTextLine1S" 
+      :textLine2="modalTextLine2S"
+      :close="closeS" />
+    <FailModal 
+      v-if="showFailModal" 
+      @close="handleModalClose"
+      :title="modalTitleF" 
+      :textLine1="modalTextLine1F" 
+      :textLine2="modalTextLine2F"
+      :close="closeF" />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import DetailInfoComponent from "./DetailInfoComponent.vue";
+import SuccessModal from "../modal/SuccessModal.vue";  
+import FailModal from "../modal/FailModal.vue";  
 
 export default {
   name: "TodayCarListComponent",
   components: {
     DetailInfoComponent,
+    SuccessModal,
+    FailModal,
   },
   data() {
     return {
-      todayParticipationList: null, // 오늘 차량 탑승 예약 내역 저장
+      todayParticipationList: null, 
       userId: localStorage.getItem("memberId"),
-      isModalOpen: false, // 모달창 상태
-      selectedCar: null, // 선택된 차량 정보 저장
+      selectedCar: null, 
+      showSuccessModal: false, 
+      showFailModal: false, 
+      modalTitle: '',            // 모달에 전달할 제목
+      modalTextLine1: '',        // 모달에 전달할 텍스트 1
+      modalTextLine2: '',        // 모달에 전달할 텍스트 2
+      close: '',                 // 버튼 텍스트
     };
   },
   methods: {
-    hostAction() {
-      console.log("호스트로 이용하기");
-    },
-    guestAction() {
-      console.log("게스트로 이용하기");
-    },
     openModal(item) {
-      this.selectedCar = item;
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
-      this.selectedCar = null;
-    },
-    selectOption(isRiding) {
-      if (isRiding) {
-        console.log("🚗 탄다 선택:", this.selectedCar);
+      if (this.selectedCar && this.selectedCar.carShareJoinId === item.carShareJoinId) {
+        this.selectedCar = null;
       } else {
-        console.log("🚗 안 탄다 선택:", this.selectedCar);
+        this.selectedCar = item;
       }
-      this.closeModal();
+    },
+    handleModalClose() {
+      this.showSuccessModal = false;
+      this.showFailModal = false;
+      this.selectedCar = null;
+      this.fetchTodayParticipationList(); 
+    },
+    async updateStateOK(carShareJoinId) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
+        );
+        console.log("상태 변경 응답:", response.data);
+        
+        if (response.data === 1) {
+          this.modalTitleS = '💡';
+          this.modalTextLine1S = '탑승 신청이 완료되었습니다';
+          this.modalTextLine2S = '약속 시간에 맞춰 출발지에 도착해주세요';
+          this.closeS = '확인';
+          this.showSuccessModal = true;
+        } else {
+          this.modalTitleF = '🚨';
+          this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+          this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+          this.closeF = '확인';
+          this.showFailModal = true;
+        }
+      } catch (error) {
+        console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+        this.showFailModal = true;
+      }
+    },
+    async updateStateNO(carShareJoinId) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-no`
+        );
+        console.log("상태 변경 응답:", response.data);
+        
+        if (response.data === 1) {
+          this.modalTitleS = '💡';
+          this.modalTextLine1S = '탑승 취소가 완료되었습니다다';
+          this.modalTextLine2S = '취소 상태에서는 차량 탑승이 불가능합니다';
+          this.closeS = '확인';
+          this.showSuccessModal = true;
+        } else {
+          this.modalTitleF = '🚨';
+          this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+          this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+          this.closeF = '확인';
+          this.showFailModal = true;
+        }
+      } catch (error) {
+        console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+        this.showFailModal = true;
+      }
     },
     async fetchTodayParticipationList() {
       try {
@@ -89,6 +165,12 @@ export default {
       } catch (error) {
         console.error("오늘 탑승 내역을 가져오는 데 오류가 발생했습니다:", error);
       }
+    },
+    formatTime(pickupDate) {
+      const date = new Date(pickupDate); 
+      const hours = date.getHours().toString().padStart(2, '0'); 
+      const minutes = date.getMinutes().toString().padStart(2, '0'); 
+      return `${hours}:${minutes}`; 
     },
   },
   mounted() {
@@ -125,72 +207,85 @@ export default {
   color: #555;
 }
 
+.divider {
+  border-top: 1px dashed #878787;
+  margin: 20px 0;
+}
+
+.action-buttons {
+  margin-top: 20px;
+}
+
+.button-container2 {
+    width: 100%;
+    position: relative;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.ride {
+    width: 80%;
+    height: 200px;
+    background-color: #878787;
+    border-radius: 10px;
+}
+
+.unride {
+    width: 80%;
+    height: 200px;
+    background-color: #878787;
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px;
+    border: 2px solid #d9d9d9;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.image-button {
+    width: 100%; /* 이미지 크기 */
+    padding: 0; /* 버튼 패딩 제거 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-button img {
+    width: 100%; 
+    height: 100%; 
+    border-radius: 10px;
+}
+
+#map-btn {
+    width: 100%;
+    padding: 15px;
+    color: white;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #878787;
+    border: none;
+    margin-top: 50px;
+    position: relative; 
+}
+
 .button {
-  display: inline-block;
-  margin: 10px;
-  padding: 15px 30px;
-  color: white;
-  background-color: #878787;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 30px;
+    color: white;
+    background-color: #878787;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
 
-.button:hover {
-  background-color: #6b6b6b;
-}
-
-/* 모달창 스타일 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.modal-content h3 {
-  margin-bottom: 10px;
-}
-
-.confirm-btn {
-  background: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cancel-btn {
-  background: #f44336;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.close-btn {
-  background: #aaa;
-  color: white;
-  padding: 5px 15px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 </style>

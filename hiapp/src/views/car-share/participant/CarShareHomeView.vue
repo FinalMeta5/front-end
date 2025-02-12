@@ -1,7 +1,7 @@
 <template>
     <div class="home phone-main-screen">
         <div class="button-container">
-            <button class="image-button">
+            <button class="image-button" @onclick="sendRequest1()">
                 <img src="https://ifh.cc/g/xX2n1K.png" alt="출퇴근 이미지"/>
             </button>
             <button class="image-button">
@@ -35,10 +35,27 @@
 
 <script>
 export default {
-    name: 'CarShareHomeView'
-}
+    name: 'CarShareHomeView',
+    data() {
+        return {
+            carList: [],
+        }
+    },
+    methods: {
+        async sendRequest1() {
+            try {
+                const response = await axios.get("http://localhost:8080/api/carshare/registration/list/category?category=예비군");
+                if (response.status === 200 && response.data) {
+                    this.carList = response.data;
+                    console.log("data : this.carList")
+                }
+            } catch (error) {
+                console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.', error);
+            }  
+        }
+    }
+};
 </script>
-
 <style scoped>
 @import "../../../style.css";
 @import "../../../assets/style/phone-main-view-common.css";
@@ -61,11 +78,12 @@ export default {
     display: flex; 
     justify-content: center; 
     align-items: center; 
+    margin: 0 auto;
 }
 
 .around-car {
-    width: 80%;
-    height: 200px;
+    width: 85%;
+    height: 300px;
     background-color: #878787;
     border-radius: 10px;
 }
@@ -78,7 +96,6 @@ button {
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .image-button {
@@ -99,7 +116,7 @@ button {
     width: 100%;
     padding: 15px;
     color: white;
-    font-size: 18px;
+    font-size: 20px;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
@@ -107,8 +124,8 @@ button {
     background-color: #878787;
     border: none;
     margin-top: 50px;
-    z-index: 2; /* 버튼이 이미지 위에 오도록 설정 */
-    position: relative; /* 버튼 위치 설정 */
+    z-index: 2; 
+    position: relative; 
 }
 
 .moving-image {
@@ -130,6 +147,20 @@ button {
     }
     100% {
         left: 40%; 
+    }
+}
+
+@media (max-width: 768px){
+    .button-container {
+        width: 100vw;
+    }
+
+    .button-container2 {
+        width: 100vw;
+    }
+
+    .around-car {
+        width: 90vw;
     }
 }
 </style>
