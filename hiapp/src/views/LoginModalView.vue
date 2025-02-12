@@ -27,11 +27,11 @@
 
       <!-- 링크 섹션 -->
       <div class="links">
-        <a href="#">아이디 찾기</a>
+        <a @click="goToFindId">아이디 찾기</a>
         <span>|</span>
-        <a href="#">비밀번호 변경</a>
+        <a @click="goToChangePassword">비밀번호 변경</a>
         <span>|</span>
-        <a href="#">회원가입</a>
+        <a @click="goToSignup">회원가입</a>
       </div>
 
       <hr />
@@ -47,7 +47,7 @@
 import { ref } from "vue";
 import { defineEmits } from "vue";
 import { login } from "../store/auth/auth.js";
-import { useRouter, useRoute} from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 // 부모 컴포넌트로부터 모달 열림/닫힘 여부를 prop으로 받을 수도 있지만,
 // 여기서는 예시로 직접 showModal을 관리해도 되고,
@@ -75,7 +75,7 @@ async function handleLogin() {
     closeModal();
 
     emit("login-success"); // ✅ 부모 컴포넌트에게 로그인 성공 알림
-    
+
     // ✅ 새로고침 후 실행되도록 로직 저장
     setTimeout(() => {
       // ✅1. 로그인 후 이동할 페이지로 리디렉트
@@ -96,11 +96,22 @@ async function handleLogin() {
 
     // ✅ 새로고침 실행
     window.location.reload();
-
-    
   } catch (err) {
     console.log("로그인 실패:", err);
   }
+}
+
+function goToChangePassword() {
+  router.push("/change-password");
+  closeModal();
+}
+function goToFindId() {
+  router.push("/find-id");
+  closeModal();
+}
+function goToSignup() {
+  router.push("/signup");
+  closeModal();
 }
 </script>
 
