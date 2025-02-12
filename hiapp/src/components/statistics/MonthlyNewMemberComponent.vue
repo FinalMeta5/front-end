@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { authAxios } from '../../store/auth/auth';
 
 ChartJS.register( CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -44,7 +44,7 @@ export default {
     },
     methods: {
         fetchChartData() {
-            axios.get('http://localhost:8080/api/statistics/monthly-member')
+            authAxios.get('https://localhost:8443/api/statistics/monthly-member')
                 .then(response => {
                     const data = response.data;
                     this.chartData.labels = data.map(monthlyNewMem => monthlyNewMem.month);
