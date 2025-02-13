@@ -62,12 +62,9 @@ export default {
           }
         );
 
-        console.log("✅ 서버 응답:", response);
-        alert("🚗 차량 정보가 조회되었습니다.");
-        // ✅ 차량이 등록된 경우 → 차량 조회 페이지로 이동
-        router.push({ path: "/my-car-search", query: { mode: "edit" } });
-      } catch (error) {
-        console.error("🚨 서버 응답 오류:", error);
+            console.log("✅ 서버 응답:", response);
+            // ✅ 차량이 등록된 경우 → 차량 조회 페이지로 이동
+            router.push({ path: "/my-car-search", query: { mode: "edit" } });
 
         if (error.response) {
           const { status, data } = error.response;
