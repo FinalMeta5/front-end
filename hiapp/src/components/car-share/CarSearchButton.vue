@@ -65,7 +65,7 @@ export default {
             console.log("✅ 서버 응답:", response);
             // ✅ 차량이 등록된 경우 → 차량 조회 페이지로 이동
             router.push({ path: "/my-car-search", query: { mode: "edit" } });
-
+          } catch (error) {
         if (error.response) {
           const { status, data } = error.response;
 
