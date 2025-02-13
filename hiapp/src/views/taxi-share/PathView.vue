@@ -41,8 +41,8 @@
 
         <!-- 선택된 주소 정보 -->
         <div class="address-info">
-            <p>출발지: {{ startLocation }}{{ startAddress ? ` (${startAddress})` : '' }}</p>
-            <p>도착지: {{ endLocation }}{{ endAddress ? ` (${endAddress})` : '' }}</p>
+            <p>출발지: {{ startAddress ? ` ${startAddress}` : '' }}</p>
+            <p>도착지: {{ endAddress ? ` ${endAddress}` : '' }}</p>
         </div>
 
         <button class="next-button" @click="nextStep">다음</button>
@@ -250,7 +250,7 @@ export default {
 
 <style scoped>
 .path-view {
-    padding: 24px;
+    padding: 16px;
     margin-top: 140px;
     max-width: 600px;
     margin-left: auto;
@@ -261,75 +261,61 @@ export default {
     overflow-y: auto;
 }
 
+/* 📌 모바일 화면에서 크기 조정 */
+@media (max-width: 768px) {
+    .path-view {
+        width: 85%;
+        /* 모바일에서는 더 넓게 */
+        padding: 12px;
+        margin-top: 140px;
+    }
+}
+
 .header {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .header h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     color: #333;
 }
 
-.back-button {
-    position: absolute;
-    left: 480px;
-    text-decoration: none;
-    font-size: 24px;
-    color: #007bff;
-}
-
+/* 📌 입력 그룹 반응형 스타일 */
 .input-group {
     position: relative;
-    /* 상대 위치 지정 (search-results 위치 조정용) */
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     background: #f3f3f3;
     border-radius: 10px;
-    padding: 12px;
+    padding: 10px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 📌 모바일에서 폰트 크기 조정 */
 .input-group input {
     flex: 1;
     border: none;
     background: transparent;
-    padding: 10px;
-    font-size: 16px;
+    padding: 8px;
+    font-size: 14px;
     outline: none;
     color: #333;
 }
 
-.input-group input::placeholder {
-    color: #aaa;
-}
-
 .input-group .icon {
-    font-size: 18px;
+    font-size: 16px;
     color: #777;
-}
-
-.input-group .search-icon {
-    margin-left: auto;
-    cursor: pointer;
-    font-size: 18px;
-    color: #777;
-    transition: color 0.3s;
-}
-
-.input-group .search-icon:hover {
-    color: #333;
 }
 
 .search-results {
     position: absolute;
     top: 100%;
-    /* input-group 바로 아래 배치 */
     left: 0;
     width: 100%;
     background: white;
@@ -337,14 +323,14 @@ export default {
     border-radius: 10px;
     list-style: none;
     padding: 0;
-    margin: 5px 0 0;
-    /* 입력창과 간격 */
+    margin: 4px 0 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
 }
 
 .search-results li {
-    padding: 12px;
+    padding: 10px;
+    font-size: 14px;
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -353,25 +339,26 @@ export default {
     background: #f0f8ff;
 }
 
-.search-icon img {
-    width: 24px;
-    /* 원하는 크기로 조정 */
-    height: 24px;
-    cursor: pointer;
-    /* 클릭 가능하게 설정 */
-}
-
+/* 📌 모바일에서 지도 크기 조정 */
 .map-container {
     width: 100%;
-    height: 450px;
-    margin-top: 20px;
+    height: 400px;
+    margin-top: 16px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 📌 모바일에서는 지도 높이 줄이기 */
+@media (max-width: 768px) {
+    .map-container {
+        height: 300px;
+    }
+}
+
+/* 📌 주소 정보 */
 .address-info {
-    margin-top: 20px;
-    padding: 15px;
+    margin-top: 16px;
+    padding: 12px;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -380,10 +367,11 @@ export default {
 
 .address-info p {
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     color: #555;
 }
 
+/* 📌 버튼 크기 조정 */
 .next-button {
     width: 100%;
     padding: 12px;
@@ -391,14 +379,50 @@ export default {
     color: #fff;
     border: none;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 16px;
     cursor: pointer;
     transition: background 0.3s;
 }
 
+/* 📌 모바일에서는 버튼 크기 조정 */
+@media (max-width: 768px) {
+    .next-button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
 .next-button:hover {
     background: #0056b3;
+}
+
+.search-icon img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 📌 모바일 화면에서 아이콘 크기 줄이기 */
+@media (max-width: 768px) {
+    .search-icon img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 📌 더 작은 모바일 화면 (예: 480px 이하) */
+@media (max-width: 480px) {
+    .search-icon img {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* 📌 클릭 시 효과 */
+.search-icon img:active {
+    transform: scale(0.9);
 }
 </style>
