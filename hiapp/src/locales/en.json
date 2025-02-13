@@ -1,0 +1,9 @@
+{
+    "home": "Home",
+    "about": "About",
+    "welcome": "Welcome to our website!",
+    "nav": {
+        "top": "Top Navigation",
+        "bottom": "Bottom Navigation"
+    }
+}

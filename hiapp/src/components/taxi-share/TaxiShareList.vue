@@ -227,9 +227,22 @@ onMounted(() => {
 
 <style scoped>
 .taxi-share-list {
-    margin-top: 110px;
+    margin-top: 140px;
     padding: 20px;
     text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 80px;
+}
+
+/* 📌 모바일 화면에서 크기 자동 조정 */
+@media (max-width: 768px) {
+    .taxi-share-list {
+        width: 90%;
+        padding: 15px;
+        margin-top: 140px;
+    }
 }
 
 h1 {
