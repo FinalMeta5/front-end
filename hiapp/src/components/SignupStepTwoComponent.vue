@@ -234,7 +234,7 @@ async function onSendCode() {
     return;
   }
 
-  await axios.post("http://localhost:8080/api/email/signup", {
+  await axios.post("https://api.hifive5.shop/api/email/signup", {
     email: email.value,
   });
 
@@ -276,7 +276,7 @@ async function onVerifyCode() {
     return;
   }
 
-  const response = await axios.post("http://localhost:8080/api/email/check", {
+  const response = await axios.post("https://api.hifive5.shop/api/email/check", {
     email: email.value,
     code: codeInput.value,
   });
@@ -307,7 +307,7 @@ const emit = defineEmits(["next-step"]);
 // 닉네임 중복확인
 async function checkNicknameDuplicate() {
   const response = await axios.post(
-    "http://localhost:8080/api/member/check-nickname",
+    "https://api.hifive5.shop/api/member/check-nickname",
     {
       nickname: nickname.value,
     }
@@ -375,7 +375,7 @@ function handleNextClick() {
 }
 
 async function signupRequest() {
-  axios.post("http://localhost:8080/api/member/signup", {
+  axios.post("https://api.hifive5.shop/api/member/signup", {
     email: email.value,
     name: name.value,
     password: password.value,

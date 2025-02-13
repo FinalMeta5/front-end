@@ -11,9 +11,8 @@
 
     <div v-else>
       <div class="message">오늘의 예약 내역</div>
-      <hr class="divider"> 
       <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
-        <DetailInfoComponent
+          <DetailInfoComponent
           :pickupLoc="item.pickupLoc"
           :destination="item.destination"
           :pickupDate="formatTime(item.pickupDate)"
@@ -22,7 +21,6 @@
           :carShareJoinId="item.carShareJoinId"
           @click="openModal(item)" 
         />
-
         <div v-if="selectedCar && selectedCar.carShareJoinId === item.carShareJoinId" class="action-buttons">
           <div class="button-container2">
             <div class="ride" @click="updateStateOK(item.carShareJoinId)">
@@ -47,7 +45,6 @@
       </div>
       <button class="button">운전자로 이용하기</button>
       <button class="button">탑승자로 이용하기</button>
-      <hr class="divider"> 
     </div>
 
     <SuccessModal 
@@ -110,7 +107,7 @@ export default {
     async updateStateOK(carShareJoinId) {
       try {
         const response = await axios.put(
-        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
+        `https://api.hifive5.shop/api/carshare/registration/${carShareJoinId}/state-ok`
       );
         console.log("상태 변경 응답:", response.data);
         

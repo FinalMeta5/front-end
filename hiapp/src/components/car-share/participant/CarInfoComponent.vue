@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     async fetchCarInfo(driverId) {
-      const url = `http://localhost:8080/api/carshare/registration/car-information/${driverId}`;
+      const url = `https://api.hifive5.shop/api/carshare/registration/car-information/${driverId}`;
   
       try {
         const response = await axios.get(url);

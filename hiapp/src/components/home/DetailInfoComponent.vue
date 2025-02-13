@@ -1,9 +1,11 @@
 <template>
-  <div :class="['detail-container', stateClass]">
+  <div class="detail-info-wrapper">
+    <div :class="['detail-container', stateClass]">
     <p class="pickup-date">{{ pickupDate }}</p>
     <p class="pickup-loc">(출발) &nbsp;{{ pickupLoc }}</p>
     <p class="pickup-loc">(도착) &nbsp;{{ destination }}</p>
     <p class="expectedNum">현재 탑승 예정인원은 {{ expectedNum }}명입니다</p>
+  </div>
   </div>
 </template>
 
@@ -27,6 +29,7 @@ export default {
 </script>
 
 <style scoped>
+
 .detail-container {
   border: 1px solid #ccc;
   padding: 10px;

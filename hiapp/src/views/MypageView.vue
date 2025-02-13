@@ -1,6 +1,5 @@
 <template>
   <div class="phone-main-screen">
-    <div class="view-context-contain">
       <h1 class="titleH1">마이페이지</h1>
       <div class="my-page-container">
         <section class="profile-section">
@@ -50,7 +49,6 @@
           <MyCarShareSearchButton />
         </section>
       </div>
-    </div>
   </div>
 </template>
 
@@ -135,12 +133,14 @@ function goToCreditHistory() {
 <style scoped>
 @import "../style.css";
 @import "../assets/style/phone-main-view-common.css";
+.phone-main-screen {
+  padding: 20px;
+}
+
 .titleH1 {
   text-align: left;
-  width: 90%;
   font-size: 1.5rem;
-  padding-left: 15px;
-  margin-left: 0px;
+  margin-left: 35px;
   margin-top: 150px;
   margin-bottom: 10px;
 }
@@ -220,5 +220,11 @@ function goToCreditHistory() {
 }
 .menu-btn:last-child {
   margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .view-context-contain {
+    width: 100vw;
+  }
 }
 </style>

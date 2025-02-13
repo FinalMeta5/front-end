@@ -8,14 +8,14 @@
 
         <div v-if="addressPl">
           <p id="start">승차지</p>
-          <p id="pl1">{{ addressPl.road_address.address_name }}</p>
-          <p id="pl2">{{ addressPl.address.address_name }}</p>
+          <p id="pl1">{{ addressPl.address?.address_name || '' }}</p>
+          <p id="pl2">{{ addressPl.road_address?.address_name || '' }}</p>
         </div>
 
         <div v-if="addressDs">
           <p id="end">하차지</p>
-          <p id="ds1">{{ addressDs.road_address.address_name }}</p>
-          <p id="ds2">{{ addressDs.address.address_name }}</p>
+          <p id="ds1">{{ addressDs.address?.address_name || '' }}</p>
+          <p id="ds2">{{ addressDs.road_address?.address_name || '' }}</p>
         </div>
 
         <div v-else>
@@ -70,9 +70,9 @@ export default {
         });
 
         if (type === 'Pl') {
-          this.addressPl = response.data.documents[0]; 
+          this.addressPl = response.data.documents[0] || {}; 
         } else if (type === 'Ds') {
-          this.addressDs = response.data.documents[0]; 
+          this.addressDs = response.data.documents[0] || {}; 
         }
         
       } catch (error) {
@@ -80,12 +80,12 @@ export default {
       }
     },
     async goToDetailPage() {
-      const { memberId, carShareRegiId, latitudePl, longitudePl,  latitudeDs, longitudeDs} = this.car;
+      const { memberId, carShareRegiId, latitudePl, longitudePl, latitudeDs, longitudeDs } = this.car;
 
       this.$router.push({ 
         path: '/carshare/detail', 
         query: { 
-          driverId: memberId ,
+          driverId: memberId,
           carShareRegiId: carShareRegiId,
           startRoadAddress: this.addressPl?.road_address?.address_name || '',
           startAddress: this.addressPl?.address?.address_name || '',
@@ -97,7 +97,7 @@ export default {
           longitudeDs: longitudeDs || '',
         }  
       });
-  }
+    }
   },
 };
 </script>
