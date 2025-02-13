@@ -1,6 +1,6 @@
 <template>
     <div class="car-registration phone-main-screen">
-        <h1 class="titleH1">내 차량 정보</h1>
+        <h1 class="titleH2">내 차량 정보</h1>
         <div class="view-context-contain">
             <CarEditForm/>
         </div>

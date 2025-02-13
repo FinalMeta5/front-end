@@ -14,17 +14,18 @@
 
         <!-- 입력 필드 -->
         <div class="max-psg">
-            <div class="form-group">
-                <label for="model">차량 모델명</label>
-                <input type="text" id="model" v-model="carModel" :disabled="!isEditing || isEditing" />
+            <div class="first-info-car">
+                <div class="car-model">
+                    {{carModel}}
+                </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="maxPassengers">최대 탑승인원</label>
-                <select id="maxPassengers" v-model="maxPassengers" :disabled="!isEditing">
-                    <option v-for="n in 9" :key="n" :value="n">{{ n }}</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label for="maxPassengers">최대 탑승인원</label>
+            <select id="maxPassengers" v-model="maxPassengers" :disabled="!isEditing">
+                <option v-for="n in 9" :key="n" :value="n">{{ n }}</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -218,7 +219,8 @@ const submitCarUpdate = async () => {
 };
 
 // ✅ 차량 재등록 API 요청
-const reRegisterCar  = async () => {
+// ✅ 차량 재등록 API 요청
+const reRegisterCar = async () => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -227,8 +229,6 @@ const reRegisterCar  = async () => {
     }
 
     const reRegisterData = {
-        carNumber: carRegistration.value,
-        carModel: carModel.value,
         maxPassengers: maxPassengers.value,
         color: carColor.value,
         imageUrl: carImageUrl.value,
@@ -238,7 +238,8 @@ const reRegisterCar  = async () => {
     };
 
     try {
-        const response = await axios.put(`http://localhost:8080/api/car-registration/update/${originalData.value.carId}`, 
+        // 차량 수정 요청 (PUT)
+        const updateResponse = await axios.put(`http://localhost:8080/api/car-registration/update/${originalData.value.carId}`, 
             reRegisterData, {
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -246,15 +247,31 @@ const reRegisterCar  = async () => {
             }
         });
 
-        console.log("✅ 차량 재등록 성공:", response.data);
-        alert("🚗 차량이 성공적으로 재등록되었습니다! 추가 검토 후 인증이 진행됩니다.");
+        console.log("✅ 차량 재등록 성공:", updateResponse.data);
+        alert("🚗 차량이 성공적으로 수정되었습니다! 추가 검토 후 인증이 진행됩니다.");
+
         isEditing.value = false;
+
+        // 🚀 차량 수정 성공 후, 차량 재등록 알림 요청 (POST)
+        const reRegisterResponse = await axios.post(
+            `http://localhost:8080/api/car-registration/re-registration/${originalData.value.memberId}`,
+            {},  // POST 요청이지만 데이터 없이 보낼 경우 빈 객체 `{}` 전달
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        console.log("📢 차량 재등록 알림 요청 성공:", reRegisterResponse.data);
+        alert("📩 차량 재등록 요청이 성공적으로 전달되었습니다!");
 
     } catch (error) {
         console.error("❌ 차량 수정 실패:", error);
         alert("⚠ 차량 정보 수정에 실패했습니다.");
     }
 };
+
 
 
 // ✅ 차량 삭제 API 요청

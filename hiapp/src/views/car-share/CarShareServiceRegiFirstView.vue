@@ -335,7 +335,7 @@ export default {
   display: flex;
   align-items: center;
   height: 4rem;
-  gap: 10px;
+  gap: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
