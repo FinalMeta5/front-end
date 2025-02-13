@@ -109,4 +109,10 @@ button.active {
   display: flex;
   justify-content: space-between;
 }
+
+@media (max-width: 500px) {
+  .today-reservation-container {
+    width: 90vw;
+  }
+}
 </style>

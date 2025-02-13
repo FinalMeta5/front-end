@@ -74,7 +74,7 @@ methods: {
     },
 },
 mounted() {
-    this.fetchData('http://localhost:8080/member/all', 'members');
+    this.fetchData('https://api.hifive5.shop/member/all', 'members');
 }
 };
 </script>

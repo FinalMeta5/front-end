@@ -8,14 +8,14 @@
 
         <div v-if="addressPl">
           <p id="start">승차지</p>
-          <p id="pl1">{{ addressPl.road_address.address_name }}</p>
-          <p id="pl2">{{ addressPl.address.address_name }}</p>
+          <p id="pl1">{{ addressPl.address?.address_name || '' }}</p>
+          <p id="pl2">{{ addressPl.road_address?.address_name || '' }}</p>
         </div>
 
         <div v-if="addressDs">
           <p id="end">하차지</p>
-          <p id="ds1">{{ addressDs.road_address.address_name }}</p>
-          <p id="ds2">{{ addressDs.address.address_name }}</p>
+          <p id="ds1">{{ addressDs.address?.address_name || '' }}</p>
+          <p id="ds2">{{ addressDs.road_address?.address_name || '' }}</p>
         </div>
 
         <div v-else>
@@ -70,31 +70,34 @@ export default {
         });
 
         if (type === 'Pl') {
-          this.addressPl = response.data.documents[0]; 
+          this.addressPl = response.data.documents[0] || {}; 
         } else if (type === 'Ds') {
-          this.addressDs = response.data.documents[0]; 
+          this.addressDs = response.data.documents[0] || {}; 
         }
+        
       } catch (error) {
         console.error('주소 정보를 가져오는 중 오류가 발생했습니다.', error);
       }
     },
     async goToDetailPage() {
-      const { memberId, carShareRegiId, latitudePl, longitudePl } = this.car;
+      const { memberId, carShareRegiId, latitudePl, longitudePl, latitudeDs, longitudeDs } = this.car;
 
       this.$router.push({ 
         path: '/carshare/detail', 
         query: { 
-          driverId: memberId ,
+          driverId: memberId,
           carShareRegiId: carShareRegiId,
           startRoadAddress: this.addressPl?.road_address?.address_name || '',
           startAddress: this.addressPl?.address?.address_name || '',
           endRoadAddress: this.addressDs?.road_address?.address_name || '',
           endAddress: this.addressDs?.address?.address_name || '',
           latitudePl: latitudePl || '',
-          longitudePl: longitudePl || ''
+          longitudePl: longitudePl || '',
+          latitudeDs: latitudeDs || '',
+          longitudeDs: longitudeDs || '',
         }  
       });
-  }
+    }
   },
 };
 </script>
@@ -153,17 +156,17 @@ export default {
 }
 
 #pl1, #ds1 {
-  font-size: 18px; 
+  font-size: 17px; 
   color: #4E4B4B;
 }
 
 #pl2{
-  margin-top: 28px;
+  margin-top: 25px;
   font-size: 14px;
 }
 
 #ds2 {
-  margin-bottom: -8px;
+  margin-bottom: -6px;
   font-size: 14px;
 }
 

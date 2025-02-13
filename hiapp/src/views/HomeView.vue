@@ -1,6 +1,5 @@
 <template>
     <div class="home phone-main-screen">
-        <h1 class="titleH1">Home</h1>
         <div class="view-context-contain">
             <TodayReservationListComponent/>
             <WeekReservationListComponent/>
@@ -26,4 +25,8 @@ import WeekReservationListComponent from '../components/home/WeekReservationList
 <style scoped>
 @import "../style.css";
 @import "../assets/style/phone-main-view-common.css";
+
+.today-reservation-container {
+    margin-top: 220px;
+}
 </style>

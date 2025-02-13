@@ -1,9 +1,11 @@
 <template>
-  <div class="detail-container">
+  <div class="detail-info-wrapper">
+    <div :class="['detail-container', stateClass]">
     <p class="pickup-date">{{ pickupDate }}</p>
-    <p class="pickup-loc">(출발) {{ pickupLoc }}</p>
+    <p class="pickup-loc">(출발) &nbsp;{{ pickupLoc }}</p>
+    <p class="pickup-loc">(도착) &nbsp;{{ destination }}</p>
     <p class="expectedNum">현재 탑승 예정인원은 {{ expectedNum }}명입니다</p>
-    <p>여부 : {{ state }}</p>
+  </div>
   </div>
 </template>
 
@@ -18,10 +20,16 @@ export default {
     state: String,
     carShareJoinId: Number,
   },
+  computed: {
+    stateClass() {
+      return this.state === "탄다" ? "green-border" : "red-border";
+    }
+  }
 };
 </script>
 
 <style scoped>
+
 .detail-container {
   border: 1px solid #ccc;
   padding: 10px;
@@ -32,13 +40,22 @@ export default {
 
 .pickup-date,
 .pickup-loc {
-  display: inline-block; /* 두 <p> 태그를 같은 줄에 배치 */
-  margin-right: 10px; /* 오른쪽에 간격을 추가 */
+  display: inline-block; 
+  margin-right: 10px;
+  margin-bottom: 6px;
+  font-size: 17px;
 }
 
 .expectedNum {
-  display: inline-block;
   margin-left: 55px;
-  margin-top: 0px;
+  font-size: 13px;
+}
+
+.green-border {
+  border: 2px solid #4192FF;
+}
+
+.red-border {
+  border: 2px solid #878787;
 }
 </style>

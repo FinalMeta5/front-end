@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     async fetchDriverInfo(driverId) {
-      const url = `http://localhost:8080/api/carshare/registration/driver-information/${driverId}`;
+      const url = `https://api.hifive5.shop/api/carshare/registration/driver-information/${driverId}`;
 
       try {
         const response = await axios.get(url);
@@ -75,7 +75,7 @@ export default {
       }
     },
     async fetchDriverRating(driverId) {
-      const url = `http://localhost:8080/api/carshare/registration/rating/${driverId}`;
+      const url = `https://api.hifive5.shop/api/carshare/registration/rating/${driverId}`;
 
       try {
         const response = await axios.get(url);
@@ -106,12 +106,11 @@ export default {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .driver-img-wrapper {
   width: 95%;
-  height: 150px;
+  height: 250px;
   overflow: hidden; 
   display: flex;
   justify-content: center;
@@ -120,6 +119,12 @@ export default {
   border: 2px solid #5d5d5d; 
   margin: 0 auto;
   margin-bottom: 30px;
+}
+
+.driver-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
 }
 
 .driver-img-placeholder {

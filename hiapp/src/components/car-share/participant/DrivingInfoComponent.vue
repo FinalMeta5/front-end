@@ -5,17 +5,14 @@
       <hr class="divider-top"> 
       <div v-if="drivingInfo && Object.keys(drivingInfo).length > 0">
         <div class="driver-img-wrapper">
-          <!-- mapRef로 참조할 div 요소 추가 -->
           <div id="map"></div>
         </div>
         <h2 id="driver-nickname">{{ nickname }}님의 차량 운행 정보</h2>
-        <p>✔ 출발지 : {{ startRoadAddress }}</p>
-        <p>✔ 도착지 : {{ endRoadAddress }}</p>
+        <p>✔ 출발지 : {{ startAddress }}</p>
+        <p>✔ 도착지 : {{ endAddress }}</p>
         <p>✔ 출발일 : {{ formattedPickupDate }}</p>
         <p>✔ 총인원 : {{ drivingInfo.passengersNum }}명</p>
         <p>✔ 잔여석 : {{ drivingInfo.leftoverNum }}명</p>
-        <p>{{ drivingInfo.latitudeDs }}</p>
-        <p>{{ drivingInfo.longitudeDS }}</p>
       </div>
       <hr class="divider-bottom"> 
     </div>
@@ -42,15 +39,21 @@ export default {
     startAddress: String,
     endRoadAddress: String,
     endAddress: String,
+    latitudePl: Number,
+    longitudePl: Number,
+    latitudeDs: Number,
+    longitudeDs: Number,
   },
   data() {
     return {
       drivingInfo: null,        
       isModalOpen: false,      
       modalImageUrl: '',  
-      map: null,     
-      latitude: 37.584257,
-      longitude: 127.000824,
+      map: null,  
+      localLatitudePl: this.latitudePl, 
+      localLongitudePl: this.longitudePl,
+      localLatitudeDs: this.latitudeDs,
+      localLongitudeDs: this.longitudeDs   
     };
   },
 
@@ -70,9 +73,30 @@ export default {
           this.fetchDrivingInfo(this.driverId, newCarShareRegiId);  
         }
       },
-    }
+    },
+    latitudePl: {
+      handler() {
+        this.updateMap(); 
+      }
+    },
+    longitudePl: {
+      handler() {
+        this.updateMap();  
+      }
+    },
+    latitudeDs: {
+      handler() {
+        this.updateMap(); 
+      }
+    },
+    longitudeDs: {
+      handler() {
+        this.updateMap();  
+      }
+    },
   },
   created() {
+    console.log("파라미터 :", this.$route.query);
     if (!("geolocation" in navigator)) {
       alert("위치 정보를 사용할 수 없습니다.");
       return;
@@ -103,7 +127,7 @@ export default {
 
   methods: {
     async fetchDrivingInfo(driverId, carShareRegiId) {
-      const url = `http://localhost:8080/api/carshare/registration/driving-information`;
+      const url = `https://api.hifive5.shop/api/carshare/registration/driving-information`;
       try {
         const response = await axios.get(url, {
           params: {
@@ -114,13 +138,13 @@ export default {
         this.drivingInfo = response.data;
         
         if (this.drivingInfo.latitudePl && this.drivingInfo.longitudePl) {
-        this.latitude = this.drivingInfo.latitudePl;
-        this.longitude = this.drivingInfo.longitudePl;
+        this.localLatitudePl = this.drivingInfo.latitudePl;
+        this.localLongitudePl= this.drivingInfo.longitudePl;
         
 
         if (this.drivingInfo.latitudeDs && this.drivingInfo.longitudeDs) {
-        this.latitudeDs = this.drivingInfo.latitudeDs;
-        this.longitudeDs = this.drivingInfo.longitudeDs;
+        this.localLatitudeDs = this.drivingInfo.latitudeDs;
+        this.localLatitudeDs = this.drivingInfo.longitudeDs;
       }
       this.updateMap();
       }
@@ -327,6 +351,18 @@ export default {
   font-size: 20px;
   cursor: pointer;
 }
+
+p, h2 {
+  text-align: left;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  color: #5d5d5d;
+}
+
+p {
+  font-size: 15px;
+}
+
 
 @media (max-width: 480px) { 
   .driving-info {

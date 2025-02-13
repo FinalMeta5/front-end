@@ -2,7 +2,7 @@
     <nav class="bottom-nav phone-fix">
         <ul>
             <li @click="changeImage('taxi')" class="left-space">
-                <router-link to="/carshare/home">
+                <router-link to="/taxi-share/list">
                     <img :src="activeImage.taxi" alt="Taxi" />
                 </router-link>
             </li>
