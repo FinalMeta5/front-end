@@ -305,7 +305,7 @@ export default {
 
   console.log("🚀 [전송 데이터]:", requestData); // ✅ 확인용 콘솔 로그
 
-  axios.post("https://api.hifive5.shop/api/car-share/register", requestData, {  
+  axios.post("http://localhost:8080/api/car-share/register", requestData, {  
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${localStorage.getItem("accessToken")}`

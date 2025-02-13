@@ -13,7 +13,7 @@
         <div class="step-item" :class="{ active: currentStep >= 2 }">
           <div class="circle">2</div>
           <div class="label">정보입력</div>
-        </div>
+        </div>z
         <div class="line" :class="{ active: currentStep > 2 }"></div>
         <!-- 3단계 -->
         <div class="step-item" :class="{ active: currentStep >= 3 }">

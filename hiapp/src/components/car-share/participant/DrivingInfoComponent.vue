@@ -8,8 +8,8 @@
           <div id="map"></div>
         </div>
         <h2 id="driver-nickname">{{ nickname }}님의 차량 운행 정보</h2>
-        <p>✔ 출발지 : {{ startAddress }}</p>
-        <p>✔ 도착지 : {{ endAddress }}</p>
+        <p>✔ 출발지 : {{ startRoadAddress }}</p>
+        <p>✔ 도착지 : {{ endRoadAddress }}</p>
         <p>✔ 출발일 : {{ formattedPickupDate }}</p>
         <p>✔ 총인원 : {{ drivingInfo.passengersNum }}명</p>
         <p>✔ 잔여석 : {{ drivingInfo.leftoverNum }}명</p>
@@ -127,7 +127,7 @@ export default {
 
   methods: {
     async fetchDrivingInfo(driverId, carShareRegiId) {
-      const url = `https://api.hifive5.shop/api/carshare/registration/driving-information`;
+      const url = `http://localhost:8080/api/carshare/registration/driving-information`;
       try {
         const response = await axios.get(url, {
           params: {
