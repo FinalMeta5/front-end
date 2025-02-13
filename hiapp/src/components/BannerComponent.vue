@@ -96,5 +96,11 @@
   .next {
     right: 10px;
   }
+
+  @media (max-width: 500px) {
+  .banner-container {
+    width: 90vw;
+  }
+}
   </style>
   

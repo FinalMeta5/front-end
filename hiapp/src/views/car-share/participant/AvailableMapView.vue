@@ -16,7 +16,7 @@
             <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
           </div>
           <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
-          <CarShareInformationComponent v-if="selectedCar" :car="selectedCar"/>
+          <CarShareInformationComponent v-if="selectedCar" :car="selectedCar" id="carShareInformationComponent"/>
           <div v-if="searchResults.length > 0" class="address-list">
             <ul>
               <li v-for="(result, index) in searchResults" :key="index" @click="selectAddress(result)" class="search-item">
@@ -383,7 +383,7 @@ export default {
 
 .search-container {
   position: absolute;
-  top: 125px;
+  top: 140px;
   z-index: 12;
   width: 100%;
   display: flex;
@@ -419,9 +419,14 @@ input {
   outline: none;
 }
 
+#carShareInformationComponent {
+  position: absolute;
+  bottom: 80px;
+}
+
 .address-list {
   position: absolute;
-  top: 195px;
+  top: 200px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 11;
@@ -476,7 +481,8 @@ border-bottom: none;
 
 .current-location-btn {
 position: absolute;
-right: 12px;
+right: 15px;
+bottom: 100px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
@@ -492,11 +498,25 @@ width: 50px;
   font-size: 14px;
 }
 
+.address-list {
+  width: 80%;
+}
+
 .result-container {
   width: 85%;
   left: 0;
   right: 0;
   margin: 0 auto;
 }
+
+.current-location-btn {
+position: absolute;
+right: 50px;
+bottom: 80px;
+cursor: pointer;
+z-index: 15;
+width: 50px;
+}
+
 }
 </style>

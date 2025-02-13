@@ -74,12 +74,13 @@ export default {
         } else if (type === 'Ds') {
           this.addressDs = response.data.documents[0]; 
         }
+        
       } catch (error) {
         console.error('주소 정보를 가져오는 중 오류가 발생했습니다.', error);
       }
     },
     async goToDetailPage() {
-      const { memberId, carShareRegiId, latitudePl, longitudePl } = this.car;
+      const { memberId, carShareRegiId, latitudePl, longitudePl,  latitudeDs, longitudeDs} = this.car;
 
       this.$router.push({ 
         path: '/carshare/detail', 
@@ -91,7 +92,9 @@ export default {
           endRoadAddress: this.addressDs?.road_address?.address_name || '',
           endAddress: this.addressDs?.address?.address_name || '',
           latitudePl: latitudePl || '',
-          longitudePl: longitudePl || ''
+          longitudePl: longitudePl || '',
+          latitudeDs: latitudeDs || '',
+          longitudeDs: longitudeDs || '',
         }  
       });
   }
@@ -153,17 +156,17 @@ export default {
 }
 
 #pl1, #ds1 {
-  font-size: 18px; 
+  font-size: 17px; 
   color: #4E4B4B;
 }
 
 #pl2{
-  margin-top: 28px;
+  margin-top: 25px;
   font-size: 14px;
 }
 
 #ds2 {
-  margin-bottom: -8px;
+  margin-bottom: -6px;
   font-size: 14px;
 }
 

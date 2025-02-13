@@ -13,9 +13,7 @@
         </div>
         <div class="dates">
           <div v-for="(date, index) in weekDates" :key="index" class="date-column">
-            <!-- 날짜가 있는 열 -->
             <span>{{ date }}</span>
-            <!-- 화요일(2번째 열)일 때만 TaxiComponent 추가 -->
             <div v-if="index === 1" class="taxi-container">
               <TaxiComponent />
             </div>
@@ -27,7 +25,6 @@
 </template>
 
 <script>
-// TaxiComponent 컴포넌트를 import
 import TaxiComponent from './TaxiComponent.vue';
 
 export default {
@@ -36,7 +33,7 @@ export default {
   },
   data() {
     return { 
-      weekDates: [],            // 이번 주 날짜 저장
+      weekDates: [],           
     };
   },
   methods: {
@@ -67,16 +64,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 200px;
 }
 
 .box {
   width: 400px;
-  height: 500px;
   border: 2px solid #878787;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.calendar {
+  border-radius: 13px;
 }
 
 .days,
@@ -95,14 +96,15 @@ export default {
 }
 
 .days span {
-  flex-grow: 1; /* 각 요일 열이 동일한 비율로 나누어지도록 설정 */
-  text-align: center; /* 중앙 정렬 */
+  flex-grow: 1;
+  text-align: center;
 }
 
 .dates {
   background-color: #f0f0f0;
   display: flex;
   justify-content: space-between;
+  border-radius: 0 0 8px 8px;
 }
 
 .date-column {
@@ -118,7 +120,7 @@ export default {
 }
 
 .taxi-container {
-  margin-top: 10px; /* TaxiComponent와 날짜 간의 간격 */
+  margin-top: 10px; 
   padding: 10px;
   width: 5px;
   height: 5px;
@@ -131,5 +133,11 @@ export default {
   color: white;
   font-size: 14px;
   font-weight: bold;
+}
+
+@media (max-width: 500px) {
+  .box {
+    width: 90vw;
+  }
 }
 </style>

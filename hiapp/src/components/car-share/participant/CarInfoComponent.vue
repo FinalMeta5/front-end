@@ -123,7 +123,7 @@ export default {
 
 .driver-img-wrapper {
   width: 95%;
-  height: 150px;
+  height: 250px;
   overflow: hidden; 
   display: flex;
   justify-content: center;
@@ -132,6 +132,12 @@ export default {
   border: 2px solid #5d5d5d; 
   margin: 0 auto;
   margin-bottom: 30px;
+}
+
+.driver-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
 }
 
 .driver-img-placeholder {

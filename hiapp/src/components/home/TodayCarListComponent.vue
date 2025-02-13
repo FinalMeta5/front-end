@@ -26,17 +26,21 @@
         <div v-if="selectedCar && selectedCar.carShareJoinId === item.carShareJoinId" class="action-buttons">
           <div class="button-container2">
             <div class="ride" @click="updateStateOK(item.carShareJoinId)">
-              <img class="moving-image1" src="https://ifh.cc/g/ch51wM.png" alt="움직이는 이미지">
-              <button id="map-btn">
+              <div class="b">
+                <img class="moving-image1" src="https://ifh.cc/g/4DpadZ.png" alt="움직이는 이미지">
+              <span id="map-btn">
                 탑승 신청
-              </button>
+              </span>
+              </div>
             </div>
 
             <div class="unride" @click="updateStateNO(item.carShareJoinId)">
-              <img class="moving-image2" src="https://ifh.cc/g/ch51wM.png" alt="움직이는 이미지">
-              <button id="map-btn">
+              <div class="b">
+                <img class="moving-image2" src="https://ifh.cc/g/p1xNCK.png" alt="움직이는 이미지">
+              <span id="map-btn">
                 탑승 취소
-              </button>
+              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -106,8 +110,8 @@ export default {
     async updateStateOK(carShareJoinId) {
       try {
         const response = await axios.put(
-          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
-        );
+        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
+      );
         console.log("상태 변경 응답:", response.data);
         
         if (response.data === 1) {
@@ -137,7 +141,7 @@ export default {
         
         if (response.data === 1) {
           this.modalTitleS = '💡';
-          this.modalTextLine1S = '탑승 취소가 완료되었습니다다';
+          this.modalTextLine1S = '탑승 취소가 완료되었습니다';
           this.modalTextLine2S = '취소 상태에서는 차량 탑승이 불가능합니다';
           this.closeS = '확인';
           this.showSuccessModal = true;
@@ -180,6 +184,10 @@ export default {
 </script>
 
 <style scoped>
+.b {
+  margin-top: 10px;
+}
+
 .today-car-container {
   text-align: center;
 }
@@ -217,30 +225,43 @@ export default {
 }
 
 .button-container2 {
-    width: 100%;
-    position: relative;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+  width: 100%;
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  gap: 10px; 
 }
 
 .ride {
     width: 80%;
-    height: 200px;
-    background-color: #878787;
+    height: 50px;
+    background-color: #4192FF;
+    border: 1px solid #4192FF;
     border-radius: 10px;
+    flex-direction: row; 
+    justify-content: center;
+   align-items: center; 
 }
 
 .unride {
     width: 80%;
-    height: 200px;
-    background-color: #878787;
+    height: 50px;
+    background-color: #4192FF;
+    border: 1px solid #4192FF;
     border-radius: 10px;
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center; 
+} 
+
+img {
+  width: 20%;
+  vertical-align: middle;
 }
 
 button {
     padding: 10px;
-    border: 2px solid #d9d9d9;
+    border: 2px solid #4192FF;
     color: white;
     font-size: 16px;
     border-radius: 10px;
@@ -249,8 +270,8 @@ button {
 }
 
 .image-button {
-    width: 100%; /* 이미지 크기 */
-    padding: 0; /* 버튼 패딩 제거 */
+    width: 100%; 
+    padding: 0; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -264,16 +285,13 @@ button {
 
 #map-btn {
     width: 100%;
-    padding: 15px;
-    color: white;
+    color: #ffffff;
     font-size: 18px;
-    border-radius: 10px;
     cursor: pointer;
     text-align: center;
     text-transform: uppercase;
-    background-color: #878787;
+    background-color: #4192FF;
     border: none;
-    margin-top: 50px;
     position: relative; 
 }
 
