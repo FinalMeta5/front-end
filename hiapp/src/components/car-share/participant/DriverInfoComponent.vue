@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     async fetchDriverInfo(driverId) {
-      const url = `https://api.hifive5.shop/api/carshare/registration/driver-information/${driverId}`;
+      const url = `http://localhost:8080/api/carshare/registration/driver-information/${driverId}`;
 
       try {
         const response = await axios.get(url);
@@ -75,7 +75,7 @@ export default {
       }
     },
     async fetchDriverRating(driverId) {
-      const url = `https://api.hifive5.shop/api/carshare/registration/rating/${driverId}`;
+      const url = `http://localhost:8080/api/carshare/registration/rating/${driverId}`;
 
       try {
         const response = await axios.get(url);

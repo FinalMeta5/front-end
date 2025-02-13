@@ -101,7 +101,7 @@ export default {
         return;
       }
 
-      const url = `https://api.hifive5.shop/api/carshare/registration/reservation?carShareRegiId=${this.carShareRegiId}&userId=${this.userId}`;
+      const url = `http://localhost:8080/api/carshare/registration/reservation?carShareRegiId=${this.carShareRegiId}&userId=${this.userId}`;
 
       try {
         const response = await axios.post(url);
@@ -128,7 +128,7 @@ export default {
     },
 
     async handleCreditDeduction() {
-      const url = `https://api.hifive5.shop/api/carshare/registration/deducted-credit?userId=${this.userId}`;
+      const url = `http://localhost:8080/api/carshare/registration/deducted-credit?userId=${this.userId}`;
 
       try {
         const response = await axios.post(url);
@@ -167,11 +167,6 @@ export default {
 <style scoped>
 @import "../../../style.css";
 @import "../../../assets/style/phone-main-view-common.css";
-
-.titleH1 {
-  font-size: 20px;
-  margin-top: 150px;
-}
 
 .button-container {
   display: flex;

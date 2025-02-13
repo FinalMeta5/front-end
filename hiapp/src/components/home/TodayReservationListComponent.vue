@@ -45,7 +45,7 @@ export default {
 
 .box {
   width: 400px;
-  height: 500px;
+  height: 360px;
   border: 2px solid #878787;
   border-radius: 8px;
   display: flex;
@@ -67,11 +67,12 @@ export default {
 
 button {
   flex: 1;
-  padding: 12px;
+  padding: 10px;
   border: 2px solid #878787; 
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   background-color: #f0f0f0;
+  color: #5d5d5d;
 }
 
 button:first-child {
@@ -92,7 +93,7 @@ button.active {
 .content {
   text-align: center;
   font-size: 18px;
-  margin-top: 30px;
+  margin-top: 27px;
 }
 
 .calendar {
@@ -112,7 +113,7 @@ button.active {
 
 @media (max-width: 500px) {
   .today-reservation-container {
-    width: 90vw;
+    width: 88vw;
   }
 }
 </style>

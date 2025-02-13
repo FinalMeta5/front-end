@@ -41,7 +41,7 @@ export default {
     };
   },methods: {
     fetchCarList() {
-      axios.get('https://api.hifive5.shop/api/carshare/registration/all-list')  // 백엔드 API 주소로 변경
+      axios.get('http://localhost:8080/api/carshare/registration/all-list')  // 백엔드 API 주소로 변경
         .then(response => {
           this.carList = response.data;
         })

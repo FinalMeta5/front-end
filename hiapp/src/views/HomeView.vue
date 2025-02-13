@@ -1,8 +1,8 @@
 <template>
     <div class="home phone-main-screen">
         <div class="view-context-contain">
-            <TodayReservationListComponent/>
-            <WeekReservationListComponent/>
+            <TodayReservationListComponent/><br>
+            <!-- <WeekReservationListComponent/> -->
             <BannerComponent/>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <header class="header phone-fix ">
+  <header class="header phone-fix "  @click="gohome">
     <img class="icon-image " src="/src/assets/images/BURURUNG_BLUE.png">
   </header>
 </template>
@@ -7,6 +7,11 @@
   <script>
   export default {
     name: "HeaderComponent",
+    methods : {
+      gohome() {
+      this.$router.push('/');
+      }
+    }
   };
   </script>
   
