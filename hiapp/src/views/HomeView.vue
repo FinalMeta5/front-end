@@ -1,11 +1,8 @@
 <template>
     <div class="home phone-main-screen">
-        <h1 class="titleH1">Home</h1>
         <div class="view-context-contain">
-            <p>홈페이지 접속을 환영합니다.</p>
-            <router-link to="/about">About 페이지 보기</router-link>
-            <router-link to="/mypage">Mypage 보기</router-link>
-
+            <TodayReservationListComponent/><br>
+            <!-- <WeekReservationListComponent/> -->
             <BannerComponent/>
         </div>
     </div>
@@ -13,10 +10,14 @@
 
 <script>
 import BannerComponent from '../components/BannerComponent.vue';
+import TodayReservationListComponent from '../components/home/TodayReservationListComponent.vue';
+import WeekReservationListComponent from '../components/home/WeekReservationListComponent.vue';
     export default {
         name: 'HomeView',
         components: {
             BannerComponent,
+            TodayReservationListComponent,
+            WeekReservationListComponent
         }
     };
 </script>
@@ -24,4 +25,8 @@ import BannerComponent from '../components/BannerComponent.vue';
 <style scoped>
 @import "../style.css";
 @import "../assets/style/phone-main-view-common.css";
+
+.today-reservation-container {
+    margin-top: 220px;
+}
 </style>

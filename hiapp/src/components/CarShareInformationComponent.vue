@@ -1,29 +1,26 @@
 <template>
-  <div class="result-container">
+  <div class="result-container" @click="goToDetailPage">
     <img id="showInformation" src="https://ifh.cc/g/OslxBJ.png" />
     <div class="result-show">
-      <div v-if="car">
+      <div v-if="car && addressPl && addressDs">
         <h3 id="driver-nickname">{{ car.nickname }}</h3>
         <span id="date">{{ car.pickupDate }}</span>
 
         <div v-if="addressPl">
           <p id="start">승차지</p>
-          <p id="pl1">{{ addressPl.road_address.address_name }}</p>
-          <p id="pl2">{{ addressPl.address.address_name }}</p>
+          <p id="pl1">{{ addressPl.address?.address_name || '' }}</p>
+          <p id="pl2">{{ addressPl.road_address?.address_name || '' }}</p>
         </div>
 
         <div v-if="addressDs">
           <p id="end">하차지</p>
-          <p id="ds1">{{ addressDs.road_address.address_name }}</p>
-          <p id="ds2">{{ addressDs.address.address_name }}</p>
+          <p id="ds1">{{ addressDs.address?.address_name || '' }}</p>
+          <p id="ds2">{{ addressDs.road_address?.address_name || '' }}</p>
         </div>
 
         <div v-else>
-          <p>주소 정보를 불러오는 중..</p>
+          <p>주소 정보를 불러오는 중</p>
         </div>
-      </div>
-      <div v-else>
-        <p>No car information available.</p>
       </div>
     </div>
   </div>
@@ -34,12 +31,7 @@ import axios from 'axios';
 
 export default {
   name: 'CarShareInformationComponent',
-  props: {
-    car: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ['car'],
   data() {
     return {
       addressPl: null, 
@@ -78,14 +70,34 @@ export default {
         });
 
         if (type === 'Pl') {
-          this.addressPl = response.data.documents[0]; 
+          this.addressPl = response.data.documents[0] || {}; 
         } else if (type === 'Ds') {
-          this.addressDs = response.data.documents[0]; 
+          this.addressDs = response.data.documents[0] || {}; 
         }
+        
       } catch (error) {
         console.error('주소 정보를 가져오는 중 오류가 발생했습니다.', error);
       }
     },
+    async goToDetailPage() {
+      const { memberId, carShareRegiId, latitudePl, longitudePl, latitudeDs, longitudeDs } = this.car;
+
+      this.$router.push({ 
+        path: '/carshare/detail', 
+        query: { 
+          driverId: memberId,
+          carShareRegiId: carShareRegiId,
+          startRoadAddress: this.addressPl?.road_address?.address_name || '',
+          startAddress: this.addressPl?.address?.address_name || '',
+          endRoadAddress: this.addressDs?.road_address?.address_name || '',
+          endAddress: this.addressDs?.address?.address_name || '',
+          latitudePl: latitudePl || '',
+          longitudePl: longitudePl || '',
+          latitudeDs: latitudeDs || '',
+          longitudeDs: longitudeDs || '',
+        }  
+      });
+    }
   },
 };
 </script>
@@ -94,6 +106,7 @@ export default {
 .result-container {
   position: relative;
   color: #5D5D5D;
+  cursor: pointer;
 }
 
 .result-show {
@@ -143,17 +156,17 @@ export default {
 }
 
 #pl1, #ds1 {
-  font-size: 18px; 
+  font-size: 17px; 
   color: #4E4B4B;
 }
 
 #pl2{
-  margin-top: 28px;
+  margin-top: 25px;
   font-size: 14px;
 }
 
 #ds2 {
-  margin-bottom: -8px;
+  margin-bottom: -6px;
   font-size: 14px;
 }
 
@@ -170,5 +183,19 @@ export default {
 
 #end {
   top: 44px;
+}
+
+@media screen and (max-width: 600px) {
+
+  #driver-nickname {
+    font-size: 22px;
+    top: -100px;
+  }
+
+  #date {
+    top: -93px;
+    right: 59px;
+    font-size: 12px;
+}
 }
 </style>

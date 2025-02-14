@@ -27,11 +27,11 @@
 
       <!-- 링크 섹션 -->
       <div class="links">
-        <a href="#">아이디 찾기</a>
+        <a @click="goToFindId">아이디 찾기</a>
         <span>|</span>
-        <a href="#">비밀번호 변경</a>
+        <a @click="goToChangePassword">비밀번호 변경</a>
         <span>|</span>
-        <a href="#">회원가입</a>
+        <a @click="goToSignup">회원가입</a>
       </div>
 
       <hr />
@@ -47,7 +47,7 @@
 import { ref } from "vue";
 import { defineEmits } from "vue";
 import { login } from "../store/auth/auth.js";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 // 부모 컴포넌트로부터 모달 열림/닫힘 여부를 prop으로 받을 수도 있지만,
 // 여기서는 예시로 직접 showModal을 관리해도 되고,
@@ -59,7 +59,10 @@ const email = ref("");
 const password = ref("");
 const emit = defineEmits(["close"]);
 const router = useRouter();
-
+const props = defineProps({
+  redirectPath: String, // ✅ 로그인 후 이동할 경로 (선택 사항)
+  pendingAction: Function, // ✅ 로그인 후 실행할 함수 (선택 사항)
+});
 // 모달을 닫는 메서드
 function closeModal() {
   emit("close");
@@ -70,10 +73,45 @@ async function handleLogin() {
     await login(email.value, password.value);
     console.log("로그인 성공");
     closeModal();
-    router.push("/");
+
+    emit("login-success"); // ✅ 부모 컴포넌트에게 로그인 성공 알림
+
+    // ✅ 새로고침 후 실행되도록 로직 저장
+    setTimeout(() => {
+      // ✅1. 로그인 후 이동할 페이지로 리디렉트
+      if (props.redirectPath) {
+        router.push(props.redirectPath);
+        return;
+      }
+
+      // ✅2. 로그인 후 실행할 함수
+      if (props.pendingAction) {
+        props.pendingAction();
+        return;
+      }
+
+      // ✅3. 기본으로 "/" 홈으로 이동
+      router.push("/");
+    }, 500); // 새로고침 후 0.5초 뒤 실행
+
+    // ✅ 새로고침 실행
+    window.location.reload();
   } catch (err) {
     console.log("로그인 실패:", err);
   }
+}
+
+function goToChangePassword() {
+  router.push("/change-password");
+  closeModal();
+}
+function goToFindId() {
+  router.push("/find-id");
+  closeModal();
+}
+function goToSignup() {
+  router.push("/signup");
+  closeModal();
 }
 </script>
 

@@ -1,19 +1,24 @@
 <template>
-  <header class="header phone-fix ">
-    <img class="icon-image " src="/src/assets/images/BURURUNG_WHITE.png">
+  <header class="header phone-fix "  @click="gohome">
+    <img class="icon-image " src="/src/assets/images/BURURUNG_BLUE.png">
   </header>
 </template>
   
   <script>
   export default {
     name: "HeaderComponent",
+    methods : {
+      gohome() {
+      this.$router.push('/');
+      }
+    }
   };
   </script>
   
   <style scoped>
   .header {
-    height: 60px;
-    background-color: #4192ff;
+    height: 66px;
+    background-color: #ffffff;
     color: white;
     display: flex;
     justify-content: center;

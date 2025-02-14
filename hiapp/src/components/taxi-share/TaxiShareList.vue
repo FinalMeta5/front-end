@@ -2,23 +2,25 @@
     <div class="taxi-share-list">
         <div class="max-w-md mx-auto p-4">
             <!-- 헤더 -->
-            <h1 class="text-2xl font-bold mb-2">택시 같이 타요!</h1>
+            <h1>택시 같이 타요!</h1>
+            <p>어디서 출발하시나요?</p>
 
             <!-- 출발지, 도착지, 날짜 선택 -->
-            <div class="bg-gray-100 p-4 rounded-lg flex items-center gap-2 mb-4">
-                <button @click="openPlaceSearch('departure')"
-                    class="flex items-center gap-1 bg-white px-3 py-2 rounded shadow">
+            <div class="search-container">
+                <button @click="showSearchModal = true">
                     <img src="../../assets/images/출발마크.png" alt="출발지" class="w-5 h-5 text-gray-500" width="20px" />
-                    {{ departure || '출발지 선택' }}
+                    <span v-if="departure && departureAdr">
+                        {{ departure }} ({{ departureAdr }})
+                    </span>
+                    <span v-else-if="departure">
+                        {{ departure }}
+                    </span>
+                    <span v-else>
+                        출발지 선택
+                    </span>
                 </button>
-                <span>➡</span>
-                <button @click="openPlaceSearch('destination')"
-                    class="flex items-center gap-1 bg-white px-3 py-2 rounded shadow">
-                    <img src="../../assets/images/도착마크.png" alt="도착지" class="w-5 h-5 text-red-500" width="20px" />
-                    {{ destination || '도착지 선택' }}
-                </button>
-                <button @click="showDateTimeModal = true"
-                    class="ml-auto flex items-center gap-1 bg-white px-3 py-2 rounded shadow">
+
+                <button @click="showDateTimeModal = true">
                     <img src="../../assets/images/calendar.png" alt="날짜 선택" class="w-5 h-5 text-gray-500"
                         width="20px" />
                     {{ formattedSelectedDate || '날짜 선택' }}
@@ -36,46 +38,94 @@
             </div>
 
             <!-- 택시 공유 리스트 -->
-            <div v-for="(ride, index) in rideList" :key="index" class="bg-white p-4 rounded-lg shadow mb-3">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-gray-600">{{ formatDate(ride.pickupTime) }} 출발</span>
-                    <span :class="ride.status === 'Y' ? 'text-blue-500' : 'text-red-500'">
-                        {{ ride.status === 'Y' ? '모집중' : '모집완료' }}
-                    </span>
-                </div>
-                <div class="text-sm text-gray-700">
-                    <p>📍 출발지: {{ ride.pickupLocation }}</p>
-                    <p>📍 도착지: {{ ride.destination }}</p>
-                </div>
-                <div class="flex items-center mt-2">
-                    <img src="" class="w-8 h-8 rounded-full" />
-                    <span class="ml-2 text-gray-700">ID: {{ ride.memberId }}</span>
-                    <span class="ml-auto text-gray-500 text-sm">탑승자: /{{ ride.passengersNum }}</span>
+            <div v-if="rideList.length > 0">
+                <div v-for="(ride, index) in rideList" :key="index"
+                    :class="['ride-card', ride.status !== 'Y' ? 'disabled' : '']"
+                    @click="ride.status === 'Y' ? showJoinModal(ride.taxiShareId) : null" class="ride-card">
+                    <div class="ride-header">
+                        <span class="time">🕒 {{ formatDate(ride.pickupTime) }}&nbsp;{{ ride.pickupTimeOnly }} 출발</span>
+                        <span :class="['status', ride.status === 'Y' ? 'open' : 'closed']">
+                            {{ ride.status === 'Y' ? '모집중' : '모집완료' }}
+                        </span>
+                    </div>
+                    <div class="ride-info">
+                        <p>📍 출발지: {{ ride.pickupLocation }}</p>
+                        <p>📍 도착지: {{ ride.destination }}</p>
+                    </div>
+                    <div class="host-info">
+                        <img v-if="ride.memberImageUrl" :src="ride.memberImageUrl" />
+                        <img v-else src="https://ifh.cc/g/qsAZyn.png" />
+                        <span v-if="ride.memberId === memberId" class="host-name"> 나</span>
+                        <span v-else class="host-name"> {{ ride.memberNickname }}</span>
+                        <span class="passenger-count">
+                            승차인원: {{ ride.currentPassengerNum }} / {{ ride.passengersNum }}
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
+            <!-- rideList가 비어 있을 경우 슬픈 아이콘과 함께 모달 표시 -->
+            <div v-else class="no-rides-modal">
+                <font-awesome-icon :icon="['fas', 'face-frown']" class="sad-icon" />
+                <p>선택하신 날짜와 출발지 근처에 택시 공유가 없습니다.</p>
+                <p>직접 호스트가 되어 동승자를 모집해보세요!</p>
+                <!-- 리스트 이동 버튼 -->
+                <div class="mg-t-60">
+                    <button class="move-button" @click="goToRegist">택시 공유 호스트되기</button>
+                </div>
+            </div>
 
-        <!-- 날짜/시간 선택 모달 -->
-        <div v-if="showDateTimeModal" class="modal-overlay" @click="showDateTimeModal = false">
-            <div class="modal-content" @click.stop>
-                <h3>날짜 선택</h3>
-                <input type="date" v-model="tempSelectedDate">
-                <button @click="confirmDate">확인</button>
+            <!-- 날짜/시간 선택 모달 -->
+            <div v-if="showDateTimeModal" class="modal-overlay" @click="showDateTimeModal = false">
+                <div class="modal-content" @click.stop>
+                    <h3>날짜 선택</h3>
+                    <input type="date" v-model="tempSelectedDate">
+                    <button @click="confirmDate">확인</button>
+                </div>
             </div>
+            <!-- 출발지 검색 모달 -->
+            <PlaceSearchModal v-if="showSearchModal" @close="showSearchModal = false" @select="setDeparture"
+                @current="setCurrentDeparture" />
+            <!-- 디테일/신청 모달 -->
+            <TaxiShareJoinModal v-if="isModalOpen" :taxiShareId="selectedTaxiShareId"
+                :selectedMemberId="selectedTaxiShareMemberId" @close="handleModalClose" />
+
+
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { ref, onMounted, computed, watchEffect } from "vue";
 import axios from "axios";
-
+import PlaceSearchModal from "./PlaceSearchModal.vue";
+import TaxiShareJoinModal from "./TaxiShareJoinModal.vue";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faFaceFrown } from '@fortawesome/free-solid-svg-icons';
+const router = useRouter();
+library.add(faFaceFrown);
+//멤버 아이디 local storage에서 가져오기
+const memberId = ref<number | null>(null); // null 또는 number를 허용
 // 출발지, 도착지, 날짜 상태
 const departure = ref("");
-const destination = ref("");
-const selectedDate = ref(new Date().toISOString().split("T")[0]); // 현재 날짜 기본값 설정
+const showSearchModal = ref(false);
+const departureLat = ref("");
+const departureLng = ref("");
+const departureAdr = ref("");
+
+const isModalOpen = ref(false);
+const selectedTaxiShareId = ref<number | null>(null);
+
+const selectedDate = ref(new Date().toISOString().split("T")[0]); // 현재 날짜 기본값 설w정
 const showDateTimeModal = ref(false);
 const tempSelectedDate = ref(selectedDate.value);
+
+// localStorage에서 memberId를 가져오는 함수
+const getMemberIdFromLocalStorage = () => {
+    const storedMemberId = localStorage.getItem('memberId');
+    return storedMemberId ? parseInt(storedMemberId) : null;
+};
 
 // 날짜 표시 포맷 (YYYY-MM-DD → YYYY년 MM월 DD일)
 const formattedSelectedDate = computed(() => {
@@ -95,7 +145,20 @@ const fetchTaxiList = async () => {
     errorMessage.value = "";
 
     try {
-        const response = await axios.get(`http://localhost:8080/api/taxi/list/${selectedDate.value}`);
+        const url = `https://api.hifive5.shop/api/taxi/list?pickupTime=${selectedDate.value}`;
+
+        const requestBody = departureLat.value && departureLng.value ? {
+            lat: departureLat.value,
+            lng: departureLng.value
+        } : null;
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        const response = await axios.post(url, requestBody, config);
+
         console.log(response.data);
         rideList.value = response.data;
     } catch (error) {
@@ -105,11 +168,21 @@ const fetchTaxiList = async () => {
         loading.value = false;
     }
 };
-
+//신청모달 오픈 함수
+const showJoinModal = (id: number) => {
+    isModalOpen.value = true;
+    selectedTaxiShareId.value = id;
+}
 // 날짜 변경 감지하여 API 요청 실행
 watchEffect(() => {
     fetchTaxiList();
 });
+
+// 신청 모달 닫혔을때 리스트 다시불러오기
+const handleModalClose = () => {
+    isModalOpen.value = false;
+    fetchTaxiList(); // 리스트 다시 불러오기
+};
 
 // 날짜 선택 후 업데이트
 const confirmDate = () => {
@@ -125,30 +198,184 @@ const formatDate = (dateStr: string) => {
     return `${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
-// 장소 검색 모달 열기
-const openPlaceSearch = (type: "departure" | "destination") => {
-    console.log(`${type} 검색 모달 열기`);
+// 출발지 선택 시 업데이트
+const setDeparture = (place: any) => {
+    departure.value = place.place_name;
+    departureLat.value = place.y;
+    departureLng.value = place.x;
+    departureAdr.value = place.road_address_name;
+    console.log(place);
 };
+
+const setCurrentDeparture = (currentInfo: any) => {
+    console.log(currentInfo);
+    departure.value = currentInfo.userAddress.value;
+    departureLat.value = currentInfo.coord.getLat();
+    departureLng.value = currentInfo.coord.getLng();
+}
+
+const goToRegist = () => {
+    router.push('/taxi-share');
+}
 
 // 컴포넌트가 마운트될 때 데이터 불러오기
 onMounted(() => {
+    memberId.value = getMemberIdFromLocalStorage();
     fetchTaxiList();
 });
 </script>
 
 <style scoped>
 .taxi-share-list {
+    margin-top: 140px;
     padding: 20px;
-    margin-top: 120px;
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 80px;
 }
 
-button {
-    transition: all 0.2s;
+/* 📌 모바일 화면에서 크기 자동 조정 */
+@media (max-width: 768px) {
+    .taxi-share-list {
+        width: 90%;
+        padding: 15px;
+        margin-top: 140px;
+    }
 }
 
-button:hover {
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.search-container button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-container button:hover {
     background-color: #f3f3f3;
 }
+
+/* 택시 공유 리스트 스타일 */
+.ride-card {
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.ride-card:hover {
+    transform: translateY(-2px);
+}
+
+.ride-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ride-header .time {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 모집 완료된 카드 스타일 */
+.ride-card.disabled {
+    background-color: #f1f1f1;
+    /* 회색 배경 */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.ride-card.disabled:hover {
+    transform: none;
+}
+
+.status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.status.open {
+    color: white;
+    background-color: #007bff;
+}
+
+.status.closed {
+    color: white;
+    background-color: #dc3545;
+}
+
+.ride-info {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.ride-info p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.host-info {
+    display: flex;
+    align-items: center;
+    /* 이미지와 텍스트를 세로로 가운데 정렬 */
+    margin-top: 8px;
+}
+
+.host-info img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin-right: 8px;
+    /* 이미지와 호스트 이름 사이에 여백 추가 */
+}
+
+.host-info .host-name {
+    font-size: 14px;
+    color: #555;
+}
+
+.passenger-count {
+    font-size: 12px;
+    color: #888;
+    margin-left: auto;
+    /* 탑승자 정보는 오른쪽 끝으로 배치 */
+}
+
 
 .modal-overlay {
     position: fixed;
@@ -190,5 +417,63 @@ button:hover {
 
 .modal-content button:hover {
     background-color: #0056b3;
+}
+
+.no-rides-modal {
+    text-align: center;
+    padding: 40px;
+    color: #555;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    /* 그림자 추가 */
+    max-width: 400px;
+    /* 최대 너비 설정 */
+    margin: 0 auto;
+}
+
+.sad-icon {
+    font-size: 70px;
+    /* 아이콘 크기 크게 */
+    color: #ff6347;
+    /* 슬픈 아이콘 색상 */
+    margin-bottom: 20px;
+    /* 아이콘과 텍스트 간의 간격 */
+}
+
+.no-rides-modal p {
+    font-size: 16px;
+    /* 텍스트 크기 조정 */
+    line-height: 1.5;
+    /* 텍스트 간의 줄 간격 */
+    margin-bottom: 20px;
+    /* 텍스트 간의 간격 */
+    color: #333;
+    /* 텍스트 색상 */
+}
+
+.mg-t-60 {
+    margin-top: 60px;
+}
+
+.move-button {
+    padding: 14px 28px;
+    /* 버튼 패딩 조정 */
+    background-color: #007bff;
+    /* 파란색 배경 */
+    color: white;
+    /* 텍스트 색상 */
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* 버튼 배경 색상 전환 */
+}
+
+.move-button:hover {
+    background-color: #0056b3;
+    /* 버튼 hover 시 색상 변경 */
 }
 </style>

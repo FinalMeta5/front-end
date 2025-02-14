@@ -33,6 +33,8 @@ import LeftScreenComponent from "./components/layout/LeftScreenComponent.vue";
 import RightScreenComponent from "./components/layout/RightScreenComponent.vue";
 import TopNavComponent from "./components/commons/TopNavComponent.vue"
 import BottomNavComponent from "./components/commons/BottomNavComponent.vue"
+import { mapActions } from 'vuex';
+
 export default {
   name: "App",
   components: {
@@ -42,6 +44,14 @@ export default {
     TopNavComponent,
     BottomNavComponent,
   },
+  methods: {
+    ...mapActions('websocket', ['connectWebSocket']),
+  },
+  created() {
+    // 웹소켓 연결
+    //this.connectWebSocket();
+  },
+
 };
 </script>
 
