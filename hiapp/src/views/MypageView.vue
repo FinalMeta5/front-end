@@ -46,6 +46,7 @@
           <button class="menu-btn" @click="goToCreditHistory">
             {{ $t('mypage.selectCreditList') }}
           </button>
+          <CarRegiButton/>
           <CarSearchButton />
           <MyCarShareSearchButton />
         </section>
@@ -60,6 +61,7 @@ import { authAxios, useAuthState } from "../store/auth/auth.js";
 import CarSearchButton from "../components/car-share/CarSearchButton.vue";
 import MyCarShareSearchButton from "../components/car-share/MyCarShareSearchButton.vue";
 import PastCarListComponent from '../components/car-share/participant/PastCarListComponent.vue';
+import CarRegiButton from "../components/car-share/CarRegiButton.vue"
 
 const { nickname } = useAuthState();
 const userData = ref({

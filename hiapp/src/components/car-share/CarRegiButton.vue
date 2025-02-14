@@ -120,13 +120,15 @@ export default {
 
 <style scoped>
 .car-regi-btn {
-    background-color: #4192ff;
-    color: white;
-    font-weight: bold;
-    font-family: fantasy;
-    border-radius: 10px;
+    width: 100%;
+    display: block;
+    text-align: left;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    margin-bottom: 8px;
     cursor: pointer;
-    width: 22rem;
-    height: 50px;
+    border-radius: 8px;
+    font-size: 14px;
 }
 </style>

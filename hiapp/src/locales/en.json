@@ -28,7 +28,14 @@
     },
     "context" :{
         "todayReservations" : "Today's Reservations",
-        "shareTaxi" : "Let's Share a Taxi!",
-        "shareCar" :"Let's Share a Ride!"
+        "shareTaxi" : "Let's Share a Taxi! 🚕",
+        "shareCar" :"Let's Share a Ride! 🚗",
+        "getTogether" : "✨ Travel together with like-minded people! ✨",
+        "whereAreUGoing" : "✨ Where are you departing from? ✨",
+        "noTaxi" : "There are no taxi shares near your selected date and departure location.",
+        "withUs" : "Become a host and find fellow passengers!",
+        "loading" : "🚕 LOADING... 🚕",
+        "SelectDepartureLocation" : "Departure"
+
     }
 }
