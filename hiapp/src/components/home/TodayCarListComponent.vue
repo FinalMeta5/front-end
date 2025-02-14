@@ -3,7 +3,6 @@
     <!-- 로딩 화면 -->
     <div v-if="isLoading" class="loading">
       <div class="spinner"></div>
-      <div class="loading-message">오늘의 예약 내역을 불러오는 중 .. </div>
     </div>
 
     <!-- 예약 내역이 없는 경우 -->
@@ -41,7 +40,6 @@
     <transition name="modal">
     <div v-if="selectedCar" class="modal-overlay">
     <div class="modal-content">
-      <!-- 오른쪽 상단의 X 아이콘 -->
       <span class="modal-close" @click="closeModal">&times;</span>
       <div class="modal-buttons">
         <div class="ride" @click="updateStateOK(selectedCar.carShareJoinId)">

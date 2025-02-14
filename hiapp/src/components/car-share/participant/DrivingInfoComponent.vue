@@ -195,7 +195,8 @@ export default {
 
       const script = document.createElement("script");
       script.id = "kakao-map-script";
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      // script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=09502adbac4fa761abc3729739a5f256`;
       script.onload = () => kakao.maps.load(this.initMap);
       document.head.appendChild(script);
     },
@@ -289,7 +290,7 @@ export default {
 }
 
 #driver-nickname {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #5d5d5d;
@@ -316,7 +317,7 @@ export default {
   justify-content: center;
   align-items: center;
   color: #eaeaea;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 20px;
 }
 .modal-overlay {
@@ -360,7 +361,7 @@ p, h2 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 

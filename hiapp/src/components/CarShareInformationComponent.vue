@@ -185,17 +185,45 @@ export default {
   top: 44px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 400px) {
 
   #driver-nickname {
-    font-size: 22px;
-    top: -100px;
+    font-size: 20px;
+    top: -95px;
+    margin-left: -10px;
   }
 
   #date {
-    top: -93px;
-    right: 59px;
+    top: -87px;
+    right: 50px;
     font-size: 12px;
-}
+  }
+
+  #start {
+    margin-top: 9px;
+    font-size: 12px;
+  }
+
+  #end {
+    margin-top: -7px;
+    font-size: 12px;
+  }
+
+  #pl1 {
+    font-size: 16px;
+  }
+
+  #pl2 {
+    font-size: 12px;
+  }
+
+  #ds1 {
+    font-size: 16px;
+    /* margin-top: 10px; */
+  }
+
+  #ds2 {
+    font-size: 12px;
+  }
 }
 </style>

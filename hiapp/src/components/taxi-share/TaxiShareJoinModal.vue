@@ -71,7 +71,7 @@ const fetchTaxiDetail = async () => {
     errorMessage.value = "";
 
     try {
-        const response = await axios.get(`https://api.hifive5.shop/api/taxi/detail/${props.taxiShareId}`);
+        const response = await axios.get(`http://localhost:8080/api/taxi/detail/${props.taxiShareId}`);
         detail.value = response.data;
         console.log(response.data);
     } catch (error) {

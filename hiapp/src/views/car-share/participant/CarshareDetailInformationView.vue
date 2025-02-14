@@ -168,6 +168,11 @@ export default {
 @import "../../../style.css";
 @import "../../../assets/style/phone-main-view-common.css";
 
+.titleH1 {
+  font-size: 18px;
+  margin-top: 170px;
+}
+
 .button-container {
   display: flex;
   justify-content: space-between;

@@ -7,7 +7,7 @@
     <div v-else-if="todayParticipationList && todayParticipationList.length === 0">
       <div class="message">오늘은 예약 내역이 없습니다.</div>
       <img src="http://ifh.cc/g/KAROcS.png" alt="이미지" class="image" />
-      <div class="subtitle">여러 사람과 함께 차량을 이용해 보세요</div>
+      <div class="subtitle">여러 사람과 함께 택시를 이용해 보세요</div>
     </div>
 
     <div v-else>
@@ -15,13 +15,11 @@
       <div class="detail-info-wrapper">
         <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
           <DetailInfoComponent
-            :pickupLoc="item.pickupLoc"
+            :pickupLocation="item.pickupLocation"
             :destination="item.destination"
             :pickupDate="formatTime(item.pickupDate)"
-            :expectedNum="item.expectedNum"
-            :state="item.state"
-            :carShareJoinId="item.carShareJoinId"
-            @click="openModal(item)" 
+            :count="item.count"
+            :taxiShareId="item.taxiShareId"
           />
         
         </div>
@@ -82,7 +80,7 @@ export default {
   },
   methods: {
     openModal(item) {
-      if (this.selectedCar && this.selectedCar.carShareJoinId === item.carShareJoinId) {
+      if (this.selectedCar && this.selectedCar.taxiShareId === item.taxiShareId) {
         this.selectedCar = null;
       } else {
         this.selectedCar = item;
@@ -98,7 +96,7 @@ export default {
       this.isLoading = true;  // 데이터 로딩 시작
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/taxi/join/count/byMemberIdToday?memberId={this.userId}`
+          `http://localhost:8080/api/taxi/join/count/byMemberIdToday/${this.userId}`
         );
         this.todayParticipationList = Array.isArray(response.data)
           ? response.data

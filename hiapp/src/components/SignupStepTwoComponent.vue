@@ -108,7 +108,7 @@
           type="text"
           id="nickname"
           v-model="nickname"
-          placeholder="공백 없이 닉네임을 입력해주세요."
+          placeholder="닉네임을 입력해주세요."
           class="form-input"
           required
         />
@@ -195,10 +195,11 @@
         </div>
       </div>
     </div>
+    <button class="next-button" @click="handleNextClick">다음</button>
   </div>
 
   <!-- 하단 고정 '다음' 버튼 -->
-  <button class="next-button" @click="handleNextClick">다음</button>
+  
 </template>
 
 <script setup>
@@ -398,6 +399,7 @@ onUnmounted(() => {
 .info-input-container {
   /* width: 100%; */
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 /* 공통 폼 그룹 간격 */
@@ -410,7 +412,7 @@ onUnmounted(() => {
   text-align: left;
   display: block;
   margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 13px;
   color: #000;
   font-weight: 500;
 }
@@ -418,9 +420,9 @@ onUnmounted(() => {
 /* 기본 인풋 스타일 */
 .form-input {
   width: 100%;
-  height: 48px;
+  height: 40px;
   padding: 0 12px;
-  font-size: 14px;
+  font-size: 13px;
   color: #333;
   box-sizing: border-box;
   border: 1px solid #ddd;
@@ -447,8 +449,8 @@ onUnmounted(() => {
 .check-button {
   margin-left: 8px;
   min-width: 80px;
-  height: 48px;
-  font-size: 14px;
+  height: 40px;
+  font-size: 13px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fff;
@@ -501,9 +503,9 @@ onUnmounted(() => {
   text-align: center;
   border: 1px solid #ddd;
   border-radius: 4px;
-  padding: 12px 0;
+  padding: 10px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
   margin-bottom: 15px;
 }
@@ -521,11 +523,17 @@ onUnmounted(() => {
   background-color: #878787;
   color: #fff;
   border: none;
-  height: 50px;
-  font-size: 16px;
+  height: 35px;
+  font-size: 14px;
   cursor: pointer;
 }
 .next-button:hover {
   background-color: #333;
+}
+
+@media (max-width: 400px) {
+  .info-input-container {
+    width: 80vw;
+  }
 }
 </style>
