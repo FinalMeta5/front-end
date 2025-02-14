@@ -2,7 +2,7 @@
     <div class="taxi-share-list">
         <div class="max-w-md mx-auto p-4">
             <!-- 헤더 -->
-            <h1>택시 같이 타요!</h1>
+            <h1>{{ $t('context.shareTaxi') }}</h1>
             <p>어디서 출발하시나요?</p>
 
             <!-- 출발지, 도착지, 날짜 선택 -->
