@@ -5,5 +5,17 @@
     "nav": {
         "top": "Top Navigation",
         "bottom": "Bottom Navigation"
+    },
+    "mypage": {
+        "title": "My Page",
+        "useCount": " uses",
+        "carShareCount": "Number of shared cars",
+        "carUsageCount": "Number of car uses",
+        "taxiUsageCount": "Number of taxi uses",
+        "updateMemberInfo": "Edit member information",
+        "updatePassword": "Change password",
+        "selectCreditList": "View credit history",
+        "selectCarList": "View my car",
+        "selectMyCarService": "View my car sharing service"
     }
 }

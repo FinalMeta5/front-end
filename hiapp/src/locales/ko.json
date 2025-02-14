@@ -5,5 +5,17 @@
     "nav": {
         "top": "상단 내비게이션",
         "bottom": "하단 내비게이션"
+    },
+    "mypage": {
+        "title": "마이페이지",
+        "useCount": "건",
+        "carShareCount": "차량 공유 수",
+        "carUsageCount": "차량 이용 수",
+        "taxiUsageCount": "택시 이용 수",
+        "updateMemberInfo": "회원정보 수정",
+        "updatePassword": "비밀번호 수정",
+        "selectCreditList": "크레딧 내역 조회",
+        "selectCarList": "차량 조회",
+        "selectMyCarService": "내 차량 공유 서비스 조회"
     }
 }
