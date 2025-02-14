@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <button @click="goToCarShareRegi" class="car-service-regi-btn">차량 서비스 등록하기</button>
+        <button @click="goToCarShareRegi" class="service-regi-btn">서비스 등록하기</button>
 
         <!-- ✅ 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" 
@@ -10,7 +9,6 @@
 
         <!-- ✅ 에러 모달 (`v-model` 적용) -->
         <ErrorModal v-model:show="showErrorModal" :message="errorMessage" />
-    </div>
 </template>
 
 <script>
@@ -67,7 +65,7 @@ export default {
             console.log("🚗 차량 인증 완료 → 서비스 등록 페이지로 이동");
             router.push("/car-share/service/registration/first");
         } else {
-            errorMessage.value = "🚨 차량 인증이 필요합니다. 먼저 차량 인증을 완료해주세요.";
+            errorMessage.value = "차량 인증이 필요합니다. 먼저 차량 인증을 완료해주세요.";
             await nextTick();
             showErrorModal.value = true;
             console.log("🚨 showErrorModal 값 (차량 미인증):", showErrorModal.value);
@@ -119,14 +117,20 @@ export default {
 </script>
 
 <style scoped>
-.car-service-regi-btn {
-    background-color: #4192ff;
-    color: white;
-    font-weight: bold;
-    font-family: fantasy;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 22rem;
-    height: 50px;
+@import "../../style.css";
+button {
+    
+}
+.service-regi-btn {
+    display: inline-block;
+  width: 95%;
+  height: 30px;
+  color: white;
+  background-color: #878787;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-size: 13px;
 }
 </style>

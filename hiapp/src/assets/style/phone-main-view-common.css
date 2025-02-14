@@ -27,6 +27,15 @@ main {
     margin-top: 130px;
 }
 
+.titleH3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    position: relative;
+    /* ✅ 부모 요소를 기준으로 이동 */
+    margin-top: 130px;
+    margin-bottom: 6px;
+}
+
 .view-context-contain {
     display: flex;
     flex-direction: column;

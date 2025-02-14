@@ -32,7 +32,7 @@
 
     <!-- 하단 버튼들 (로딩이 끝난 후) -->
     <div v-if="!isLoading" class="button-container">
-      <button class="today-button" @click="goToCarShareRegistration1">서비스 등록하기</button>
+      <CarShareServiceRegiButton/>
       <button class="today-button" @click="goToCarShareRegistration2">서비스 이용하기</button>
     </div>
 
@@ -190,13 +190,6 @@ export default {
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       return `${hours}:${minutes}`;
-    },
-    goToCarShareRegistration1() {
-      if (this.$router) {
-        this.$router.push('/car-share/service/registration/first');
-      } else {
-        console.error('Router is not defined');
-      }
     },
     goToCarShareRegistration2() {
       if (this.$router) {
