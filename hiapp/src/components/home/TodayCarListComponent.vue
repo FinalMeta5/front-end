@@ -14,7 +14,7 @@
 
     <!-- 예약 내역이 있는 경우 -->
     <div v-else>
-      <div class="message">오늘의 예약 내역</div>
+      <div class="message">{{ $t('context.todayReservations') }}</div>
       <div class="detail-info-wrapper">
         <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
           <DetailInfoComponent
@@ -33,7 +33,7 @@
     <!-- 하단 버튼들 (로딩이 끝난 후) -->
     <div v-if="!isLoading" class="button-container">
       <CarShareServiceRegiButton/>
-      <button class="today-button" @click="goToCarShareRegistration2">서비스 이용하기</button>
+      <button class="today-button" @click="goToCarShareRegistration2">{{ $t('button.UseService') }}</button>
     </div>
 
     <!-- 모달 창 (선택된 예약 항목의 탑승 신청/취소 버튼들) -->

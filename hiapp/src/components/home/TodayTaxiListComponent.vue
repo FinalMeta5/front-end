@@ -11,7 +11,7 @@
     </div>
 
     <div v-else>
-      <div class="message">오늘의 예약 내역</div>
+      <div class="message">{{ $t('context.todayReservations') }}</div>
       <div class="detail-info-wrapper">
         <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
           <DetailInfoComponent
@@ -27,8 +27,8 @@
     </div>
 
     <div v-if="!isLoading" class="button-container">
-      <button class="today-button" @click="goToTaxiShareRegistration1">서비스 등록하기</button>
-      <button class="today-button" @click="goToTaxiShareRegistration2">서비스 이용하기</button>
+      <button class="today-button" @click="goToTaxiShareRegistration1">{{ $t('button.RegisterService') }}</button>
+      <button class="today-button" @click="goToTaxiShareRegistration2">{{ $t('button.UseService') }}</button>
     </div>
 
     <SuccessModal 

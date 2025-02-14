@@ -1,6 +1,6 @@
 <template>
     <div class="home phone-main-screen">
-      <h2 class="title">차량 같이 타요</h2>
+      <h1 class="title">{{ $t('context.shareCar') }}</h1>
       <span class="text">같은 목적을 가진 사람과 같이 이동해봐요</span>
       <div class="button-container">
         <button class="image-button" @click="sendRequest('출퇴근')">
@@ -132,8 +132,9 @@
   @import "../../../assets/style/phone-main-view-common.css";
   
   .title {
-    margin-top: 170px;
+    margin-top: 175px;
     font-weight: bold;
+    font-size: 25px;
   }
 
   .text {

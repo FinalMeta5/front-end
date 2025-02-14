@@ -1,5 +1,8 @@
 {
-    "home": "홈",
+    "home": {
+        "taxiRegiList" : "택시 예약 내역",
+        "carRegiList" : "차량 예약 내역"
+    },
     "about": "소개",
     "welcome": "우리 웹사이트에 오신 것을 환영합니다!",
     "nav": {
@@ -17,5 +20,14 @@
         "selectCreditList": "크레딧 내역 조회",
         "selectCarList": "차량 조회",
         "selectMyCarService": "내 차량 공유 서비스 조회"
+    },
+    "button" : {
+        "RegisterService" : "서비스 등록하기",
+        "UseService" : "서비스 이용하기"
+    },
+    "context" :{
+        "todayReservations" : "오늘 예약 내역",
+        "shareTaxi" : "택시 같이 타요!",
+        "shareCar" :"차 같이 타요!"
     }
 }

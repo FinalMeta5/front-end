@@ -1,5 +1,5 @@
 <template>
-        <button @click="goToCarShareRegi" class="service-regi-btn">서비스 등록하기</button>
+        <button @click="goToCarShareRegi" class="service-regi-btn">{{ $t('button.RegisterService') }}</button>
 
         <!-- ✅ 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" 

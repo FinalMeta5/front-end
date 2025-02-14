@@ -2,8 +2,8 @@
   <div class="today-reservation-container">
     <div class="box">
       <div class="tabs">
-        <button @click="changeContent('left')" :class="{ active: activeTab === 'left' }">택시 예약 내역</button>
-        <button @click="changeContent('right')" :class="{ active: activeTab === 'right' }">차량 예약 내역</button>
+        <button @click="changeContent('left')" :class="{ active: activeTab === 'left' }">{{ $t('home.taxiRegiList') }}</button>
+        <button @click="changeContent('right')" :class="{ active: activeTab === 'right' }">{{ $t('home.carRegiList') }}</button>
       </div>
       <div class="content">
         <TodayTaxiListComponent v-if="activeTab === 'left'" />
