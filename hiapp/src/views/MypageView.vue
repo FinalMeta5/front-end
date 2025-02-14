@@ -23,11 +23,11 @@
         
         <!-- 차량 공유/이용/택시 이용 정보 영역 -->
         <section class="usage-section">
-          <div class="usage-card" @click="goToSharedCars">
+          <div class="usage-card" @click="goToSharedCars = true">
             <p class="count">{{ userData.carRegistrationCount }}{{ $t('mypage.useCount') }}</p>
             <p class="label">{{ $t('mypage.carShareCount') }}</p>
           </div>
-          <div class="usage-card" @click="goToUsedCars">
+          <div class="usage-card" @click="showPastCarModal = true">
             <p class="count">{{ userData.carJoinCount }}{{ $t('mypage.useCount') }}</p>
             <p class="label">{{ $t('mypage.carUsageCount') }}</p>
           </div>
@@ -36,6 +36,22 @@
             <p class="label">{{ $t('mypage.taxiUsageCount') }}</p>
           </div>
         </section>
+
+        <!-- 내 차량 공유 서비스 내역 -->
+        <div v-if="goToSharedCars" class="modal">
+          <div class="modal-content">
+            <button class="close-btn" @click="goToSharedCars = false">✖</button>
+            <MyCarShareSearchButton />
+          </div>
+        </div>
+        
+        <!-- 과거 차량 탑승 내역 -->
+        <div v-if="showPastCarModal" class="modal">
+          <div class="modal-content">
+            <button class="close-btn" @click="showPastCarModal = false">✖</button>
+            <PastCarListComponent />
+          </div>
+        </div>
 
         <!-- 메뉴 버튼 영역 -->
         <section class="menu-section">
@@ -46,9 +62,9 @@
           <button class="menu-btn" @click="goToCreditHistory">
             {{ $t('mypage.selectCreditList') }}
           </button>
+          <hr>
           <CarRegiButton/>
           <CarSearchButton />
-          <MyCarShareSearchButton />
         </section>
       </div>
   </div>
@@ -72,6 +88,8 @@ const userData = ref({
   taxiJoinCount: 0,
 });
 
+const showPastCarModal = ref(false); 
+const goToSharedCars = ref(false);
 const fileInput = ref(null);
 const DEFAULT_PROFILE_IMAGE = "https://ifh.cc/g/qsAZyn.png";
 const onProfileClick = () => {
@@ -126,17 +144,79 @@ function goToCreditHistory() {
 // function goToSharedCars() {
 //   router.push('/shared-cars')
 // }
-// function goToUsedCars() {
-//   router.push('/used-cars')
-// }
 // function goToTaxi() {
 //   router.push('/taxi-usage')
 // }
+
+
+
+
+
 </script>
 
 <style scoped>
 @import "../style.css";
 @import "../assets/style/phone-main-view-common.css";
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  animation: slideUp 0.3s ease-in-out;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: color 0.2s ease-in-out;
+}
+.close-btn:hover {
+  color: #e74c3c;
+}
+
+/* ✅ 애니메이션 효과 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 .phone-main-screen {
   padding: 20px;
 }
