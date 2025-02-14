@@ -16,7 +16,7 @@
                         {{ departure }}
                     </span>
                     <span v-else>
-                        {{ $t('context.SelectDepartureLocation') }}
+                        {{ $t('context.selectDepartureLocation') }}
                     </span>
                 </button>
 
@@ -70,7 +70,7 @@
                 <p>{{ $t('context.withUs') }}</p>
                 <!-- 리스트 이동 버튼 -->
                 <div class="mg-t-60">
-                    <button class="move-button" @click="goToRegist">택시 공유 호스트되기</button>
+                    <button class="move-button" @click="goToRegist">{{ $t('context.becomeATaxiShareHost') }}</button>
                 </div>
             </div>
 

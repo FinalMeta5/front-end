@@ -45,7 +45,7 @@
         <div class="around-car">
           <img class="moving-image" src="https://ifh.cc/g/ch51wM.png" alt="움직이는 이미지">
           <router-link to="/carshare/map">
-            <button id="map-btn">내 주변 공유 차량 확인하기</button>
+            <button id="map-btn">{{ $t('context.checkSharedCarsAroundMe') }}</button>
           </router-link>
         </div>
       </div>

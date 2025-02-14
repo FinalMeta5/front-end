@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="goToCarRegi" class="car-regi-btn">차량 등록하기</button>
+        <button @click="goToCarRegi" class="car-regi-btn">{{$t('mypage.registerCar')}}</button>
 
         <!-- ✅ 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" 

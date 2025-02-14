@@ -2,7 +2,8 @@
     "home": {
         "taxiRegiList" : "택시 예약 내역",
         "carRegiList" : "차량 예약 내역",
-        "mainTitle": "로그인이 필요합니다"
+        "mainTitle": "로그인이 필요합니다",
+        "welcom" : "안녕하세요."
     },
     "about": "소개",
     "welcome": "우리 웹사이트에 오신 것을 환영합니다!",
@@ -20,7 +21,8 @@
         "updatePassword": "비밀번호 수정",
         "selectCreditList": "크레딧 내역 조회",
         "selectCarList": "차량 조회",
-        "selectMyCarService": "내 차량 공유 서비스 조회"
+        "selectMyCarService": "내 차량 공유 서비스 조회",
+        "registerCar" :"차량 등록"
     },
     "button" : {
         "RegisterService" : "서비스 등록하기",
@@ -35,7 +37,12 @@
         "noTaxi" : "선택하신 날짜와 출발지 근처에 택시 공유가 없습니다.",
         "withUs" : "직접 호스트가되어 동승자를 모집해보세요!",
         "loading" : "🚕 로딩중... 🚕",
-        "SelectDepartureLocation" : "출발지 선택"
+        "selectDepartureLocation" : "출발지 선택",
+        "becomeATaxiShareHost" : "택시 공유 호스트되기",
+        "checkSharedCarsAroundMe" : "내 주변 차량 공유 확인",
+        "noReservationsToday" : "❌ 오늘은 예약 내역이 없습니다.",
+        "shareATaxiService" : "여러 사람들과 함께 택시를 이용해보세요! 🚕",
+        "shareACarService" : "여러 사람들과 함께 차량을 이용해보세요! 🚗"
 
     }
 }
