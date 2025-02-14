@@ -2,8 +2,8 @@
   <div class="today-reservation-container">
     <div class="box">
       <div class="login-status">
-        <div v-if="!memberId">로그인이 필요합니다.</div>
-        <div v-else><strong id="nickname">{{ memberId }}</strong> 님, 안녕하세요</div>
+        <div v-if="!memberId"><strong>{{$t('home.mainTitle')}}</strong></div>
+        <div v-else><strong id="nickname">{{nickname }}님, 안녕하세요</strong></div>
       </div>
 
       <div class="tabs">
@@ -32,6 +32,7 @@ export default {
     return {
       activeTab: 'left', 
       memberId: localStorage.getItem('memberId'), 
+      nickname: localStorage.getItem('nickname'), 
     };
   },
   methods: {

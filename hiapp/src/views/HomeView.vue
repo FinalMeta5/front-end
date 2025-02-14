@@ -3,7 +3,7 @@
         <div class="view-context-contain">
             <TodayReservationListComponent/><br>
             <!-- <WeekReservationListComponent/> -->
-            <BannerComponent/>
+            <BannerComponent/><br><br>
         </div>
     </div>
 </template>

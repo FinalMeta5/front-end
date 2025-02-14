@@ -30,4 +30,4 @@ app.use(i18n);
 app.use(router);
 app.use(store);
 app.mount('#app');
-//router.push('/loading1');
+// router.push('/loading1');

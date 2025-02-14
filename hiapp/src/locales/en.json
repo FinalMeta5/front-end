@@ -1,7 +1,8 @@
 {
     "home": {
         "taxiRegiList" : "My Taxi Reservation",
-        "carRegiList" : "My car Reservation"
+        "carRegiList" : "My car Reservation",
+        "mainTitle" : "Login is required"
     },
     "about": "About",
     "welcome": "Welcome to our website!",
