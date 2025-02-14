@@ -179,8 +179,8 @@ button:active {
 /* ✅ 반응형 스타일 */
 @media (max-width: 480px) {
     .car-registration {
-        max-width: 100%;
-        padding: 16px;
+        max-width: 80%;
+        padding: 2rem;
     }
 
     .image-placeholder {

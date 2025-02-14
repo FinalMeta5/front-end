@@ -11,6 +11,14 @@
 
         </div>
 
+        <!-- ✅ 로딩 중일 때 -->
+        <div v-if="isLoading" class="loading-container">
+            <img src="../../assets/images/BURURUNG_BLUE.png" alt="로딩 중" class="loading-icon" />
+            <p>🚗  조회 중...</p>
+        </div>
+        <!-- ✅ 데이터가 없을 때 -->
+        <div v-if="!isLoading && sortedCarList.length == 0" class="no-car-srv">🚨 등록된 차량 공유 서비스가 없습니다.</div>
+
         <!-- ✅ 리스트 데이터가 있을 때 -->
         <div v-if="sortedCarList.length > 0">
             <div v-for="car in sortedCarList" :key="car.carShareRegiId" class="car-item">
@@ -34,9 +42,9 @@
                 
                 
                 <div class="check-btn-container">
-                    <div class="pre-drive" v-if="!isPastService(car.pickupDate) && !car.participantCount == 0 ">모집중</div>
+                    <div class="pre-drive" v-if="!isPastService(car.pickupDate) && car.participantCount > 0 ">모집중</div>
                     <div class="done-drive" v-if="isPastService(car.pickupDate)">운행 완료</div>
-                    <button v-if="!car.participantCount == 0" class="look-parti-btn" @click="fetchParticipants(car.carShareRegiId)">참가자  [ {{ car.participantCount }} / {{ car.passengersNum }} ]</button>
+                    <button v-if="!car.participantCount == 0" class="look-parti-btn" @click="fetchParticipants(car.carShareRegiId)">👥  [ {{ car.participantCount }} / {{ car.passengersNum }} ]</button>
                 </div>
                 <button v-if="!isPastService(car.pickupDate) && car.participantCount == 0" 
                     @click="cancelCarShare(car.carShareRegiId, car.hasParticipants)" class="cancel-btn">🚨 공유 취소</button>
@@ -46,7 +54,7 @@
         <!-- ✅ 참가자 리스트 모달 -->
         <div v-if="showParticipantsModal" class="modal">
             <div class="modal-content">
-                <button @click="showParticipantsModal = false">✖</button>
+                <div class="close-btn" @click="showParticipantsModal = false">✖</div>
                 <h3>🚗 참가자 목록</h3>
                 
                 <!-- 참가자 데이터가 없을 때 -->
@@ -74,9 +82,6 @@
                 </ul>
             </div>
         </div>
-
-        <!-- ✅ 데이터가 없을 때 -->
-        <p v-if="sortedCarList.length === 0">🚨 등록된 차량 공유 서비스가 없습니다.</p>
     </div>
 </template>
 
@@ -92,7 +97,7 @@ export default {
             currentTime : new Date(),
             selectedYear : new Date().getFullYear(),
             selectedMonth : new Date().getMonth() + 1,
-
+            isLoading: true,
             participants : [], // 참가자 데이터 리스트
             showParticipantsModal : false
         };
@@ -100,6 +105,7 @@ export default {
     methods: {
         // ✅ API 호출해서 리스트 불러오기
         async fetchMyCars() {
+            this.isLoading = true;
             const accessToken = localStorage.getItem("accessToken");
             if (!accessToken) {
                 alert("🚨 로그인이 필요합니다.");
@@ -130,7 +136,8 @@ export default {
                 }
             } catch (error) {
                 console.error("🚨 차량 목록 불러오기 오류:", error);
-                alert("데이터를 불러오는데 실패했습니다.");
+            }  finally {
+                this.isLoading = false; // ✅ 조회 끝나면 로딩 상태 해제
             }
         },
 
@@ -246,24 +253,145 @@ export default {
     @import "../../style.css";
     @import "../../assets/style/CarRegistraion.css";
 
-    .parti-info-zone{
-        display: flex;
-        flex-direction: row;
+    /* ✅ 모달 내부 스타일 */
+.modal-content {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    width: 85%;
+    max-width: 420px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    animation: slideUp 0.3s ease-in-out;
+}
+
+/* ✅ 닫기 버튼 */
+.close-btn {
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.close-btn:hover {
+    color: #e74c3c; /* 닫기 버튼 hover 효과 */
+}
+
+/* ✅ 참가자 목록 */
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* ✅ 참가자 아이템 */
+.modal-content li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 닉네임과 탄다/안탄다 이미지 정렬 */
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ✅ 마지막 아이템 테두리 없애기 */
+.modal-content li:last-child {
+    border-bottom: none;
+}
+
+/* ✅ 참가자 프로필 이미지 */
+.profile-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+/* ✅ 닉네임 & 참가 날짜 */
+.parti-info-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1; /* 닉네임 영역이 유동적으로 확장 */
+    margin-left: 10px;
+}
+
+/* ✅ 참가자 닉네임 */
+.parti-info-zone span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* ✅ 참가 날짜 */
+.when-join {
+    font-size: 13px;
+    color: #828282;
+}
+
+/* ✅ 별점 */
+.star {
+    max-width: 90px;
+    margin-top: 4px;
+}
+
+/* ✅ "탄다/안탄다" 이미지 정렬 */
+.parti-rigth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ✅ 탄다/안탄다 이미지 */
+.parti-img {
+    max-height: 4rem;
+    max-width: 4rem;
+    object-fit: contain; /* 이미지 비율 유지하면서 크기 맞추기 */
+}
+
+
+    .no-car-srv {
+        font-weight: bold ;
+        padding: 20px;
     }
 
-    .parti-who{
+    /* ✅ 로딩 컨테이너 */
+    .loading-container {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 0;
     }
 
+    /* ✅ 로딩 아이콘 */
+    .loading-icon {
+        width: 160px;
+        height: 120px;
+        margin: 100px;
+    }
+
+
     .parti-img {
-        max-height: 4rem;
+        max-height: 3rem;
+        margin-left: 2px;
+        padding-left: 10px ;
     }
 
     .look-parti-btn {
-        border: 1px solid;
-        min-width: 100px;
+        min-width: 9rem;
+        max-width: 9rem;
         border-radius: 6px;
+        background-color: #f9f9f9;
+        padding : 0 0;
+        
     }
 
     .look-parti-btn:hover {
@@ -285,58 +413,24 @@ export default {
         animation: fadeIn 0.3s ease-in-out; /* 부드러운 등장 효과 */
     }
 
-    /* ✅ 모달 내부 스타일 */
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        width: 90%;
-        max-width: 400px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        position: relative;
-        animation: slideUp 0.3s ease-in-out; /* 살짝 위로 올라오는 효과 */
-    }
-
     /* ✅ 닫기 버튼 */
-    .modal-content button {
-        background: #e74c3c;
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        transition: background 0.2s ease-in-out;
-    }
+/* 닫기 버튼 스타일 */
+.modal-content close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    transition: color 0.2s ease-in-out;
+}
 
-    .modal-content button:hover {
-        background: #c0392b;
-    }
+.modal-content button:hover {
+    color: #e74c3c; /* 빨간색으로 변경 */
+}
 
-    /* ✅ 참가자 목록 스타일 */
-    .modal-content ul {
-        list-style: none;
-        padding: 0;
-        margin-top: 20px;
-        max-height: 300px; /* 너무 많으면 스크롤 */
-        overflow-y: auto;
-    }
-
-    .modal-content li {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .modal-content li:last-child {
-        border-bottom: none;
-    }
 
     /* ✅ 참가자 프로필 이미지 */
     .profile-img {
@@ -524,7 +618,7 @@ export default {
 
 .parti {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
