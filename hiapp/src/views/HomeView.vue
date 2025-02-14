@@ -27,6 +27,6 @@ import WeekReservationListComponent from '../components/home/WeekReservationList
 @import "../assets/style/phone-main-view-common.css";
 
 .today-reservation-container {
-    margin-top: 220px;
+    margin-top: 270px;
 }
 </style>

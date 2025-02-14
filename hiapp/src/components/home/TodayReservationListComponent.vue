@@ -1,6 +1,11 @@
 <template>
   <div class="today-reservation-container">
     <div class="box">
+      <div class="login-status">
+        <div v-if="!memberId">로그인이 필요합니다.</div>
+        <div v-else><strong id="nickname">{{ memberId }}</strong> 님, 안녕하세요</div>
+      </div>
+
       <div class="tabs">
         <button @click="changeContent('left')" :class="{ active: activeTab === 'left' }">택시 예약 내역</button>
         <button @click="changeContent('right')" :class="{ active: activeTab === 'right' }">차량 예약 내역</button>
@@ -26,6 +31,7 @@ export default {
   data() {
     return {
       activeTab: 'left', 
+      memberId: localStorage.getItem('memberId'), 
     };
   },
   methods: {
@@ -53,6 +59,12 @@ export default {
   justify-content: space-between;
   padding: 20px;
   position: relative;
+}
+
+.login-status {
+  position: absolute;
+  top: -90px; 
+  left: 3px;
 }
 
 .tabs {
