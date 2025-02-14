@@ -1,7 +1,8 @@
 {
     "home": {
         "taxiRegiList" : "택시 예약 내역",
-        "carRegiList" : "차량 예약 내역"
+        "carRegiList" : "차량 예약 내역",
+        "mainTitle": "로그인이 필요합니다"
     },
     "about": "소개",
     "welcome": "우리 웹사이트에 오신 것을 환영합니다!",

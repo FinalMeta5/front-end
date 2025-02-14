@@ -44,14 +44,14 @@
       <div class="modal-buttons">
         <div class="ride" @click="updateStateOK(selectedCar.carShareJoinId)">
           <div class="b">
-            <img class="moving-image1" src="http://ifh.cc/g/4DpadZ.png" alt="움직이는 이미지">
-            <span id="map-btn">탑승 신청</span>
+            <img class="moving-image1" src="https://ifh.cc/g/AhHHf8.png" alt="움직이는 이미지">
+            <span id="map-btn1">탑승 신청</span>
           </div>
         </div>
         <div class="unride" @click="updateStateNO(selectedCar.carShareJoinId)">
           <div class="b">
-            <img class="moving-image2" src="http://ifh.cc/g/p1xNCK.png" alt="움직이는 이미지">
-            <span id="map-btn">탑승 취소</span>
+            <img class="moving-image2" src="https://ifh.cc/g/1CcglF.png" alt="움직이는 이미지">
+            <span id="map-btn2">탑승 취소</span>
           </div>
         </div>
       </div>
@@ -213,6 +213,9 @@ export default {
 }
 .b {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .today-car-container {
   text-align: center;
@@ -248,9 +251,9 @@ export default {
 }
 .ride {
   width: 80%;
-  height: 50px;
-  background-color: #4192FF;
-  border: 1px solid #4192FF;
+  height: 140px;
+  /* background-color: #4192FF; */
+  border: 2px solid #004AAD;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -258,9 +261,9 @@ export default {
 }
 .unride {
   width: 80%;
-  height: 50px;
-  background-color: #4192FF;
-  border: 1px solid #4192FF;
+  height: 140px;
+  /* background-color: #4192FF; */
+  border: 2px solid #737373;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -278,6 +281,9 @@ export default {
   margin-bottom: 8px;
   font-size: 13px;
 }
+.moving-image1, .moving-image2 {
+  transform: rotate(45deg);
+}
 img {
   width: 20%;
   vertical-align: middle;
@@ -294,16 +300,21 @@ img {
   height: 100%;
   border-radius: 10px;
 }
-#map-btn {
+#map-btn1, #map-btn2 {
   width: 100%;
-  color: #ffffff;
   font-size: 18px;
   cursor: pointer;
   text-align: center;
   text-transform: uppercase;
-  background-color: #4192FF;
   border: none;
   position: relative;
+  margin-bottom: 10px;
+}
+#map-btn1 {
+  color: #004AAD;
+}
+#map-btn2 {
+  color: #737373;
 }
 .button {
   display: inline-block;
@@ -376,7 +387,7 @@ img {
 
 .modal-buttons {
   display: flex;
-  justify-content: space-around; /* 또는 space-between, center 등 원하는 정렬 방식 사용 */
+  gap: 10px;
   align-items: center;
   margin: 20px 0; /* 필요에 따라 여백 추가 */
 }
@@ -386,5 +397,11 @@ img {
 }
 .modal-enter, .modal-leave-to {
   opacity: 0;
+}
+
+@media (max-width:380) {
+  .modal-content {
+    width: 100px;
+  }
 }
 </style>

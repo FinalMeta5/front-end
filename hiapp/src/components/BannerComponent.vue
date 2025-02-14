@@ -6,8 +6,8 @@
                 <img :src="image" alt="Slide image" />
                 </div>
             </div>
-        <button class="prev" @click="prevSlide">‹</button>
-        <button class="next" @click="nextSlide">›</button>
+        <!-- <button class="prev" @click="prevSlide">‹</button>
+        <button class="next" @click="nextSlide">›</button> -->
         </div>
     </div>
   </template>
@@ -18,9 +18,9 @@
     data() {
       return {
         images: [
-          "https://ifh.cc/g/bvzz9G.jpg",
-          "https://ifh.cc/g/MKlkZr.jpg",
-          "https://ifh.cc/g/AdBMnM.jpg",
+          "https://ifh.cc/g/Gd4Mrq.png",
+          "https://ifh.cc/g/5SfxP3.png",
+          "https://ifh.cc/g/tl9yqZ.png",
         ],
         currentIndex: 0,
         interval: null,
@@ -55,6 +55,7 @@
   <style scoped>
   .banner-container {
     position: relative;
+    width: 85%;
   }
 
   .slider {
@@ -82,7 +83,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
     color: white;
     border: none;
     padding: 10px;
@@ -90,16 +91,16 @@
   }
   
   .prev {
-    left: 10px;
+    left: 3px;
   }
   
   .next {
-    right: 10px;
+    right: 3px;
   }
 
   @media (max-width: 500px) {
   .banner-container {
-    width: 90vw;
+    width: 87vw;
   }
 }
   </style>
