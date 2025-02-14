@@ -106,7 +106,7 @@ const joinApply = async () => {
     isSubmitting.value = true;
 
     try {
-        const response = await axios.post("http://localhost:8080/api/taxi/join/insert", {
+        const response = await axios.post("https://api.hifive5.shop/api/taxi/join/insert", {
             taxiShareId: props.taxiShareId,
             memberId: memberId.value,
         });
@@ -138,7 +138,7 @@ const deletePost = async () => {
     isSubmitting.value = true;
 
     try {
-        const response = await axios.post("http://localhost:8080/api/taxi/delete", {
+        const response = await axios.post("https://api.hifive5.shop/api/taxi/delete", {
             taxiShareId: props.taxiShareId,
             memberId: memberId.value,
         });

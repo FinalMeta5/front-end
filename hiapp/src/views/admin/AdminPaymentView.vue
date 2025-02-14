@@ -2,6 +2,9 @@
     <div class="about phone-main-screen">
         <h1 class="titleH1 mb-2">결제 관리</h1>
         <div class="view-context-contain">
+            <div class="w-100 text-end">
+                <ExcelDownloadButtonComponent/>
+            </div>
             <div class="accordion w-75" id="accordionExample">
                 <div class="accordion-item" v-for="(payment, index) in paymentList" :key="index">
                     <h2 class="accordion-header" :id="'heading' + index">
@@ -47,6 +50,7 @@
 </template>
 
 <script>
+import ExcelDownloadButtonComponent from '../../components/ExcelDownloadButtonComponent.vue';
 import { authAxios } from '../../store/auth/auth';
 export default {
     name: 'AdminPaymentView',
@@ -54,6 +58,9 @@ export default {
         return {
             paymentList: [],
         }
+    },
+    components: {
+        ExcelDownloadButtonComponent,
     },
     methods: {
         async fetchData(endpoint, targetProperty) {

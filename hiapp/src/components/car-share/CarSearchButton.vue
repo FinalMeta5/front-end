@@ -1,5 +1,5 @@
 <template>
-  <button @click="goToCarSearch" class="car-search-btn">차량 조회</button>
+  <button @click="goToCarSearch" class="car-search-btn">{{ $t('mypage.selectCarList') }}</button>
 
   <!-- ✅ 로그인 모달 -->
   <LoginModalView
