@@ -1,5 +1,8 @@
 {
-    "home": "Home",
+    "home": {
+        "taxiRegiList" : "My Taxi Reservation",
+        "carRegiList" : "My car Reservation"
+    },
     "about": "About",
     "welcome": "Welcome to our website!",
     "nav": {
@@ -17,5 +20,14 @@
         "selectCreditList": "View credit history",
         "selectCarList": "View my car",
         "selectMyCarService": "View my car sharing service"
+    },
+    "button" : {
+        "RegisterService" : "Register Service",
+        "UseService" : "Use Service"
+    },
+    "context" :{
+        "todayReservations" : "Today's Reservations",
+        "shareTaxi" : "Let's Share a Taxi!",
+        "shareCar" :"Let's Share a Ride!"
     }
 }

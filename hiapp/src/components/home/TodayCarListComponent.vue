@@ -14,7 +14,7 @@
 
     <!-- 예약 내역이 있는 경우 -->
     <div v-else>
-      <div class="message">오늘의 예약 내역</div>
+      <div class="message">{{ $t('context.todayReservations') }}</div>
       <div class="detail-info-wrapper">
         <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
           <DetailInfoComponent
@@ -32,8 +32,8 @@
 
     <!-- 하단 버튼들 (로딩이 끝난 후) -->
     <div v-if="!isLoading" class="button-container">
-      <button class="today-button" @click="goToCarShareRegistration1">서비스 등록하기</button>
-      <button class="today-button" @click="goToCarShareRegistration2">서비스 이용하기</button>
+      <CarShareServiceRegiButton/>
+      <button class="today-button" @click="goToCarShareRegistration2">{{ $t('button.UseService') }}</button>
     </div>
 
     <!-- 모달 창 (선택된 예약 항목의 탑승 신청/취소 버튼들) -->
@@ -190,13 +190,6 @@ export default {
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       return `${hours}:${minutes}`;
-    },
-    goToCarShareRegistration1() {
-      if (this.$router) {
-        this.$router.push('/car-share/service/registration/first');
-      } else {
-        console.error('Router is not defined');
-      }
     },
     goToCarShareRegistration2() {
       if (this.$router) {
