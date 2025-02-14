@@ -28,7 +28,14 @@
     },
     "context" :{
         "todayReservations" : "오늘 예약 내역",
-        "shareTaxi" : "택시 같이 타요!",
-        "shareCar" :"차 같이 타요!"
+        "shareTaxi" : "택시 같이 타요! 🚕",
+        "shareCar" :"차 같이 타요! 🚗",
+        "getTogether" : "✨ 같은 목적을 가진 사람들과 함께 이동해보세요! ✨",
+        "whereAreUGoing" : "✨ 어디서 출발하시나요? ✨",
+        "noTaxi" : "선택하신 날짜와 출발지 근처에 택시 공유가 없습니다.",
+        "withUs" : "직접 호스트가되어 동승자를 모집해보세요!",
+        "loading" : "🚕 로딩중... 🚕",
+        "SelectDepartureLocation" : "출발지 선택"
+
     }
 }

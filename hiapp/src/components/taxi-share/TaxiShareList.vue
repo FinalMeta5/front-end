@@ -3,7 +3,7 @@
         <div class="max-w-md mx-auto p-4">
             <!-- 헤더 -->
             <h1>{{ $t('context.shareTaxi') }}</h1>
-            <p>어디서 출발하시나요?</p>
+            <p>{{ $t('context.whereAreUGoing') }}</p>
 
             <!-- 출발지, 도착지, 날짜 선택 -->
             <div class="search-container">
@@ -16,7 +16,7 @@
                         {{ departure }}
                     </span>
                     <span v-else>
-                        출발지 선택
+                        {{ $t('context.SelectDepartureLocation') }}
                     </span>
                 </button>
 
@@ -29,7 +29,7 @@
 
             <!-- 로딩 상태 -->
             <div v-if="loading" class="text-center text-gray-500 my-4">
-                🚖 데이터를 불러오는 중...
+                {{ $t('context.loading') }}
             </div>
 
             <!-- 에러 메시지 -->
@@ -66,8 +66,8 @@
             <!-- rideList가 비어 있을 경우 슬픈 아이콘과 함께 모달 표시 -->
             <div v-else class="no-rides-modal">
                 <font-awesome-icon :icon="['fas', 'face-frown']" class="sad-icon" />
-                <p>선택하신 날짜와 출발지 근처에 택시 공유가 없습니다.</p>
-                <p>직접 호스트가 되어 동승자를 모집해보세요!</p>
+                <p>{{ $t('context.noTaxi') }}</p>
+                <p>{{ $t('context.withUs') }}</p>
                 <!-- 리스트 이동 버튼 -->
                 <div class="mg-t-60">
                     <button class="move-button" @click="goToRegist">택시 공유 호스트되기</button>
@@ -246,7 +246,7 @@ onMounted(() => {
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 25px;
     font-weight: bold;
     margin-bottom: 10px;
 }
