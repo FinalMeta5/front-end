@@ -1,7 +1,7 @@
 <template>
   <div>
     <button @click="goToCarRegi" class="car-regi-btn">
-      내 차량 공유 서비스 조회
+      {{ $t('mypage.selectMyCarService') }}
     </button>
 
     <!-- ✅ 로그인 모달 -->

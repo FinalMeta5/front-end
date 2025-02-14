@@ -1,6 +1,6 @@
 <template>
   <div class="phone-main-screen">
-      <h1 class="titleH1">마이페이지</h1>
+      <h1 class="titleH1">{{ $t('mypage.title') }}</h1>
       <div class="my-page-container">
         <section class="profile-section">
           <div class="profile-icon" @click="onProfileClick">
@@ -23,27 +23,27 @@
         <!-- 차량 공유/이용/택시 이용 정보 영역 -->
         <section class="usage-section">
           <div class="usage-card" @click="goToSharedCars">
-            <p class="count">{{ userData.carRegistrationCount }}건</p>
-            <p class="label">차량 공유 수</p>
+            <p class="count">{{ userData.carRegistrationCount }}{{ $t('mypage.useCount') }}</p>
+            <p class="label">{{ $t('mypage.carShareCount') }}</p>
           </div>
           <div class="usage-card" @click="goToUsedCars">
-            <p class="count">{{ userData.carJoinCount }}건</p>
-            <p class="label">차량 이용 수</p>
+            <p class="count">{{ userData.carJoinCount }}{{ $t('mypage.useCount') }}</p>
+            <p class="label">{{ $t('mypage.carUsageCount') }}</p>
           </div>
           <div class="usage-card" @click="goToTaxi">
-            <p class="count">{{ userData.taxiJoinCount }}건</p>
-            <p class="label">택시 이용 수</p>
+            <p class="count">{{ userData.taxiJoinCount }}{{ $t('mypage.useCount') }}</p>
+            <p class="label">{{ $t('mypage.taxiUsageCount') }}</p>
           </div>
         </section>
 
         <!-- 메뉴 버튼 영역 -->
         <section class="menu-section">
           <button class="menu-btn" @click="goToMemberInfo">
-            회원정보 수정
+            {{ $t('mypage.updateMemberInfo') }}
           </button>
-          <button class="menu-btn" @click="goToPWChange">비밀번호 수정</button>
+          <button class="menu-btn" @click="goToPWChange">{{ $t('mypage.updatePassword') }}</button>
           <button class="menu-btn" @click="goToCreditHistory">
-            크레딧내역 조회
+            {{ $t('mypage.selectCreditList') }}
           </button>
           <CarSearchButton />
           <MyCarShareSearchButton />
