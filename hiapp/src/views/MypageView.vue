@@ -6,6 +6,7 @@
           <div class="profile-icon" @click="onProfileClick">
             <img :src="userData.profileUrl" alt="프로필" />
           </div>
+          
 
           <div class="profile-info">
             <p class="user-name">{{ nickname }}</p>
@@ -19,7 +20,7 @@
           style="display: none"
           @change="onFileChange"
         />
-
+        
         <!-- 차량 공유/이용/택시 이용 정보 영역 -->
         <section class="usage-section">
           <div class="usage-card" @click="goToSharedCars">
@@ -58,6 +59,7 @@ import { useRouter } from "vue-router";
 import { authAxios, useAuthState } from "../store/auth/auth.js";
 import CarSearchButton from "../components/car-share/CarSearchButton.vue";
 import MyCarShareSearchButton from "../components/car-share/MyCarShareSearchButton.vue";
+import PastCarListComponent from '../components/car-share/participant/PastCarListComponent.vue';
 
 const { nickname } = useAuthState();
 const userData = ref({

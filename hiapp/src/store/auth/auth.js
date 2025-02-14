@@ -108,8 +108,8 @@ async function login(email, password) {
   try {
     // 서버 로그인 요청
     const response = await axios.post(
-      // "https://api.hifive5.shop/api/member/login",
-      "http://localhost:8080/api/member/login",
+      "https://api.hifive5.shop/api/member/login",
+      // "http://localhost:8080/api/member/login",
       {
         email: email,
         password: password,

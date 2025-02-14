@@ -40,7 +40,6 @@
     <transition name="modal">
     <div v-if="selectedCar" class="modal-overlay">
     <div class="modal-content">
-      <!-- 오른쪽 상단의 X 아이콘 -->
       <span class="modal-close" @click="closeModal">&times;</span>
       <div class="modal-buttons">
         <div class="ride" @click="updateStateOK(selectedCar.carShareJoinId)">

@@ -7,7 +7,7 @@
     <div v-else-if="todayParticipationList && todayParticipationList.length === 0">
       <div class="message">오늘은 예약 내역이 없습니다.</div>
       <img src="http://ifh.cc/g/KAROcS.png" alt="이미지" class="image" />
-      <div class="subtitle">여러 사람과 함께 차량을 이용해 보세요</div>
+      <div class="subtitle">여러 사람과 함께 택시를 이용해 보세요</div>
     </div>
 
     <div v-else>

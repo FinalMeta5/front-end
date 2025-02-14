@@ -516,7 +516,7 @@ z-index: 15;
 width: 50px;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 600px) {
 
 .search-container {
   width: 100vw;
