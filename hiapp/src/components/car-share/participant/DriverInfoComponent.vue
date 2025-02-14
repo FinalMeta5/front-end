@@ -186,7 +186,7 @@ export default {
   text-align: left;
   color: #5d5d5d;
   margin-left: 5px;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -213,11 +213,11 @@ p, h2 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 #driver-nickname {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #5d5d5d;

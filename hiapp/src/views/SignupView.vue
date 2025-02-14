@@ -13,7 +13,7 @@
         <div class="step-item" :class="{ active: currentStep >= 2 }">
           <div class="circle">2</div>
           <div class="label">정보입력</div>
-        </div>z
+        </div>
         <div class="line" :class="{ active: currentStep > 2 }"></div>
         <!-- 3단계 -->
         <div class="step-item" :class="{ active: currentStep >= 3 }">
@@ -26,6 +26,7 @@
           :is="currentComponent"
           @next-step="onNextStep"
           v-bind="stepProps"
+          class="step-container"
         />
       </div>
     </div>
@@ -73,11 +74,15 @@ function onNextStep(payload) {
 .titleH1 {
   text-align: left;
   width: 90%;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   padding-left: 15px;
-  margin-left: 0px;
+  margin-left: 100px;
   margin-top: 150px;
   margin-bottom: 30px;
+}
+
+.step-container {
+  margin: 0 auto;
 }
 
 .arrow-left {
@@ -97,7 +102,7 @@ function onNextStep(payload) {
 .header h1 {
   text-align: center;
   flex: 1;
-  font-size: 18px;
+  font-size: 17px;
   margin: 0;
 }
 
@@ -127,7 +132,7 @@ function onNextStep(payload) {
 }
 
 .label {
-  font-size: 14px;
+  font-size: 11px;
   white-space: nowrap;
 }
 

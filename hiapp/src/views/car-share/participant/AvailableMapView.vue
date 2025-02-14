@@ -16,7 +16,16 @@
             <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
           </div>
           <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
-          <CarShareInformationComponent v-if="selectedCar" :car="selectedCar" id="carShareInformationComponent"/>
+          
+          <CarShareInformationComponent 
+            v-if="selectedCar" 
+            :car="selectedCar" 
+            id="carShareInformationComponent"
+            @click="handleCarClick"
+          />
+
+          <LoginModalView v-if="showLoginModal" @close="showLoginModal = false" />
+
           <div v-if="searchResults.length > 0" class="address-list">
             <ul>
               <li v-for="(result, index) in searchResults" :key="index" @click="selectAddress(result)" class="search-item">
@@ -32,12 +41,14 @@
 
 <script>
 import axios from "axios";
-import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue'
+import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
+import LoginModalView from '../../../views/LoginModalView.vue';
 
 export default {
   name: "KakaoMap",
   components: {
       CarShareInformationComponent,
+      LoginModalView
   },
 
   data() {
@@ -92,6 +103,18 @@ export default {
     // 차량 목록 가져오기
     this.fetchCarList();
   },
+  mounted() {
+        // localStorage에서 memberId 확인
+        const memberId = localStorage.getItem("memberId");
+
+        // memberId가 없으면 로그인 모달을 띄운다.
+        if (!memberId) {
+            this.showLoginModal = true;
+        } else {
+            // memberId가 있으면 정상적으로 경로 등록 화면을 로드
+            this.fetchCarList();
+        }
+    },
 
   methods: {
     // 카카오 지도 API를 사용하여 주소 가져오기
@@ -107,7 +130,8 @@ export default {
         const response = await axios.get(apiUrl, {
           params,
           headers: {
-            Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`, 
+            // Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`, 
+            Authorization: `KakaoAK 363140f5c664f7b3b3e29d2cbf81a108`, 
           },
         });
         this.address = response.data.documents[0];  
@@ -130,9 +154,11 @@ export default {
                   });
               });
           } else {
+            this.waitForKakaoMap().then(() => {
               this.carList.forEach(car => {
-                  this.createCarMarker(car.latitudePl, car.longitudePl, car);
+                this.createCarMarker(car.latitudePl, car.longitudePl, car);
               });
+          });
           }
         }
       } catch (error) {
@@ -158,7 +184,8 @@ export default {
 
       const script = document.createElement("script");
       script.id = "kakao-map-script";
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      // script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=09502adbac4fa761abc3729739a5f256`;
       script.onload = () => kakao.maps.load(this.initMap);
       document.head.appendChild(script);
     },
@@ -259,7 +286,8 @@ export default {
           const response = await axios.get(apiUrl, {
           params,
           headers: {
-              Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`,
+              // Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`,
+              Authorization: `KakaoAK 363140f5c664f7b3b3e29d2cbf81a108`,
           },
       });
 
@@ -488,10 +516,10 @@ z-index: 15;
 width: 50px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 400px) {
 
 .search-container {
-  width: 85%;
+  width: 100vw;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -499,7 +527,7 @@ width: 50px;
 }
 
 .address-list {
-  width: 80%;
+  width: 73%;
 }
 
 .result-container {
@@ -512,11 +540,26 @@ width: 50px;
 .current-location-btn {
 position: absolute;
 right: 50px;
-bottom: 80px;
+bottom: -10px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
 }
 
+#carShareInformationComponent {
+  width: 100vw;
+}
+
+}
+
+@media screen and (max-height: 70px) {
+.current-location-btn {
+position: absolute;
+right: 50px;
+bottom: 60px;
+cursor: pointer;
+z-index: 15;
+width: 50px;
+}
 }
 </style>

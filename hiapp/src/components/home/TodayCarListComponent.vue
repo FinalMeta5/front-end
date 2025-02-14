@@ -3,7 +3,6 @@
     <!-- 로딩 화면 -->
     <div v-if="isLoading" class="loading">
       <div class="spinner"></div>
-      <div class="loading-message">오늘의 예약 내역을 불러오는 중 .. </div>
     </div>
 
     <!-- 예약 내역이 없는 경우 -->

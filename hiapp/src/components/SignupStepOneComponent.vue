@@ -19,7 +19,7 @@
             <!-- key 에 따라 문구 변경이 필요하다면 분기 처리 or 그냥 예시로 작성 -->
             {{
               key === "hiFive"
-                ? "하이파이브 이용 약관 동의"
+                ? "부르릉 이용 약관 동의"
                 : key === "privacy"
                 ? "개인정보 수집 및 이용 동의"
                 : key === "location"
@@ -57,7 +57,7 @@
     <!-- 안내 문구 -->
     <div class="notice">
       <p>부르릉 멤버십에 오신 것을 환영합니다.</p>
-      <p>부르릉 사용을 위해 약관 동의 및 회원가입이 필요합니다.</p>
+      <p>약관 동의 및 회원가입이 필요합니다.</p><br>
       <p>고객님께서는 동의를 거부할 수 있습니다.</p>
       <p>단, 필수항목 거부 시에는 회원가입이 제한됩니다.</p>
     </div>
@@ -143,6 +143,7 @@ watch(
   border-bottom: 2px solid #878787;
   margin-bottom: 8px;
   padding-bottom: 8px;
+  margin: 0 auto;
 }
 
 .line {
@@ -152,7 +153,7 @@ watch(
 .agree-all {
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   margin-bottom: 10px;
 }
@@ -174,13 +175,13 @@ watch(
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #eee;
-  padding: 12px 0;
+  padding: 10px 0;
 }
 
 .terms-label {
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -210,11 +211,11 @@ watch(
 
 .notice {
   text-align: left;
-  margin-top: 20px;
-  font-size: 14px;
+  margin-top: 30px;
+  font-size: 13px;
   color: #666;
   line-height: 0.7;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .next-button {
@@ -224,8 +225,14 @@ watch(
   background-color: #878787;
   color: #fff;
   border: none;
-  height: 50px;
-  font-size: 16px;
+  height: 35px;
+  font-size: 14px;
   cursor: pointer;
+}
+
+@media (max-width: 400px) {
+  .step-one {
+    width: 80vw;
+  }
 }
 </style>

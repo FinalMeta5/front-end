@@ -3,17 +3,17 @@
   <div class="modal-backdrop" @click.self="closeModal">
     <!-- 모달 컨테이너 -->
     <div class="modal-container">
-      <h2 class="title">사이트 이름</h2>
+      <h2 class="title">로그인</h2>
 
       <!-- 이메일/비밀번호 폼 -->
       <form @submit.prevent="handleLogin">
         <div class="input-group">
-          <label for="email">이메일</label>
+          <!-- <label for="email">이메일</label> -->
           <input type="text" id="email" v-model="email" placeholder="이메일" />
         </div>
 
         <div class="input-group">
-          <label for="password">비밀번호</label>
+          <!-- <label for="password">비밀번호</label> -->
           <input
             type="password"
             id="password"
@@ -37,8 +37,9 @@
       <hr />
 
       <!-- SNS 로그인 버튼들 -->
-      <button class="kakao-btn">kakao 계정으로 계속하기</button>
-      <button class="google-btn">Google 계정으로 계속하기</button>
+       
+      <button class="kakao-btn"><img src="https://ifh.cc/g/xhCAQ8.png" class="kakao-logo">&nbsp;&nbsp;kakao 계정으로 시작하기</button>
+      <button class="google-btn"><img src="https://ifh.cc/g/1CpBWq.png" class="google-logo">&nbsp;&nbsp;Google 계정으로 시작하기</button>
     </div>
   </div>
 </template>
@@ -95,7 +96,7 @@ async function handleLogin() {
     }, 500); // 새로고침 후 0.5초 뒤 실행
 
     // ✅ 새로고침 실행
-    window.location.reload();
+    // window.location.reload();
   } catch (err) {
     console.log("로그인 실패:", err);
   }
@@ -140,11 +141,16 @@ function goToSignup() {
   position: relative;
 }
 
+.kakao-logo, .google-logo {
+  width: 18px;
+}
+
 /* 제목 */
 .title {
   margin: 0 0 1.5rem;
   text-align: center;
   font-size: 1.4rem;
+  font-weight: bold;
 }
 
 /* 폼 요소 스타일 */
@@ -154,12 +160,12 @@ function goToSignup() {
   margin-bottom: 1rem;
 }
 .input-group label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-bottom: 0.3rem;
 }
 .input-group input {
   padding: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -174,6 +180,7 @@ function goToSignup() {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.8rem;
 }
 
 /* 링크 섹션 */
@@ -195,7 +202,7 @@ function goToSignup() {
 
 /* 구분선 */
 hr {
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   border: none;
   border-top: 1px solid #eee;
 }
@@ -204,27 +211,34 @@ hr {
 .kakao-btn {
   display: block;
   width: 100%;
-  padding: 0.6rem 0;
+  padding: 0.5rem 0;
   margin-bottom: 0.5rem;
   background-color: #ffeb00;
   border: none;
-  font-weight: bold;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 .google-btn {
   display: block;
   width: 100%;
-  padding: 0.6rem 0;
+  padding: 0.5rem 0;
   background-color: #fff;
   border: 1px solid #ccc;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 .links a {
   font-size: 12.8px;
   font-weight: normal;
+}
+
+@media (max-width: 600px) {
+  .modal-container {
+    width: 85vw;
+  }
 }
 </style>

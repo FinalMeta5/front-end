@@ -1,5 +1,7 @@
 <template>
     <div class="home phone-main-screen">
+      <h2 class="title">차량 같이 타요</h2>
+      <span class="text">같은 목적을 가진 사람과 같이 이동해봐요</span>
       <div class="button-container">
         <button class="image-button" @click="sendRequest('출퇴근')">
           <img src="https://ifh.cc/g/xX2n1K.png" alt="출퇴근 이미지"/>
@@ -24,10 +26,10 @@
       <div v-if="showModal" class="modal">
         <div class="modal-content">
           <span class="close-btn" @click="closeModal">&times;</span>
-          <h2>이용 가능한 차량 목록</h2>
+          <h2 class="list-title">이용 가능한 차량 목록</h2>
           <ul>
             <!-- selectedCarList에 값이 없을 경우 "없음" 출력 -->
-            <li v-if="selectedCarList.length === 0">이용 가능한 차량 목록이 없습니다</li>
+            <li v-if="selectedCarList.length === 0" class="no">이용 가능한 차량 목록이 없습니다</li>
             <li v-for="car in selectedCarList" :key="car.id" @click="goToDetail(car)">
               <div class="car-info"><hr>
                 <div><strong>(출발)</strong> {{ car.pickupLoc }}</div>
@@ -47,7 +49,7 @@
           </router-link>
         </div>
       </div>
-    </div>
+    </div><br><br>
   </template>
   
   <script>
@@ -129,6 +131,15 @@
   @import "../../../style.css";
   @import "../../../assets/style/phone-main-view-common.css";
   
+  .title {
+    margin-top: 170px;
+    font-weight: bold;
+  }
+
+  .text {
+    font-size: 12px;
+  }
+
   .modal {
     position: fixed;
     top: 0;
@@ -164,6 +175,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 15px;
+  }
+
+  .no {
+    font-size: 15px;
   }
   
   .button-container {
@@ -172,9 +188,7 @@
     gap: 15px;
     width: 90%;
     margin: 0 auto;
-    padding: 20px;
-    margin-top: 200px;
-    position: relative;
+    padding: 20px;    position: relative;
     overflow: hidden;
   }
   
@@ -189,7 +203,7 @@
   
   .around-car {
     width: 85%;
-    height: 300px;
+    height: 120px;
     background-color: #878787;
     border-radius: 10px;
   }
@@ -210,37 +224,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ffffff;
   }
   
   .image-button img {
-    width: 100%;
-    height: 100%;
+    width: 85%;
     border-radius: 10px;
   }
   
   #map-btn {
     width: 100%;
-    padding: 15px;
+    padding: 0px;
     color: white;
-    font-size: 20px;
+    font-size: 14px;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
     text-transform: uppercase;
     background-color: #878787;
     border: none;
-    margin-top: 50px;
+    margin-top: 75px;
     z-index: 2;
     position: relative;
   }
   
   .moving-image {
     position: absolute;
-    top: calc(100% - 80px);
+    top: calc(100% - 110px);
     left: -90%;
-    transform: translateY(-50%);
-    animation: moveImage 4s linear infinite;
-    width: 20%;
+    transform: translateY(10%);
+    animation: moveImage 2s linear infinite;
+    width: 15%;
     z-index: 1;
   }
   
@@ -249,10 +263,10 @@
       left: -90%;
     }
     50% {
-      left: 40%;
+      left: 45%;
     }
     100% {
-      left: 40%;
+      left: 45%;
     }
   }
   
