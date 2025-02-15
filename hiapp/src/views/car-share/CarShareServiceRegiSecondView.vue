@@ -1,6 +1,6 @@
 <template>
   <div class="mypage phone-main-screen">
-        <h1 class="titleH2">차량 공유 서비스 등록</h1>
+        <h1 class="titleH3 top-h3">차량 공유 서비스 등록</h1>
         <div class="view-context-contain2">
   <div class="car-share-registration">
     <div class="path-summary">
@@ -71,9 +71,11 @@
           {{ day }}
         </button>
       </div>
-      <div v-if="selectedDayType === '요일'" class="days-count-box">
-        <select> 횟수 </select>
-      </div>
+
+  <!-- ✅ 요일 선택 후 선택된 요일 개수 표시 -->
+  <div v-if="selectedDayType === '요일'" class="days-count-box">
+    <p><span v-if="selectedDays.length > 0">{{ selectedDays.join(", ") }}</span></p>
+  </div>
 
       <!-- 📌 날짜 선택 input (모바일에서도 예쁘게 보이도록 개선) -->
       <div v-if="selectedDayType === '날짜'" class="date-picker-wrapper">
@@ -141,6 +143,18 @@
     <!-- ✅ 등록 버튼 -->
     <button @click="goToFinalCheck" class="register-button">등록하기</button>
 
+        <SuccessModal
+          v-if="showSuccessModal"
+          :title="'✅ 성공'"
+          :textLine1="successMessage"
+          :textLine2="'차량 공유가 등록되었습니다.'"
+          :close="'확인'"
+          @close="showSuccessModal = false"
+        />
+
+        <!-- ✅ 오류 모달 -->
+        <ErrorModal v-if="showErrorModal" :show="showErrorModal" :message="errorMessage" @update:show="showErrorModal = false"/>
+
     <div v-if="showFinalCheckPopup" class="popup-overlay">
         <div class="popup-container">
           <h2>🚗 차량 공유 서비스 🚗</h2>
@@ -167,8 +181,11 @@
 
 <script>
 import axios from 'axios';
+import SuccessModal from "../../components/modal/SuccessModal.vue";
+import ErrorModal from "../../components/error-modal/ErrorModal.vue";
 export default {
   name: "CarShareServiceRegiSecondView",
+  components: { SuccessModal, ErrorModal },
   data() {
     return {
       latLngInfo: {
@@ -200,6 +217,10 @@ export default {
       minute: "00",
       minuteOptions: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55], // ⏳ 5분 단위 선택
       pickupDate : "",
+      showSuccessModal: false, // ✅ 성공 모달 상태
+      showErrorModal: false, // 🚨 오류 모달 상태
+      successMessage: "", // ✅ 성공 메시지
+      errorMessage: "", // 🚨 오류 메시지
 
       showFinalCheckPopup : false
     }
@@ -255,15 +276,18 @@ export default {
     }},
     goToFinalCheck () {      
       if(!this.selectedShareType) {
-        alert("유형 타입을 선택해주세요.");
+        this.errorMessage = "🚨 차량 공유 유형을 선택해주세요.";
+        this.showErrorModal = true;
         return;
       }
       if(!this.selectedDate && this.selectedDays.length === 0) {
-        alert("출발 일자를 선택해주세요");
+        this.errorMessage = "🚨 출발일을 선택해주세요.";
+        this.showErrorModal = true;
         return;
       }
       if(!this.selectedTime) {
-        alert("출발 시간을 입력해주세요.");
+        this.errorMessage = "🚨 출발 시간을 선택해주세요.";
+        this.showErrorModal = true;
         return;
       }
       this.pickupDate = `${this.selectedDate}T${this.selectedTime}`;
@@ -271,7 +295,8 @@ export default {
       const currentTime = new Date().getTime(); // 현재 시간 (밀리초)
         // ✅ 과거 시간이면 다시 선택하도록
       if (selectedDateTime < currentTime) {
-        alert("지난 시점입니다. 다시 선택해주세요.");
+        this.errorMessage = "🚨 지난 시점은 등록이 불가합니다.";
+        this.showErrorModal = true;
         return;
       }
 
@@ -312,8 +337,9 @@ export default {
     }
   })
   .then(response => {
-    alert("차량 공유 서비스가 등록되었습니다.");
-    this.$router.push("/mypage");
+    this.successMessage = "🚗 차량 공유 서비스 등록 완료!";
+    this.showSuccessModal = true;
+    this.$router.push("/");
   })
   .catch(error => {
     console.error("❌ 등록 실패:", error.response ? error.response.data : error);
@@ -514,6 +540,8 @@ font-size: 18px;
   height: 2.9rem;
 }
 
+
+
 .days-container button {
   flex: 1;
   padding: 8px;
@@ -609,6 +637,11 @@ font-size: 18px;
   font-size: 14px;
 }
 
+.top-h3 {
+  margin-bottom: 1rem;
+  padding-top: 2rem;
+}
+
 .button-group button.active {
   background: #53647c; 
   color: white;
@@ -683,7 +716,8 @@ font-weight: bold;
 .final-addre {
   justify-self: start;
   margin-top: 1rem;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 1rem;
 }
 
 .final-addre-si{
@@ -691,8 +725,8 @@ font-weight: bold;
   background-color: #fe9e4a;
   padding : 0.1rem  0.3rem;
   border-radius: 10px;
+  font-size: small;
   margin-top: 1rem;
-
 }
 
 /* ✅ 팝업 배경 (어두운 오버레이 효과) */
@@ -747,21 +781,30 @@ font-weight: bold;
   flex: 1;
 }
 
-.final-check{
-  justify-content: space-between;
+.final-check {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .final-check-line {
   display: flex;
   width: 100%;
-  justify-items: start;
-  
-}
-.final-check-content {
-  width: 60%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd; /* 구분선 추가 */
 }
 
-.final-check-title{
+.final-check-title {
   width: 40%;
+  text-align: left;
+  font-weight: bold;
 }
+
+.final-check-content {
+  width: 60%;
+  text-align: right;
+}
+
 </style>

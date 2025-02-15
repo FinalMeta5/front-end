@@ -1,11 +1,10 @@
 .car-registration {
-    padding: 20px;
+    padding: 0;
     border-radius: 12px;
     background: #ffffff;
-    max-width: 420px;
+    max-width: 400px;
     min-width: 380px;
-    margin-top: 15px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+    margin-top: 5px;
 }
 
 /* 🚗 이미지 업로드 영역 */
@@ -14,6 +13,24 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 18px;
+}
+
+.carimg-send-btn {
+    padding: 1rem;
+    max-width: 4rem;
+    margin-left: 5px;
+    background-color: rgb(112, 112, 112);
+    color: white;
+    font-size: 0.8rem;
+}
+
+.carimg-send-btn2 {
+    max-width: 6rem;
+    max-height: 3rem;
+    margin-left: 5px;
+    background-color: rgb(112, 112, 112);
+    color: white;
+    font-size: 0.8rem;
 }
 
 .image-placeholder {
@@ -48,7 +65,6 @@
 /* 🔹 입력 필드 스타일 */
 .form-group {
     margin-bottom: 16px;
-    padding: 0px 1rem;
 }
 
 .form-group label {
@@ -95,7 +111,7 @@ button {
 
 /* 버튼별 스타일 */
 .register-button {
-    background: #3a8bfd;
+    background: #6ba9ff;
     color: white;
 }
 
@@ -160,6 +176,13 @@ button:active {
 .file-upload p {
     font-size: 14px;
     color: #e74c3c;
+}
+
+.file-upload {
+    display: flex;
+    gap : 2px;
+    align-items: center;
+    
 }
 
 /* 📌 아이콘 정렬 */

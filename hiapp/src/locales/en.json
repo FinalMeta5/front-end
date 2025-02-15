@@ -3,7 +3,7 @@
         "taxiRegiList" : "My Taxi Reservation",
         "carRegiList" : "My car Reservation",
         "mainTitle" : "Login is required",
-        "welcom" : "welcom !"
+        "welcom" : "welcome !"
     },
     "about": "About",
     "welcome": "Welcome to our website!",
@@ -42,7 +42,8 @@
         "checkSharedCarsAroundMe" : "Check Shared Cars Around Me !",
         "noReservationsToday" : "❌ There are no reservations today.",
         "shareATaxiService" : "Share a ride with others! 🚕",
-        "shareACarService" : "Share a ride with others! 🚗"
+        "shareACarService" : "Share a ride with others! 🚗",
+        "noti" : "🔔 Notification 🔔"
 
     }
 }
