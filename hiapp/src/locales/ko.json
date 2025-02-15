@@ -42,7 +42,7 @@
         "checkSharedCarsAroundMe" : "내 주변 차량 공유 확인",
         "noReservationsToday" : "❌ 오늘은 예약 내역이 없습니다.",
         "shareATaxiService" : "여러 사람들과 함께 택시를 이용해보세요! 🚕",
-        "shareACarService" : "여러 사람들과 함께 차량을 이용해보세요! 🚗"
-
+        "shareACarService" : "여러 사람들과 함께 차량을 이용해보세요! 🚗",
+        "noti" : "🔔 알림 🔔"
     }
 }
