@@ -21,8 +21,9 @@
           인증하기
         </button>
       </div>
-      <div v-if="isCodeSent" class="input-group code-verification-group">
+      <div v-if="isCodeSent && !isVerified" class="input-group code-verification-group">
         <input
+          id="input"
           type="text"
           v-model="codeInput"
           placeholder="인증번호 입력"
@@ -48,8 +49,8 @@
         </div>
 
         <p class="verification-result" v-if="isCodeSent">
-          <span v-if="isVerified">인증이 완료되었습니다.</span>
-          <span v-else-if="!isVerified && timeRemaining > 0 && codeTried"
+          <span v-if="isVerified" id="success">인증이 완료되었습니다.</span>
+          <span v-else-if="!isVerified && timeRemaining > 0 && codeTried" id="fail"
             >인증에 실패했습니다.</span
           >
         </p>
@@ -120,6 +121,10 @@
           중복확인
         </button>
       </div>
+      <!-- <div v-if="nicknameVerified !== null" class="nickname-result">
+        <span v-if="nicknameVerified" style="color: green;">사용할 수 있는 닉네임입니다.</span>
+        <span v-else style="color: red;">사용할 수 없는 닉네임입니다.</span>
+      </div> -->
     </div>
 
     <!-- 생년월일 -->
@@ -199,12 +204,20 @@
   </div>
 
   <!-- 하단 고정 '다음' 버튼 -->
-  
+  <SuccessModal
+    v-if="isSuccessModalVisible"
+    :title="'💡'"
+    :textLine1="'부르릉에 오신 걸 환영합니다.'"
+    :textLine2="'로그인 화면으로 이동합니다'"
+    :close="'확인'"
+    @close="closeSuccessModal"
+/>
 </template>
 
 <script setup>
 import axios from "axios";
 import { ref, defineEmits, computed, onUnmounted } from "vue";
+import SuccessModal from './modal/SuccessModal.vue';
 
 // 폼 상태
 const email = ref("");
@@ -220,6 +233,7 @@ const gender = ref("");
 
 // 닉네임 중복확인
 const nicknameVerified = ref(false);
+const showSuccessModal = ref(false);
 
 // 이메일 인증
 const codeInput = ref("");
@@ -371,8 +385,6 @@ function handleNextClick() {
   }
 
   signupRequest();
-
-  emit("next-step", { nickname: nickname.value });
 }
 
 async function signupRequest() {
@@ -385,6 +397,16 @@ async function signupRequest() {
     birth: `${birthYear.value}-${birthMonth.value}-${birthDay.value}`,
     nickname: nickname.value,
   });
+
+  if (response.data) {
+    showSuccessModal.value = true;
+  } else {
+    alert("회원가입에 실패했습니다.");
+  }
+
+  function closeSuccessModal() {
+    showSuccessModal.value = false;
+  }
 }
 
 onUnmounted(() => {
@@ -395,6 +417,27 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+#success {
+  color: green;
+}
+
+#fail {
+  color: red;
+}
+
+.verification-result {
+  font-size: 14px;
+}
+
+.timer {
+  color: red;
+  font-size: 13px;
+}
+
+#input {
+  border-radius: 8px;
+}
+
 /* 전체 컨테이너 */
 .info-input-container {
   /* width: 100%; */
@@ -426,7 +469,7 @@ onUnmounted(() => {
   color: #333;
   box-sizing: border-box;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   outline: none;
 }
 
@@ -440,19 +483,23 @@ onUnmounted(() => {
   color: #999;
 }
 
+#email {
+  width: 200px;
+}
+
 /* 이메일/닉네임의 '중복확인' 버튼을 옆에 두기 위한 래퍼 */
 .input-with-button {
   display: flex;
+  gap: 10px;
 }
 
 /* '중복확인' 버튼 스타일 */
 .check-button {
-  margin-left: 8px;
-  min-width: 80px;
+  width: 100%;
   height: 40px;
   font-size: 13px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: #fff;
   color: #333;
   cursor: pointer;
@@ -465,6 +512,7 @@ onUnmounted(() => {
 
 .verification-actions {
   display: flex;
+  width: 100%;
   align-items: center;
   gap: 1rem;
 }
@@ -502,7 +550,7 @@ onUnmounted(() => {
   flex: 1;
   text-align: center;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 10px 0;
   cursor: pointer;
   font-size: 13px;

@@ -29,7 +29,7 @@
           class="step-container"
         />
       </div>
-    </div>
+    </div><br><br><br>
   </div>
 </template>
 
@@ -71,13 +71,11 @@ function onNextStep(payload) {
 <style scoped>
 @import "../style.css";
 @import "../assets/style/phone-main-view-common.css";
+
 .titleH1 {
   text-align: left;
-  width: 90%;
   font-size: 1.3rem;
-  padding-left: 15px;
-  margin-left: 100px;
-  margin-top: 150px;
+  margin-top: 180px;
   margin-bottom: 30px;
 }
 
