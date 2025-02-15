@@ -55,7 +55,7 @@ export default {
 
     try {
         console.log(`📡 요청: GET /api/car-registration/verified/${memberId}`);
-        const response = await axios.get(`http://localhost:8080/api/car-registration/verified/${memberId}`, {
+        const response = await authAxios.get(`/api/car-registration/verified/${memberId}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

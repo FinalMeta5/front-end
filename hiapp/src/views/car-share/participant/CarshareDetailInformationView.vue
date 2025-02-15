@@ -101,7 +101,7 @@ export default {
         return;
       }
 
-      const url = `http://localhost:8080/api/carshare/registration/reservation?carShareRegiId=${this.carShareRegiId}&userId=${this.userId}`;
+      const url = `/api/carshare/registration/reservation?carShareRegiId=${this.carShareRegiId}&userId=${this.userId}`;
 
       try {
         const response = await axios.post(url);
@@ -128,7 +128,7 @@ export default {
     },
 
     async handleCreditDeduction() {
-      const url = `http://localhost:8080/api/carshare/registration/deducted-credit?userId=${this.userId}`;
+      const url = `/api/carshare/registration/deducted-credit?userId=${this.userId}`;
 
       try {
         const response = await axios.post(url);

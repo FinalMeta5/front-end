@@ -83,14 +83,116 @@ export default {
 
 <style scoped>
 @import "../../assets/style/phone-main-view-common.css";
+/* 📌 전체 컨테이너 스타일 */
+.about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #eef2f3, #dce5e7);
+    min-height: 100vh;
+}
+
+/* 📌 타이틀 스타일 */
+.titleH1 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+/* 📌 아코디언 스타일 */
+.accordion {
+    width: 80%;
+    background-color: transparent;
+}
+
+/* 📌 아코디언 아이템 */
+.accordion-item {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* 📌 아코디언 헤더 버튼 */
+.accordion-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    color: #2c3e50;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* 📌 버튼 호버 효과 */
+.accordion-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 📌 아코디언 바디 */
+.accordion-body {
+    padding: 15px;
+    font-size: 16px;
+    color: #555;
+    background: #f9f9f9;
+    border-radius: 0 0 12px 12px;
+}
+
+/* 📌 프로필 이미지 스타일 */
 .img-div {
     width: 50px;
     height: 50px;
+    border-radius: 50%;
     overflow: hidden;
+    border: 2px solid #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-img {
+
+/* 📌 프로필 이미지 */
+.img-div img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* 📌 회원 정보 텍스트 스타일 */
+.accordion-body div {
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+/* 📌 애니메이션 효과 */
+.accordion-collapse {
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* 📌 반응형 디자인 */
+@media (max-width: 768px) {
+    .accordion {
+        width: 95%;
+    }
+    
+    .accordion-button {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .img-div {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .accordion-body {
+        font-size: 14px;
+    }
 }
 </style>
