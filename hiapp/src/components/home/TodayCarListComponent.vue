@@ -7,9 +7,9 @@
 
     <!-- 예약 내역이 없는 경우 -->
     <div v-else-if="todayParticipationList && todayParticipationList.length === 0">
-      <div class="message">오늘은 예약 내역이 없습니다.</div>
+      <div class="message">{{$t('context.noReservationsToday')}}</div>
       <img src="http://ifh.cc/g/KAROcS.png" alt="이미지" class="image" />
-      <div class="subtitle">여러 사람과 함께 차량을 이용해 보세요</div>
+      <div class="subtitle">{{$t('context.shareACarService')}}</div>
     </div>
 
     <!-- 예약 내역이 있는 경우 -->

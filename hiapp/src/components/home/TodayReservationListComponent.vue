@@ -3,7 +3,7 @@
     <div class="box">
       <div class="login-status">
         <div v-if="!memberId"><strong>{{$t('home.mainTitle')}}</strong></div>
-        <div v-else><strong id="nickname">{{nickname }}님, 안녕하세요</strong></div>
+        <div v-else><strong id="nickname">{{nickname }}님, {{$t('home.welcom')}}</strong></div>
       </div>
 
       <div class="tabs">

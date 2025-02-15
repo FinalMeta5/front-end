@@ -2,7 +2,8 @@
     "home": {
         "taxiRegiList" : "My Taxi Reservation",
         "carRegiList" : "My car Reservation",
-        "mainTitle" : "Login is required"
+        "mainTitle" : "Login is required",
+        "welcom" : "welcom !"
     },
     "about": "About",
     "welcome": "Welcome to our website!",
@@ -20,7 +21,8 @@
         "updatePassword": "Change password",
         "selectCreditList": "View credit history",
         "selectCarList": "View my car",
-        "selectMyCarService": "View my car sharing service"
+        "selectMyCarService": "View my car sharing service",
+        "registerCar" : "Register Car"
     },
     "button" : {
         "RegisterService" : "Register Service",
@@ -28,7 +30,19 @@
     },
     "context" :{
         "todayReservations" : "Today's Reservations",
-        "shareTaxi" : "Let's Share a Taxi!",
-        "shareCar" :"Let's Share a Ride!"
+        "shareTaxi" : "Let's Share a Taxi! 🚕",
+        "shareCar" :"Let's Share a Ride! 🚗",
+        "getTogether" : "✨ Travel together with like-minded people! ✨",
+        "whereAreUGoing" : "✨ Where are you departing from? ✨",
+        "noTaxi" : "There are no taxi shares near your selected date and departure location.",
+        "withUs" : "Become a host and find fellow passengers!",
+        "loading" : "🚕 LOADING... 🚕",
+        "selectDepartureLocation" : "Departure",
+        "becomeATaxiShareHost" : "Become a Taxi Share Host",
+        "checkSharedCarsAroundMe" : "Check Shared Cars Around Me !",
+        "noReservationsToday" : "❌ There are no reservations today.",
+        "shareATaxiService" : "Share a ride with others! 🚕",
+        "shareACarService" : "Share a ride with others! 🚗"
+
     }
 }

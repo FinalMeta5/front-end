@@ -1,7 +1,7 @@
 <template>
     <div class="home phone-main-screen">
       <h1 class="title">{{ $t('context.shareCar') }}</h1>
-      <span class="text">같은 목적을 가진 사람과 같이 이동해봐요</span>
+      <span class="text">{{ $t('context.getTogether') }}</span>
       <div class="button-container">
         <button class="image-button" @click="sendRequest('출퇴근')">
           <img src="https://ifh.cc/g/xX2n1K.png" alt="출퇴근 이미지"/>
@@ -45,7 +45,7 @@
         <div class="around-car">
           <img class="moving-image" src="https://ifh.cc/g/ch51wM.png" alt="움직이는 이미지">
           <router-link to="/carshare/map">
-            <button id="map-btn">내 주변 공유 차량 확인하기</button>
+            <button id="map-btn">{{ $t('context.checkSharedCarsAroundMe') }}</button>
           </router-link>
         </div>
       </div>
@@ -135,10 +135,12 @@
     margin-top: 175px;
     font-weight: bold;
     font-size: 25px;
+    margin-bottom: 6px;
   }
 
   .text {
-    font-size: 12px;
+
+    font-size: 1rem;
   }
 
   .modal {
