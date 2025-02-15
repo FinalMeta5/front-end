@@ -64,11 +64,21 @@
 
     <!-- 다음 버튼 -->
     <button class="next-button" @click="handleNextClick">다음</button>
+
+    <FailModal
+      v-if="isModalVisible"
+      :title="'🚨'"
+      :textLine1="'필수 항목에 모두 동의해야 합니다.'"
+      :textLine2="'약관을 다시 확인해주세요.'"
+      :close="'닫기'"
+      @close="isModalVisible = false"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, watch, defineEmits } from "vue";
+import FailModal from './modal/FailModal.vue';
 
 const emit = defineEmits(["next-step"]);
 
@@ -88,6 +98,7 @@ const termsOptional = ref({
 
 // 전체 동의 체크
 const agreeAll = ref(false);
+const isModalVisible = ref(false); 
 
 // 모두 동의 toggle
 function toggleAll() {
@@ -115,7 +126,7 @@ function handleNextClick() {
     (val) => val
   );
   if (!allRequiredChecked) {
-    alert("필수 항목에 모두 동의해 주세요.");
+    isModalVisible.value = true;
     return;
   }
   emit("next-step");

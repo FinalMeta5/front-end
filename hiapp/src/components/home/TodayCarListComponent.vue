@@ -120,55 +120,84 @@ export default {
       this.fetchTodayParticipationList();
     },
     async updateStateOK(carShareJoinId) {
+    const currentTime = new Date();
+    const pickupTime = new Date(this.selectedCar.pickupDate);
+    const timeDifference = (pickupTime - currentTime) / (1000 * 60 * 60); // 시간 차이 계산 (분으로 나누고 다시 시간으로 변환)
+
+    if (timeDifference < 1) {
       this.closeModal();
-      try {
-        const response = await axios.put(
-          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
-        );
-        console.log("상태 변경 응답:", response.data);
-        if (response.data === 1) {
-          this.modalTitleS = '💡';
-          this.modalTextLine1S = '탑승 신청이 완료되었습니다';
-          this.modalTextLine2S = '약속 시간에 맞춰 출발지에 도착해주세요';
-          this.closeS = '확인';
-          this.showSuccessModal = true;
-        } else {
-          this.modalTitleF = '🚨';
-          this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
-          this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
-          this.closeF = '확인';
-          this.showFailModal = true;
-        }
-      } catch (error) {
-        console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.modalTitleF = '🚨';
+      this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+      this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+      this.closeF = '확인';
+      this.showFailModal = true;
+      return;
+    }
+
+    this.closeModal();
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
+      );
+      console.log("상태 변경 응답:", response.data);
+      if (response.data === 1) {
+        this.modalTitleS = '💡';
+        this.modalTextLine1S = '탑승 신청이 완료되었습니다';
+        this.modalTextLine2S = '약속 시간에 맞춰 출발지에 도착해주세요';
+        this.closeS = '확인';
+        this.showSuccessModal = true;
+      } else {
+        this.modalTitleF = '🚨';
+        this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+        this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+        this.closeF = '확인';
         this.showFailModal = true;
       }
-    },
-    async updateStateNO(carShareJoinId) {
+    } catch (error) {
+      console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.showFailModal = true;
+    }
+  },
+  async updateStateNO(carShareJoinId) {
+    const currentTime = new Date();
+    const pickupTime = new Date(this.selectedCar.pickupDate);
+    const timeDifference = (pickupTime - currentTime) / (1000 * 60 * 60); // 시간 차이 계산
+
+    if (timeDifference < 1) {
       this.closeModal();
-      try {
-        const response = await axios.put(
-          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-no`
-        );
-        console.log("상태 변경 응답:", response.data);
-        if (response.data === 1) {
-          this.modalTitleS = '💡';
-          this.modalTextLine1S = '탑승 취소가 완료되었습니다';
-          this.modalTextLine2S = '취소 상태에서는 차량 탑승이 불가능합니다';
-          this.closeS = '확인';
-          this.showSuccessModal = true;
-        } else {
-          this.modalTitleF = '🚨';
-          this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
-          this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
-          this.closeF = '확인';
-          this.showFailModal = true;
-        }
-      } catch (error) {
-        console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.modalTitleF = '🚨';
+      this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+      this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+      this.closeF = '확인';
+      this.showFailModal = true;
+      return;
+    }
+
+    // API 호출 등 상태 변경 로직
+    this.closeModal();
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-no`
+      );
+      console.log("상태 변경 응답:", response.data);
+      if (response.data === 1) {
+        this.modalTitleS = '💡';
+        this.modalTextLine1S = '탑승 취소가 완료되었습니다';
+        this.modalTextLine2S = '취소 상태에서는 차량 탑승이 불가능합니다';
+        this.closeS = '확인';
+        this.showSuccessModal = true;
+      } else {
+        this.modalTitleF = '🚨';
+        this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+        this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+        this.closeF = '확인';
         this.showFailModal = true;
       }
-    },
+    } catch (error) {
+      console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.showFailModal = true;
+    }
+  },
     async fetchTodayParticipationList() {
       this.isLoading = true;
       try {

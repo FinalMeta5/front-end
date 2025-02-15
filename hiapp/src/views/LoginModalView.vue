@@ -34,12 +34,11 @@
         <a @click="goToSignup">회원가입</a>
       </div>
 
-      <hr />
 
       <!-- SNS 로그인 버튼들 -->
        
-      <button class="kakao-btn"><img src="https://ifh.cc/g/xhCAQ8.png" class="kakao-logo">&nbsp;&nbsp;kakao 계정으로 시작하기</button>
-      <button class="google-btn"><img src="https://ifh.cc/g/1CpBWq.png" class="google-logo">&nbsp;&nbsp;Google 계정으로 시작하기</button>
+      <!-- <button class="kakao-btn"><img src="https://ifh.cc/g/xhCAQ8.png" class="kakao-logo">&nbsp;&nbsp;kakao 계정으로 시작하기</button> -->
+      <!-- <button class="google-btn"><img src="https://ifh.cc/g/1CpBWq.png" class="google-logo">&nbsp;&nbsp;Google 계정으로 시작하기</button> -->
     </div>
   </div>
 </template>
