@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" class="modal-overlay">
     <div class="modal-content">
-      <h2>🚨 오류 발생</h2>
+      <h2>🚨</h2>
       <p>{{ message }}</p>
       <button @click="closeModal">닫기</button>
     </div>

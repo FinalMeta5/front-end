@@ -47,7 +47,8 @@
                     <button v-if="!car.participantCount == 0" class="look-parti-btn" @click="fetchParticipants(car.carShareRegiId)">👥  [ {{ car.participantCount }} / {{ car.passengersNum }} ]</button>
                 </div>
                 <button v-if="!isPastService(car.pickupDate) && car.participantCount == 0" 
-                    @click="cancelCarShare(car.carShareRegiId, car.hasParticipants)" class="cancel-btn">🚨 공유 취소</button>
+                    @click="cancelCarShare(car.carShareRegiId)" class="cancel-btn">🚨 공유 취소</button>
+                <div class="no-car" v-if="car.carId == 0"> <삭제된 차량입니다.> </div>
             </div>
         </div>
 
@@ -82,12 +83,36 @@
                 </ul>
             </div>
         </div>
+
+        <!-- 🚨 확인 모달 -->
+        <ConfirmModal 
+            v-if="showConfirmModal"
+            :message="confirmMessage"
+            @confirm="confirmAction"
+            @cancel="showConfirmModal = false"
+        />
+
+        <!-- 🚨 에러 모달 -->
+        <ErrorModal v-if="showErrorModal" :message="errorMessage" @close="showErrorModal = false" />
+
+        <!-- ✅ 성공 모달 -->
+        <SuccessModal 
+            v-if="showSuccessModal"
+            :title="successTitle"
+            :textLine1="successText"
+            :textLine2="'마이페이지에서 확인하세요.'"
+            close="확인"
+            @close="closeSuccessModal"
+        />
     </div>
 </template>
 
 
 <script>
 import axios from 'axios';
+import ConfirmModal from '../../components/modal/ConfirmModal.vue'; 
+import ErrorModal from '../../components/error-modal/ErrorModal.vue';
+import SuccessModal from '../../components/modal/SuccessModal.vue';
 
 export default {
     name: 'MyCarShareServiceListForm',
@@ -99,7 +124,17 @@ export default {
             selectedMonth : new Date().getMonth() + 1,
             isLoading: true,
             participants : [], // 참가자 데이터 리스트
-            showParticipantsModal : false
+            showParticipantsModal : false,
+            showConfirmModal: false,  // 확인 모달 상태
+            confirmMessage: "",        // 확인 모달 메시지
+            confirmAction: null,       // 확인 시 실행할 함수
+
+            showErrorModal: false,
+            errorMessage: "",
+
+            showSuccessModal: false,
+            successTitle: "",
+            successText: ""
         };
     },
     methods: {
@@ -180,34 +215,63 @@ export default {
                 "concert": category === "콘서트",
                 "shopping": category === "장보기",
                 "sports": category === "스포츠",
-                "other": category === "기타"
+                "other": category === "기타",
+                "reservist" : category === "예비군"
             };
         },
         
         async cancelCarShare(carShareRegiId) {
-            console.log(`차량 공유 취소 : ${carShareRegiId}`);
+            console.log(`🚗 차량 공유 취소 요청: ${carShareRegiId}`);
 
-            if (hasParticipants) {
-                alert("🚨 참가자가 있는 차량 공유는 삭제할 수 없습니다.");
+            // 참가자가 있는지 확인 후 취소 불가 처리
+            const car = this.carList.find(c => c.carShareRegiId === carShareRegiId);
+            if (!car) {
+                this.errorMessage = "🚨 차량 정보를 찾을 수 없습니다.";
+                this.showErrorModal = true;
                 return;
             }
 
-            if(!confirm("해당 차량 공유 서비스를 삭제하시겠습니까?")) {
+            if (car.participantCount > 0) {
+                this.errorMessage = "🚨 참가자가 있는 차량 공유는 삭제할 수 없습니다.";
+                this.showErrorModal = true;
                 return;
             }
-            const accessToken = localStorage.getItem("accessToken");
-            try {
-                const response = await axios.post(`http://localhost:8080/api/car-share/delete/${carShareRegiId}`,{},{
-                    headers : {
-                        Authorization : `Bearer ${accessToken}`}
-                    });
-                    alert(response.data);
-                    this.fetchMyCars(); 
-                } catch(error) {
-                    console.error("삭제 실패");
-                    alert("삭제 중 오류 발생!")
+
+            // 🚨 확인 모달 표시
+            this.confirmMessage = "정말 이 차량 공유를 취소하시겠습니까?";
+            this.showConfirmModal = true;
+
+            // ✅ 확인 모달에서 실행될 함수 설정
+            this.confirmAction = async () => {
+                this.showConfirmModal = false;
+                const accessToken = localStorage.getItem("accessToken");
+
+                if (!accessToken) {
+                    this.errorMessage = "🚨 로그인이 필요합니다.";
+                    this.showErrorModal = true;
+                    return;
                 }
-            },
+
+                try {
+                    // DELETE 요청으로 변경 (API 확인 필요)
+                    const response = await axios.delete(`http://localhost:8080/api/car-share/delete/${carShareRegiId}`, {
+                        headers: { Authorization: `Bearer ${accessToken}` }
+                    });
+
+                    this.successTitle = "🚗 차량 공유 취소 완료!";
+                    this.successText = response.data;
+                    this.showSuccessModal = true;
+
+                    // 목록 다시 불러오기
+                    this.fetchMyCars();
+                } catch (error) {
+                    console.error("🚨 공유 취소 실패:", error);
+                    this.errorMessage = "🚨 공유 취소 중 오류가 발생했습니다.";
+                    this.showErrorModal = true;
+                }
+            };
+        }
+
     },
 
     computed : {
@@ -319,7 +383,8 @@ export default {
 .parti-info-zone {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-items: center;
     flex-grow: 1; /* 닉네임 영역이 유동적으로 확장 */
     margin-left: 10px;
 }
@@ -330,11 +395,6 @@ export default {
     font-weight: bold;
 }
 
-/* ✅ 참가 날짜 */
-.when-join {
-    font-size: 13px;
-    color: #828282;
-}
 
 /* ✅ 별점 */
 .star {
@@ -432,14 +492,7 @@ export default {
 }
 
 
-    /* ✅ 참가자 프로필 이미지 */
-    .profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #ddd;
-    }
+
 
     /* ✅ 참가자 닉네임 */
     .modal-content span {
@@ -473,7 +526,9 @@ export default {
         display: flex;
         justify-content: space-between;
         max-height: 4rem;
+ 
     }
+
 
     .done-drive {
         color: rgb(21, 140, 90);
@@ -497,7 +552,12 @@ export default {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-}
+    }
+
+    .no-car {
+        color: #828282;
+        margin-top: 5px;
+    }
 
     .filter-container select {
         padding: 8px;
@@ -516,7 +576,7 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 2rem;
+        gap: 1rem;
         margin-left: 1rem;    
     }
 
@@ -529,14 +589,6 @@ export default {
         display: flex;
         justify-content: space-between;
     }
-    .share-cate {
-        background-color: #f7c85a;
-        width: 5rem;
-        border-radius: 10px;
-        padding: 1px 1px;
-        font-weight: bold;
-        color: white;
-    }
     .mypage {
     padding: 20px;
     }
@@ -547,8 +599,8 @@ export default {
     margin: 10px 0;
     background: #f9f9f9;
     border-radius: 8px;
-    max-width: 22rem;
-    min-width: 22rem;
+    max-width: 21rem;
+    min-width: 21rem;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -560,26 +612,32 @@ export default {
         background: rgb(255, 255, 255);
         color: rgb(222, 16, 16);
         border: 1px solid;
-        max-height: 3rem;
+        max-height: 2rem;
         border-radius: 5px;
         cursor: pointer;
         font-weight: bold;
-        max-width: 7rem;
+        max-width: 9rem;
+        justify-self: center;
+        padding : 0;
+        margin-top: 1rem;
     }
 
     .cancel-btn:hover {
     background: rgb(222, 16, 16);
     color: white;
     }
-    .share-cate {
-    width: 5rem;
-    border-radius: 10px;
-    padding: 3px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    }
 
+
+    .share-cate {
+        background-color: #f7c85a;
+        width: 4rem;
+        border-radius: 10px;
+        padding: 1px 1px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: white;
+        text-align: center;
+    }
     .start-datetime {
         font-weight: bold;
         color: #828282;
@@ -588,7 +646,10 @@ export default {
     .when-join {
         margin-bottom: 3px;
         color: #828282;
+        font-size: 13px;
+        max-width: 3.6rem;
     }
+    
 
     .star {
         max-width: 8rem;
@@ -597,19 +658,23 @@ export default {
 
 /* ✅ 카테고리에 따른 배경색 적용 */
 .commute {
-    background-color: #3286e7; /* 출퇴근 → 파란색 */
+    background-color: #1a66bc; /* 출퇴근 → 파란색 */
 }
 
 .concert {
-    background-color: #0aa438; /* 콘서트 → 초록색 */
+    background-color: #ef08bd; /* 콘서트 → 초록색 */
 }
 
 .shopping {
-    background-color: #a56806; /* 장보기 → 주황색 */
+    background-color: #be7806; /* 장보기 → 주황색 */
 }
 
 .sports {
-    background-color: #a85aca; /* 스포츠 → 보라색 */
+    background-color: #9c05dd; /* 스포츠 → 보라색 */
+}
+
+.reservist {
+    background-color: #06852c;
 }
 
 .other {
@@ -618,8 +683,10 @@ export default {
 
 .parti {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
+    padding: 10px 0;
 }
 
 .parti-img {
@@ -627,4 +694,34 @@ export default {
     max-width: 5rem;
 }
 
+.parti-left {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;  /* 나머지 공간 차지 */
+}
+
+.profile-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-left: auto;  /* ✅ 오른쪽 끝으로 정렬 */
+}
+
+/* ✅ "탄다/안탄다" 아이콘을 프로필 오른쪽에 배치 */
+.parti-rigth {
+    display: flex;
+    justify-content: flex-end;  /* ✅ 오른쪽 정렬 */
+    align-items: center;
+    margin-left: auto;  /* ✅ 왼쪽 요소들과 간격 확보 */
+}
+
+/* ✅ 탄다/안탄다 아이콘 */
+.parti-img {
+    max-height: 4rem;
+    max-width: 4rem;
+    object-fit: contain; /* 이미지 비율 유지하면서 크기 맞추기 */
+    margin-left: 10px; /* ✅ 프로필과 간격 조절 */
+}
 </style>
