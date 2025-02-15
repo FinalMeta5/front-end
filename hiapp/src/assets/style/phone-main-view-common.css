@@ -58,6 +58,18 @@ main {
     margin-bottom: 4rem;
 }
 
+.view-context-contain5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 480px;
+    height: 100%;
+    margin-bottom: 100px;
+    margin-top: 10px;
+}
+
 .context2 {
     font-weight: bold;
     font-size: 1.4rem;
