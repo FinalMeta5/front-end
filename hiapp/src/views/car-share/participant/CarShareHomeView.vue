@@ -47,7 +47,7 @@
           <router-link to="/carshare/map">
             <button id="map-btn">{{ $t('context.checkSharedCarsAroundMe') }}</button>
           </router-link>
-        </div>
+        </div><br><br>
       </div>
     </div><br><br>
   </template>
@@ -134,13 +134,12 @@
   .title {
     margin-top: 175px;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 22px;
     margin-bottom: 6px;
   }
 
   .text {
-
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 
   .modal {
