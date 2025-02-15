@@ -53,8 +53,8 @@ export default {
 
       try {
         console.log(`📡 요청: GET /api/car-registration/member/${memberId}`);
-        const response = await axios.get(
-          `http://localhost:8080/api/car-registration/member/${memberId}`,
+        const response = await authAxios.get(
+          `/api/car-registration/member/${memberId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -1,6 +1,6 @@
 <template>
     <div class="home phone-main-screen">
-        <h1 class="titleH1 mb-3">관리자 페이지</h1>
+        <h1 class="titleH2 mb-3">관리자 페이지</h1>
         <div class="view-context-contain">
             <div class="d-flex justify-content-evenly w-100 mb-3">
                 <router-link to="/admin/members">
@@ -92,4 +92,82 @@
 <style scoped>
 @import "../../style.css";
 @import "../../assets/style/phone-main-view-common.css";
+
+/* 📌 전체 컨테이너 */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa; /* 부드러운 배경색 */
+    min-height: 100vh;
+}
+
+/* 📌 타이틀 스타일 */
+.titleH2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 📌 메뉴 버튼 컨테이너 */
+.view-context-contain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 📌 각 메뉴 버튼 그룹 */
+.d-flex {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 간격 조절 */
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* 📌 개별 메뉴 아이템 */
+.router-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.router-link div {
+    width: 140px;
+    height: 140px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 📌 아이콘 스타일 */
+.router-link svg {
+    width: 60px;
+    height: 60px;
+    color: #007bff; /* 파란색 아이콘 */
+}
+
+/* 📌 텍스트 스타일 */
+.router-link h5 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    text-align: center;
+    color: #333;
+}
+
+/* 📌 호버 효과 */
+.router-link div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
 </style>
