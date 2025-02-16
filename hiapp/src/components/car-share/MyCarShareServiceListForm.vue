@@ -109,13 +109,18 @@
 
 
 <script>
-import axios from 'axios';
-import ConfirmModal from '../../components/modal/ConfirmModal.vue'; 
+import { authAxios } from "../../store/auth/auth";
+import ConfirmModal from "../modal/ConfirmModal.vue"; 
 import ErrorModal from '../../components/error-modal/ErrorModal.vue';
 import SuccessModal from '../../components/modal/SuccessModal.vue';
 
 export default {
     name: 'MyCarShareServiceListForm',
+    components : {
+        ConfirmModal,
+        ErrorModal,
+        SuccessModal
+    },
     data() {
         return {
             carList: [], // 🚗 차량 공유 데이터 리스트
@@ -149,14 +154,14 @@ export default {
             }
 
             try {
-                const response = await axios.get("http://localhost:8080/api/car-share/my-list", {
+                const response = await authAxios.get("/api/car-share/my-list", {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
 
                 // 🚗 각 차량 데이터에 참가자 수 추가
                 this.carList = await Promise.all(response.data.map(async (car) => {
                     try {
-                        const participantsResponse = await axios.get(`http://localhost:8080/api/car-share/participants/${car.carShareRegiId}`, {
+                        const participantsResponse = await authAxios.get(`/api/car-share/participants/${car.carShareRegiId}`, {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         });
                         return { ...car, participantCount: participantsResponse.data.length };
@@ -180,7 +185,7 @@ export default {
             console.log("🔍 참가자 조회 요청 carShareRegiId:", carShareRegiId);
             const accessToken = localStorage.getItem("accessToken");
             try {
-                const response = await axios.get(`http://localhost:8080/api/car-share/participants/${carShareRegiId}`, {
+                const response = await authAxios.get(`/api/car-share/participants/${carShareRegiId}`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
 
@@ -254,7 +259,7 @@ export default {
 
                 try {
                     // DELETE 요청으로 변경 (API 확인 필요)
-                    const response = await axios.delete(`http://localhost:8080/api/car-share/delete/${carShareRegiId}`, {
+                    const response = await authAxios.delete(`/api/car-share/delete/${carShareRegiId}`, {
                         headers: { Authorization: `Bearer ${accessToken}` }
                     });
 

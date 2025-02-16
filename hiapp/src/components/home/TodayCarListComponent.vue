@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
 import DetailInfoComponent from "./DetailInfoComponent.vue";
 import SuccessModal from "../modal/SuccessModal.vue";  
 import FailModal from "../modal/FailModal.vue";  
@@ -136,8 +136,8 @@ export default {
 
     this.closeModal();
     try {
-      const response = await axios.put(
-        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
+      const response = await  authAxios.put(
+        `/api/carshare/registration/${carShareJoinId}/state-ok`
       );
       console.log("상태 변경 응답:", response.data);
       if (response.data === 1) {
@@ -176,8 +176,8 @@ export default {
     // API 호출 등 상태 변경 로직
     this.closeModal();
     try {
-      const response = await axios.put(
-        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-no`
+      const response = await  authAxios.put(
+        `/api/carshare/registration/${carShareJoinId}/state-no`
       );
       console.log("상태 변경 응답:", response.data);
       if (response.data === 1) {
@@ -201,8 +201,8 @@ export default {
     async fetchTodayParticipationList() {
       this.isLoading = true;
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/carshare/registration/today-list?userId=${this.userId}`
+        const response = await  authAxios.get(
+          `/api/carshare/registration/today-list?userId=${this.userId}`
         );
         this.todayParticipationList = Array.isArray(response.data)
           ? response.data

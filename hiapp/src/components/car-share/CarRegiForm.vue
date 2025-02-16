@@ -87,7 +87,7 @@
 
 <script setup>
 import { nextTick, ref, watch} from 'vue';
-import axios from 'axios';
+import { authAxios } from "../../store/auth/auth";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 import AlertModal from "../../components/check-modal/AlertModal.vue";
@@ -154,7 +154,7 @@ const uploadCarImage = async () => {
     formData.append("carImage", carImageFile.value);
 
     try {
-        const response = await axios.post("http://localhost:8080/api/car-registration/upload-car-image", formData, {
+        const response = await authAxios.post("/api/car-registration/upload-car-image", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`,
@@ -181,7 +181,7 @@ const uploadAgreementFile = async () => {
     formData.append("agreementFile", agreementFile.value);
 
     try {
-        const response = await axios.post("http://localhost:8080/api/car-registration/upload-verified-file", formData, {
+        const response = await authAxios.post("/api/car-registration/upload-verified-file", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`,
@@ -226,7 +226,7 @@ const registerCar = async () => {
     formData.append("carDescription", carDescription.value || ''); // 🚀 description은 선택 사항
 
     try {
-        const response = await axios.post("http://localhost:8080/api/car-registration/register", formData, {
+        const response = await authAxios.post("/api/car-registration/register", formData, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "multipart/form-data"
@@ -237,7 +237,9 @@ const registerCar = async () => {
         showSuccessModal.value = true; // ✅ 성공 모달 표시
         await nextTick();
         resetForm();
-        router.push("/mypage");
+        setTimeout(() => {
+            router.push("/mypage");
+        }, 1500); // 1.5초 후 페이지 이동
 
     } catch (error) {
         console.error("❌ 차량 등록 실패:", error);

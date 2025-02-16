@@ -79,7 +79,7 @@ const fetchTaxiDetail = async () => {
     errorMessage.value = "";
 
     try {
-        const response = await axios.get(`http://localhost:8080/api/taxi/detail/${props.taxiShareId}`);
+        const response = await authAxios.get(`/api/taxi/detail/${props.taxiShareId}`);
         detail.value = response.data;
         console.log(response.data);
     } catch (error) {

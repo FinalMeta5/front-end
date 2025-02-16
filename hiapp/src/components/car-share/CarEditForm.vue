@@ -99,7 +99,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
+import { authAxios } from "../../store/auth/auth";
 import router from '../../router';
 import ErrorModal from '../error-modal/ErrorModal.vue';
 import SuccessModal from '../modal/SuccessModal.vue';
@@ -138,7 +138,7 @@ const fetchCarData = async () => {
     }
 
     try {
-        const response = await axios.get(`http://localhost:8080/api/car-registration/member/${memberId}`, {
+        const response = await authAxios.get(`/api/car-registration/member/${memberId}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -233,7 +233,7 @@ const submitCarUpdate = async () => {
     }
 
     try {
-        const response = await axios.put(`http://localhost:8080/api/car-registration/update/${originalData.value.carId}`, 
+        const response = await authAxios.put(`/api/car-registration/update/${originalData.value.carId}`, 
             updatedCarData, {
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -273,7 +273,7 @@ const reRegisterCar = async () => {
 
     try {
         // 차량 수정 요청 (PUT)
-        const updateResponse = await axios.put(`http://localhost:8080/api/car-registration/update/${originalData.value.carId}`, 
+        const updateResponse = authAxios.put(`/api/car-registration/update/${originalData.value.carId}`, 
             reRegisterData, {
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -287,8 +287,8 @@ const reRegisterCar = async () => {
         isEditing.value = false;
 
         // 🚀 차량 수정 성공 후, 차량 재등록 알림 요청 (POST)
-        const reRegisterResponse = await axios.post(
-            `http://localhost:8080/api/car-registration/re-registration/${originalData.value.memberId}`,
+        const reRegisterResponse = authAxios.post(
+            `/api/car-registration/re-registration/${originalData.value.memberId}`,
             {},  // POST 요청이지만 데이터 없이 보낼 경우 빈 객체 `{}` 전달
             {
                 headers: {
@@ -321,7 +321,7 @@ const deleteCar = async () => {
     }
 
     try {
-        await axios.delete(`http://localhost:8080/api/car-registration/delete/${originalData.value.carId}`, {
+        await authAxios.delete(`/api/car-registration/delete/${originalData.value.carId}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

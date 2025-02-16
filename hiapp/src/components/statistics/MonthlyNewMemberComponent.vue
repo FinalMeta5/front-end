@@ -44,7 +44,7 @@ export default {
     },
     methods: {
         fetchChartData() {
-            authAxios.get('https://localhost:8443/api/statistics/monthly-member')
+            authAxios.get('/api/statistics/monthly-member')
                 .then(response => {
                     const data = response.data;
                     this.chartData.labels = data.map(monthlyNewMem => monthlyNewMem.month);

@@ -127,9 +127,9 @@ export default {
 
   methods: {
     async fetchDrivingInfo(driverId, carShareRegiId) {
-      const url = `http://localhost:8080/api/carshare/registration/driving-information`;
+      const url = `/api/carshare/registration/driving-information`;
       try {
-        const response = await axios.get(url, {
+        const response = await  authAxios.get(url, {
           params: {
             memberId: driverId,
             carShareRegiId: carShareRegiId 
