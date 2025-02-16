@@ -41,6 +41,7 @@
 
 <script>
 import axios from "axios";
+import authAxios from '@/api/authAxios';
 import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
 import LoginModalView from '../../../views/LoginModalView.vue';
 
