@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { authAxios } from "../../store/auth/auth";
 
 export default {
     name: 'TaxiShareRegist.vue',

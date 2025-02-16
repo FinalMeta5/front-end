@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
 import DetailInfoComponent from "./DetailInfoComponent.vue";
 import SuccessModal from "../modal/SuccessModal.vue";  
 import FailModal from "../modal/FailModal.vue";  

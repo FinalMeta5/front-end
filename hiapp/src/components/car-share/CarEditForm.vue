@@ -99,7 +99,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
+import { authAxios } from "../../store/auth/auth";
 import router from '../../router';
 import ErrorModal from '../error-modal/ErrorModal.vue';
 import SuccessModal from '../modal/SuccessModal.vue';

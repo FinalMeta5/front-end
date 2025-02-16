@@ -16,7 +16,7 @@
 <script>
 import { ref, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
 import { useAuthState } from "../../store/auth/auth";
 import LoginModalView from "../../views/LoginModalView.vue";
 import ErrorModal from "../../components/error-modal/ErrorModal.vue";
