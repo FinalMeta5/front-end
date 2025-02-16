@@ -6,7 +6,7 @@
             <p v-else-if="errorMessage">{{ errorMessage }}</p>
 
             <div v-else-if="detail" class="modal-text">
-                <div id="destination"><b>도착&emsp;{{ detail.destination }}</b></div>
+                <div id="destination"><b>도착지 : {{ detail.destination }}</b></div>
                 <h2 class="modal-title">{{ detail.pickupTime }}&nbsp;{{ detail.pickupTimeOnly }}&ensp;출발</h2>
                 <div :class="['time-negotiation', detail.timeNego === 'true' ? 'possible' : 'impossible']">{{
                     detail.timeNego
@@ -37,6 +37,13 @@
         </div>
         <!-- 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" @close="closeLoginModal" />
+
+        <!-- <SuccessModal 
+            v-if="showSuccessModal" 
+            :modal-title="successMessage.title"
+            :modal-text="successMessage.text"
+            @close="closeSuccessModal" 
+        /> -->
     </div>
 </template>
 
@@ -44,6 +51,7 @@
 import { ref, onMounted, defineProps, defineEmits } from "vue";
 import axios from "axios";
 import LoginModalView from "../../views/LoginModalView.vue";
+// import SuccessModal from "../Mode/SuccessModal.vue";
 
 // 부모에게 받은 props
 const props = defineProps<{ taxiShareId: number | null }>();
@@ -159,6 +167,10 @@ const deletePost = async () => {
 </script>
 
 <style scoped>
+#destination, .modal-title {
+    font-size:15px;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;

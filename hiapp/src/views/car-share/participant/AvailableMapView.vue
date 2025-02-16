@@ -15,7 +15,7 @@
             />
             <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
           </div>
-          <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
+          <!-- <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/> -->
           
           <CarShareInformationComponent 
             v-if="selectedCar" 
@@ -539,8 +539,8 @@ width: 50px;
 
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: -10px;
+right: 35px;
+top: 800px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
@@ -552,14 +552,42 @@ width: 50px;
 
 }
 
-@media screen and (max-height: 70px) {
+@media screen and (max-height: 670px){
+
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: 60px;
+right: 60px;
+top: 540px;
+cursor: pointer;
+z-index: 15;
+width: 40px;
+}
+
+}
+
+@media screen and (max-height: 896px) and  (min-width: 414px){
+
+.current-location-btn {
+position: absolute;
+right: 45px;
+top: 760px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
 }
+
+}
+
+@media screen and (max-height: 844px) and  (min-width: 439px){
+
+.current-location-btn {
+position: absolute;
+right: 80px;
+top: 400px;
+cursor: pointer;
+z-index: 15;
+width: 510px;
+}
+
 }
 </style>

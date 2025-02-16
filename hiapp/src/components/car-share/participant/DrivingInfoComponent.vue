@@ -1,7 +1,7 @@
 <template>
   <div class="driving-info">
     <div class="max-w-md mx-auto p-4">
-      <span id="car-info">차량 정보</span>
+      <span id="car-info">운행 정보</span>
       <hr class="divider-top"> 
       <div v-if="drivingInfo && Object.keys(drivingInfo).length > 0">
         <div class="driver-img-wrapper">
@@ -14,7 +14,7 @@
         <p>✔ 총인원 : {{ drivingInfo.passengersNum }}명</p>
         <p>✔ 잔여석 : {{ drivingInfo.leftoverNum }}명</p>
       </div>
-      <hr class="divider-bottom"> 
+      <hr class="divider-bottom"> <br>
     </div>
 
     <div v-if="isModalOpen" class="modal-overlay" @click="closeImageModal">

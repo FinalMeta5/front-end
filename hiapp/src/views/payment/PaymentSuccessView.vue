@@ -4,14 +4,14 @@
     <div class="view-context-contain">
       <div class="p-grid typography--p" style="margin-top: 50px">
         <div class="p-grid-col text--left">
-          <b>결제금액</b>
+          <b>결제금액</b> <span>{{ Number(route.query.amount).toLocaleString() }}원</span>
         </div>
-        <div class="p-grid-col text--right" id="amount">
+        <!-- <div class="p-grid-col text--right" id="amount">
           {{ Number(route.query.amount).toLocaleString() }}원
-        </div>
+        </div> -->
       </div>
 
-      <div class="p-grid typography--p" style="margin-top: 10px">
+      <!-- <div class="p-grid typography--p" style="margin-top: 10px">
         <div class="p-grid-col text--left">
           <b>주문번호</b>
         </div>
@@ -31,7 +31,7 @@
         >
           {{ route.query.paymentKey }}
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -66,4 +66,13 @@ confirm();
 <style scoped>
 @import "../../style.css";
 @import "../../assets/style/phone-main-view-common.css";
+
+.titleH1{
+  margin-top: 200px;
+  font-size: 40px;
+}
+
+.p-grid-col{
+  font-size: 20px;
+}
 </style>

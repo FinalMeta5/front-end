@@ -26,15 +26,15 @@
       <div v-if="showModal" class="modal">
         <div class="modal-content">
           <span class="close-btn" @click="closeModal">&times;</span>
-          <h2 class="list-title">이용 가능한 차량 목록</h2>
+          <h2 class="list-title">이용 가능한 차량 목록</h2><br>
           <ul>
             <!-- selectedCarList에 값이 없을 경우 "없음" 출력 -->
             <li v-if="selectedCarList.length === 0" class="no">이용 가능한 차량 목록이 없습니다</li>
             <li v-for="car in selectedCarList" :key="car.id" @click="goToDetail(car)">
-              <div class="car-info"><hr>
-                <div><strong>(출발)</strong> {{ car.pickupLoc }}</div>
-                <div><strong>(도착)</strong> {{ car.destination }}</div>
-                <div><strong>(일정)</strong> {{ car.pickupDate }}</div>
+              <div class="car-info">
+                <div><strong>🕒</strong> {{ car.pickupDate }}</div>
+                <div><strong>📍출발지 : </strong> {{ car.pickupLoc }}</div>
+                <div><strong>📍도착지 : </strong> {{ car.destination }}</div>
               </div>
             </li>
           </ul>
@@ -131,6 +131,10 @@
   @import "../../../style.css";
   @import "../../../assets/style/phone-main-view-common.css";
   
+  .list-title {
+    font-weight: bold;
+  }
+
   .title {
     margin-top: 175px;
     font-weight: bold;
@@ -159,7 +163,7 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    width: 80%;
+    width: 90%;
     max-width: 500px;
     text-align: center;
     position: relative;
@@ -177,7 +181,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 10px;
     font-size: 15px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
   }
 
   .no {
@@ -233,7 +241,12 @@
     width: 85%;
     border-radius: 10px;
   }
-  
+
+ul {
+  max-height: 350px;  
+  overflow-y: auto;  
+}
+
   #map-btn {
     width: 100%;
     padding: 0px;
@@ -259,7 +272,43 @@
     width: 15%;
     z-index: 1;
   }
-  
+
+.modal-content li {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.modal-content li:hover {
+    transform: translateY(-2px);
+    background-color: #f9f9f9;
+}
+
+.modal-content li .car-info {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.modal-content li .car-info div {
+    margin: 5px 0;
+}
+
+
+.modal-content li.no {
+    background-color: #f1f1f1;
+    color: #888;
+    text-align: center;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+}
   @keyframes moveImage {
     0% {
       left: -90%;
@@ -285,5 +334,6 @@
       width: 90vw;
     }
   }
+
   </style>
   

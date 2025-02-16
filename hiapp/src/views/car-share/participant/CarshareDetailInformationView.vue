@@ -19,9 +19,9 @@
             :latitudeDs="latitudeDs"
             :longitudeDs="longitudeDs"/>
           <div class="button-container">
-              <button @click="makeReservation">예약</button>
-              <button @click="cancelReservation">취소</button>
-          </div>
+              <button id="btn" @click="makeReservation">예약</button>
+              <button id="btn" @click="cancelReservation">취소</button>
+          </div><br>
       </div>
       
       <SuccessModal 
@@ -123,8 +123,12 @@ export default {
     },
     
     handleModalClose() {
-      this.showSuccessModal = false;
-      this.showFailModal = false;
+      if (this.closeF === '크레딧 구매하기') {
+        this.$router.push('/purchase-credit');
+      } else {
+        this.showSuccessModal = false;
+        this.showFailModal = false;
+      }
     },
 
     async handleCreditDeduction() {
@@ -184,7 +188,14 @@ export default {
   margin: 0 5px; 
   border: none;
   padding: 10px 20px; 
+  background-color: #878787;
+  color: #ffffff;
 }
+
+#btn {
+  border-radius: 8px;
+}
+
 @media (max-width: 600px) {
   .button-container {
   width: 90vw;
