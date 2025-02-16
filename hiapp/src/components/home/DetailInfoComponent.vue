@@ -4,7 +4,7 @@
       <p class="pickup-date1">{{ pickupDate }}</p>
       <p class="pickup-date2" v-if="state === '탄다'">탑승 예정</p>
     </div>
-    <p class="pickup-loc">(출발) &nbsp;{{ pickupLoc }}</p>
+    <p class="pickup-loc">(출발) &nbsp;{{ pickupLoc }}</p><br>
     <p class="pickup-loc">(도착) &nbsp;{{ destination }}</p>
     <p class="expectedNum">현재 탑승 예정인원은 {{ expectedNum }}명입니다</p>
   </div>

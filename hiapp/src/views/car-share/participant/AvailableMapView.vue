@@ -15,7 +15,7 @@
             />
             <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
           </div>
-          <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
+          <!-- <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/> -->
           
           <CarShareInformationComponent 
             v-if="selectedCar" 
@@ -43,6 +43,7 @@
 import axios from "axios";
 import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
 import LoginModalView from '../../../views/LoginModalView.vue';
+import { authAxios, useAuthState } from "../store/auth/auth.js";
 
 export default {
   name: "KakaoMap",
@@ -143,7 +144,7 @@ export default {
     // 차량 목록 데이터 백엔드에 요청
     async fetchCarList() {
       try {
-        const response = await authAxios.get("/api/carshare/registration/available-list");
+        const response = await axios.get("/api/carshare/registration/available-list");
         if (response.status === 200 && response.data) {
           this.carList = response.data;
 
@@ -539,8 +540,8 @@ width: 50px;
 
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: -10px;
+right: 35px;
+top: 800px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
@@ -552,14 +553,42 @@ width: 50px;
 
 }
 
-@media screen and (max-height: 70px) {
+@media screen and (max-height: 670px){
+
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: 60px;
+right: 60px;
+top: 540px;
+cursor: pointer;
+z-index: 15;
+width: 40px;
+}
+
+}
+
+@media screen and (max-height: 896px) and  (min-width: 414px){
+
+.current-location-btn {
+position: absolute;
+right: 45px;
+top: 760px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
 }
+
+}
+
+@media screen and (max-height: 844px) and  (min-width: 439px){
+
+.current-location-btn {
+position: absolute;
+right: 80px;
+top: 400px;
+cursor: pointer;
+z-index: 15;
+width: 510px;
+}
+
 }
 </style>
