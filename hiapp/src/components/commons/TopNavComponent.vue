@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watchEffect, nextTick } from "vue";
 import LoginModalView from "../../views/LoginModalView.vue";
 import { logout, useAuthState } from "../../store/auth/auth";
 import { useRouter } from "vue-router";
@@ -36,7 +36,7 @@ export default {
   },
   setup() {
     const showLoginModal = ref(false);
-    const { isAuthenticated } = useAuthState();
+    const { isAuthenticated, user, clearAuthState } = useAuthState();
     const router = useRouter();
 
     const goBack = () => {
@@ -47,10 +47,28 @@ export default {
       }
     };
 
+    const handleLogout = async () => {
+      await logout(); // 로그아웃 실행 (비동기)
+
+      localStorage.removeItem("authToken"); 
+      sessionStorage.removeItem("authToken"); 
+      localStorage.removeItem("userData"); 
+      sessionStorage.removeItem("userData");
+      localStorage.removeItem("userRole");
+      sessionStorage.removeItem("userRole");
+
+      clearAuthState(); 
+
+      await nextTick();
+      
+      router.push("/");
+    };
+
     return {
       isAuthenticated,
+      user,
       showLoginModal,
-      logout,
+      logout: handleLogout,
       goBack,
     };
   },

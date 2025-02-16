@@ -87,7 +87,7 @@
 
 <script setup>
 import { nextTick, ref, watch} from 'vue';
-import axios from 'axios';
+import { authAxios } from "../../store/auth/auth";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 import AlertModal from "../../components/check-modal/AlertModal.vue";

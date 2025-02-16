@@ -109,13 +109,18 @@
 
 
 <script>
-import axios from 'axios';
-import ConfirmModal from '../../components/modal/ConfirmModal.vue'; 
+import { authAxios } from "../../store/auth/auth";
+import ConfirmModal from "../modal/ConfirmModal.vue"; 
 import ErrorModal from '../../components/error-modal/ErrorModal.vue';
 import SuccessModal from '../../components/modal/SuccessModal.vue';
 
 export default {
     name: 'MyCarShareServiceListForm',
+    components : {
+        ConfirmModal,
+        ErrorModal,
+        SuccessModal
+    },
     data() {
         return {
             carList: [], // 🚗 차량 공유 데이터 리스트
