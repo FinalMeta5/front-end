@@ -41,9 +41,15 @@
 
 <script>
 import axios from "axios";
-import authAxios from '@/api/authAxios';
 import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
 import LoginModalView from '../../../views/LoginModalView.vue';
+
+const authAxios = axios.create({
+    baseURL: 'https://api/hifive5/shop',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
 
 export default {
   name: "KakaoMap",
@@ -144,7 +150,7 @@ export default {
     // 차량 목록 데이터 백엔드에 요청
     async fetchCarList() {
       try {
-        const response = await authAxios.get("https://api.hifive5.shop/api/carshare/registration/available-list");
+        const response = await authAxios.get("/api/carshare/registration/available-list");
         if (response.status === 200 && response.data) {
           this.carList = response.data;
 
