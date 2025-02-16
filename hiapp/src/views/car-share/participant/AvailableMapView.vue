@@ -43,13 +43,7 @@
 import axios from "axios";
 import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
 import LoginModalView from '../../../views/LoginModalView.vue';
-
-const authAxios = axios.create({
-    baseURL: 'https://api/hifive5/shop',
-    headers: {
-        'Content-Type': 'application/json',
-    }
-});
+import { authAxios, useAuthState } from "../store/auth/auth.js";
 
 export default {
   name: "KakaoMap",
