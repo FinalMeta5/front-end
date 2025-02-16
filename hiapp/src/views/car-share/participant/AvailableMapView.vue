@@ -143,7 +143,7 @@ export default {
     // 차량 목록 데이터 백엔드에 요청
     async fetchCarList() {
       try {
-        const response = await authAxios.get("/api/carshare/registration/available-list");
+        const response = await authAxios.get("https://api.hifive5.shop/api/carshare/registration/available-list");
         if (response.status === 200 && response.data) {
           this.carList = response.data;
 
