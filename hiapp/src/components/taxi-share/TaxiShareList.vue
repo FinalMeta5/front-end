@@ -100,6 +100,7 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted, computed, watchEffect } from "vue";
 import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
 import PlaceSearchModal from "./PlaceSearchModal.vue";
 import TaxiShareJoinModal from "./TaxiShareJoinModal.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -147,7 +148,8 @@ const fetchTaxiList = async () => {
     errorMessage.value = "";
 
     try {
-        const url = `/api/taxi/list?pickupTime=${selectedDate.value}`;
+        // const url = `/api/taxi/list?pickupTime=${selectedDate.value}`;
+        const url = `https://api/hifive5.shop/api/taxi/list?pickupTime=${selectedDate.value}`;
 
         const requestBody = departureLat.value && departureLng.value ? {
             lat: departureLat.value,

@@ -43,7 +43,7 @@
 import axios from "axios";
 import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
 import LoginModalView from '../../../views/LoginModalView.vue';
-import { authAxios, useAuthState } from "../store/auth/auth.js";
+import { authAxios } from "../../../store/auth/auth";
 
 export default {
   name: "KakaoMap",
@@ -143,29 +143,43 @@ export default {
 
     // 차량 목록 데이터 백엔드에 요청
     async fetchCarList() {
-      try {
-        const response = await axios.get("/api/carshare/registration/available-list");
-        if (response.status === 200 && response.data) {
-          this.carList = response.data;
+  try {
+    // const response = await authAxios.get("/api/carshare/registration/available-list");
+    const response = await axios.get("https://api.hifive5.shop/api/carshare/registration/available-list");
+    if (response.status === 200 && response.data) {
+      this.carList = response.data;
 
-          if(!window.kakao || !window.kakao.maps) {
-              this.waitForKakaoMap().then(() => {
-                  this.carList.forEach(car => {
-                      this.createCarMarker(car.latitudePl, car.longitudePl, car);
-                  });
-              });
-          } else {
-            this.waitForKakaoMap().then(() => {
-              this.carList.forEach(car => {
-                this.createCarMarker(car.latitudePl, car.longitudePl, car);
-              });
+      if (!window.kakao || !window.kakao.maps) {
+        this.waitForKakaoMap().then(() => {
+          this.carList.forEach(car => {
+            this.createCarMarker(car.latitudePl, car.longitudePl, car);
           });
-          }
-        }
-      } catch (error) {
-        console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.', error);
+        });mmmmm
+      } else {
+        this.waitForKakaoMap().then(() => {
+          this.carList.forEach(car => {
+            this.createCarMarker(car.latitudePl, car.longitudePl, car);
+          });
+        });
       }
-    },
+    }
+  } catch (error) {
+    console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.');
+    
+    if (error.response) {
+      // 서버 응답이 있지만 오류가 발생한 경우
+      console.error('응답 오류:', error.response.data);
+      console.error('응답 상태 코드:', error.response.status);
+    } else if (error.request) {
+      // 요청이 보내졌으나 응답을 받지 못한 경우
+      console.error('응답 없음:', error.request);
+    } else {
+      // 요청을 보내는 과정에서 다른 오류가 발생한 경우
+      console.error('요청 오류:', error.message);
+    }
+  }
+},
+
 
     // 카카오 맵 로드 대기 함수 추가
     waitForKakaoMap() {

@@ -403,10 +403,6 @@ async function signupRequest() {
   } else {
     alert("회원가입에 실패했습니다.");
   }
-
-  function closeSuccessModal() {
-    showSuccessModal.value = false;
-  }
 }
 
 onUnmounted(() => {
