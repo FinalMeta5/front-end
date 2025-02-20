@@ -68,7 +68,7 @@
     methods: {
       async sendRequest(category) {
         try {
-          const response = await authAxios.get(`/api/carshare/registration/list/category?category=${category}`);
+          const response = await axios.get(`http://localhost:8080/api/carshare/registration/list/category?category=${category}`);
           if (response.status === 200 && response.data) {
             this.selectedCarList = response.data; 
             console.log(`${category} data: `, this.selectedCarList);

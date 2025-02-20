@@ -63,10 +63,12 @@ export default {
   },
   methods: {
     async fetchDriverInfo(driverId) {
-      const url = `/api/carshare/registration/driver-information/${driverId}`;
+      // const url = `/api/carshare/registration/driver-information/${driverId}`;
+      const url = `http://localhost:8080/api/carshare/registration/driver-information/${driverId}`;
 
       try {
-        const response = await  authAxios.get(url);
+        // const response = await  authAxios.get(url);
+        const response = await axios.get(url);
         this.driverInfo = response.data;
         console.log(this.driverInfo);
         this.$emit("update-nickname", this.driverInfo.nickname);
@@ -75,10 +77,12 @@ export default {
       }
     },
     async fetchDriverRating(driverId) {
-      const url = `/api/carshare/registration/rating/${driverId}`;
+      // const url = `/api/carshare/registration/rating/${driverId}`;
+      const url = `http://localhost:8080/api/carshare/registration/rating/${driverId}`;
 
       try {
-        const response = await  authAxios.get(url);
+        // const response = await  authAxios.get(url);
+        const response = await axios.get(url);
         this.driverRating = response.data;
       } catch (error) {
         console.error('Driver rating fetch error:', error);

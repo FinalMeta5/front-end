@@ -50,6 +50,7 @@
 
 <script>
 import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 
 export default {
     name: 'TaxiShareRegist.vue',
@@ -131,7 +132,7 @@ export default {
                 estimatedAmount: this.estimatedAmount,
                 timeNego: this.timeNego,
             };
-            authAxios.post('/api/taxi/insert', taxiShare)
+            axios.post('http://localhost:8080/api/taxi/insert', taxiShare)
                 .then(response => {
                     console.log('TaxiShare 객체가 성공적으로 전송되었습니다.');
                     this.$router.push('/taxi-share/list');

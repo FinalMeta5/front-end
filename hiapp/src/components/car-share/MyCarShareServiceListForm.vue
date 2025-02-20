@@ -48,7 +48,7 @@
                 </div>
                 <button v-if="!isPastService(car.pickupDate) && car.participantCount == 0" 
                     @click="cancelCarShare(car.carShareRegiId)" class="cancel-btn">🚨 공유 취소</button>
-                <div class="no-car" v-if="car.carId == 0"> <삭제된 차량입니다.> </div>
+                <div class="no-car" v-if="car.carId == 0">  </div>
             </div>
         </div>
 
@@ -86,7 +86,7 @@
 
         <!-- 🚨 확인 모달 -->
         <ConfirmModal 
-            v-if="showConfirmModal"
+            v-show="showConfirmModal"
             :message="confirmMessage"
             @confirm="confirmAction"
             @cancel="showConfirmModal = false"
@@ -110,9 +110,11 @@
 
 <script>
 import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 import ConfirmModal from "../modal/ConfirmModal.vue"; 
 import ErrorModal from '../../components/error-modal/ErrorModal.vue';
 import SuccessModal from '../../components/modal/SuccessModal.vue';
+import { nextTick } from "vue";
 
 export default {
     name: 'MyCarShareServiceListForm',
@@ -154,14 +156,14 @@ export default {
             }
 
             try {
-                const response = await authAxios.get("/api/car-share/my-list", {
+                const response = await axios.get("http://localhost:8080/api/car-share/my-list", {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
 
                 // 🚗 각 차량 데이터에 참가자 수 추가
                 this.carList = await Promise.all(response.data.map(async (car) => {
                     try {
-                        const participantsResponse = await authAxios.get(`/api/car-share/participants/${car.carShareRegiId}`, {
+                        const participantsResponse = await axios.get(`http://localhost:8080/api/car-share/participants/${car.carShareRegiId}`, {
                             headers: { Authorization: `Bearer ${accessToken}` }
                         });
                         return { ...car, participantCount: participantsResponse.data.length };
@@ -185,7 +187,7 @@ export default {
             console.log("🔍 참가자 조회 요청 carShareRegiId:", carShareRegiId);
             const accessToken = localStorage.getItem("accessToken");
             try {
-                const response = await authAxios.get(`/api/car-share/participants/${carShareRegiId}`, {
+                const response = await axios.get(`http://localhost:8080/api/car-share/participants/${carShareRegiId}`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
 
@@ -245,11 +247,14 @@ export default {
             // 🚨 확인 모달 표시
             this.confirmMessage = "정말 이 차량 공유를 취소하시겠습니까?";
             this.showConfirmModal = true;
+            console.log("확인 모달 상태:", this.showConfirmModal);
+            console.log("확인 모달 메시지:", this.confirmMessage);
 
             // ✅ 확인 모달에서 실행될 함수 설정
             this.confirmAction = async () => {
                 this.showConfirmModal = false;
                 const accessToken = localStorage.getItem("accessToken");
+                console.log("토큰 : ", accessToken);
 
                 if (!accessToken) {
                     this.errorMessage = "🚨 로그인이 필요합니다.";
@@ -259,7 +264,7 @@ export default {
 
                 try {
                     // DELETE 요청으로 변경 (API 확인 필요)
-                    const response = await authAxios.delete(`/api/car-share/delete/${carShareRegiId}`, {
+                    const response = await axios.delete(`http://localhost:8080/api/car-share/delete/${carShareRegiId}`, {
                         headers: { Authorization: `Bearer ${accessToken}` }
                     });
 

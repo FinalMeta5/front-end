@@ -88,6 +88,7 @@
 <script setup>
 import { nextTick, ref, watch} from 'vue';
 import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 import AlertModal from "../../components/check-modal/AlertModal.vue";
@@ -154,7 +155,7 @@ const uploadCarImage = async () => {
     formData.append("carImage", carImageFile.value);
 
     try {
-        const response = await authAxios.post("/api/car-registration/upload-car-image", formData, {
+        const response = await axios.post("http://localhost:8080/api/car-registration/upload-car-image", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`,
@@ -181,7 +182,7 @@ const uploadAgreementFile = async () => {
     formData.append("agreementFile", agreementFile.value);
 
     try {
-        const response = await authAxios.post("/api/car-registration/upload-verified-file", formData, {
+        const response = await axios.post("http://localhost:8080/api/car-registration/upload-verified-file", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${token}`,
@@ -226,7 +227,7 @@ const registerCar = async () => {
     formData.append("carDescription", carDescription.value || ''); // 🚀 description은 선택 사항
 
     try {
-        const response = await authAxios.post("/api/car-registration/register", formData, {
+        const response = await axios.post("http://localhost:8080/api/car-registration/register", formData, {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "multipart/form-data"

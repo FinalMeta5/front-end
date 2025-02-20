@@ -4,6 +4,7 @@
 
 <script setup>
 import { authAxios } from '../store/auth/auth';
+import axios from 'axios';
 
 const downloadExcel = async () => {
     try {

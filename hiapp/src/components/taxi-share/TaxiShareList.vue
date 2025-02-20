@@ -149,7 +149,8 @@ const fetchTaxiList = async () => {
 
     try {
         // const url = `/api/taxi/list?pickupTime=${selectedDate.value}`;
-        const url = `https://api.hifive5.shop/api/taxi/list?pickupTime=${selectedDate.value}`;
+        // const url = `https://api.hifive5.shop/api/taxi/list?pickupTime=${selectedDate.value}`;
+        const url =`http://localhost:8080/api/taxi/list?pickupTime=${selectedDate.value}`
 
         const requestBody = departureLat.value && departureLng.value ? {
             lat: departureLat.value,

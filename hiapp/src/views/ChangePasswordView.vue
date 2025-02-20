@@ -117,7 +117,7 @@ async function onSendCode() {
 
   try {
     console.log("email: ",email.value);
-    await axios.post("https://api.hifive5.shop/api/email/change-password", {
+    await axios.post("http://localhost:8080/api/email/change-password", {
       email: email.value,
     });
     
@@ -165,7 +165,7 @@ async function onVerifyCode() {
   }
 
   try {
-    const response = await axios.post("https://api.hifive5.shop/api/email/check", {
+    const response = await axios.post("http://localhost:8080/api/email/check", {
       email: email.value,
       code: codeInput.value,
     });
@@ -196,7 +196,7 @@ async function onChangePassword() {
   try {
     console.log("email: ",email.value);
     console.log("password: ",newPassword.value);
-    await axios.post("https://api.hifive5.shop/api/member/change-password", {
+    await axios.post("http://localhost:8080/api/member/change-password", {
       email: email.value,
       password: newPassword.value,
     });

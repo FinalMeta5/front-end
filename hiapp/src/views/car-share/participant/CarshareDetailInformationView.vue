@@ -101,23 +101,27 @@ export default {
         return;
       }
 
-      const url = `https://api.hifive5.shop/api/carshare/registration/reservation?carShareRegiId=${this.carShareRegiId}&userId=${this.userId}`;
-
+      const url = `http://localhost:8080/api/carshare/registration/reservation?carShareRegiId=${this.carShareRegiId}&userId=${this.userId}`;
+      console.log("예약을 위한 URL: ", url);
       try {
         const response = await axios.post(url);
+        console.log("response : ", response);
         if (response.data) {
             if (response.data === "차량 공유 예약에 성공했습니다.") {
             await this.handleCreditDeduction();
           } else {
+            console.error('예약에 실패했습니다. 에러 원인: ', error);
             this.modalTitleF = '🚨';
-            this.modalTextLine1F = '크레딧이 부족합니다';
+            this.modalTextLine1F = '크레딧이 부족합니다.';
             this.modalTextLine2F = '차량 탑승을 위해서는 7 크레딧이 필요합니다';
             this.closeF = '크레딧 구매하기';
             this.showFailModal = true;
+            
           }
     
         }
       } catch (error) {
+        console.error('예약에 실패했습니다. 에러 원인 2: ', err);
         alert('예약에 실패했습니다. 콘솔에서 에러를 확인해 주세요.');
       }
     },
@@ -132,7 +136,8 @@ export default {
     },
 
     async handleCreditDeduction() {
-      const url = `https://api.hifive5.shop/api/carshare/registration/deducted-credit?userId=${this.userId}`;
+      const url = `http://localhost:8080/api/carshare/registration/deducted-credit?userId=${this.userId}`;
+      console.log("Request URL: ", url);
 
       try {
         const response = await axios.post(url);

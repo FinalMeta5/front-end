@@ -38,20 +38,14 @@
         <!-- 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" @close="closeLoginModal" />
 
-        <!-- <SuccessModal 
-            v-if="showSuccessModal" 
-            :modal-title="successMessage.title"
-            :modal-text="successMessage.text"
-            @close="closeSuccessModal" 
-        /> -->
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, defineEmits } from "vue";
+import { ref, onMounted, defineProps, defineEmits, nextTick } from "vue";
 import axios from "axios";
 import LoginModalView from "../../views/LoginModalView.vue";
-// import SuccessModal from "../Mode/SuccessModal.vue";
+import Swal from 'sweetalert2';
 
 // 부모에게 받은 props
 const props = defineProps<{ taxiShareId: number | null }>();
@@ -79,7 +73,7 @@ const fetchTaxiDetail = async () => {
     errorMessage.value = "";
 
     try {
-        const response = await authAxios.get(`/api/taxi/detail/${props.taxiShareId}`);
+        const response = await axios.get(`http://localhost:8080/api/taxi/detail/${props.taxiShareId}`);
         detail.value = response.data;
         console.log(response.data);
     } catch (error) {
@@ -114,13 +108,17 @@ const joinApply = async () => {
     isSubmitting.value = true;
 
     try {
-        const response = await axios.post("https://api.hifive5.shop/api/taxi/join/insert", {
+        const response = await axios.post("http://localhost:8080/api/taxi/join/insert", {
             taxiShareId: props.taxiShareId,
             memberId: memberId.value,
         });
 
         if (response.status === 201) {
-            alert("🚖택시 공유 신청이 완료되었습니다! \n (캐시 🪙2 차감)");
+            Swal.fire({
+                icon: 'success',
+                title: '🚖택시 공유 신청이 완료되었습니다!',
+                text: '(캐시 🪙2 차감)',
+            });
         } else {
             alert("택시 공유 신청이 정상적으로 처리되지 않았습니다.");
         }
@@ -146,7 +144,7 @@ const deletePost = async () => {
     isSubmitting.value = true;
 
     try {
-        const response = await axios.post("https://api.hifive5.shop/api/taxi/delete", {
+        const response = await axios.post("http://localhost:8080/api/taxi/delete", {
             taxiShareId: props.taxiShareId,
             memberId: memberId.value,
         });

@@ -145,7 +145,7 @@ export default {
     async fetchCarList() {
   try {
     // const response = await authAxios.get("/api/carshare/registration/available-list");
-    const response = await axios.get("https://api.hifive5.shop/api/carshare/registration/available-list");
+    const response = await axios.get("http://localhost:8080/api/carshare/registration/available-list");
     if (response.status === 200 && response.data) {
       this.carList = response.data;
 
@@ -154,7 +154,7 @@ export default {
           this.carList.forEach(car => {
             this.createCarMarker(car.latitudePl, car.longitudePl, car);
           });
-        });mmmmm
+        });
       } else {
         this.waitForKakaoMap().then(() => {
           this.carList.forEach(car => {

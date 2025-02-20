@@ -51,6 +51,7 @@
 
 <script>
 import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 import DetailInfoComponent from "./DetailInfoComponent.vue";
 import SuccessModal from "../modal/SuccessModal.vue";  
 import FailModal from "../modal/FailModal.vue";  
@@ -95,8 +96,8 @@ export default {
     async fetchTodayParticipationList() {
       this.isLoading = true;  // 데이터 로딩 시작
       try {
-        const response = await authAxios.get(
-          `/api/taxi/join/count/byMemberIdToday/${this.userId}`
+        const response = await axios.get(
+          `http://localhost:8080/api/taxi/join/count/byMemberIdToday/${this.userId}`
         );
         this.todayParticipationList = Array.isArray(response.data)
           ? response.data

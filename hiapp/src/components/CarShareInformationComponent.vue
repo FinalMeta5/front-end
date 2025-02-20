@@ -28,6 +28,7 @@
 
 <script>
 import { authAxios } from '../store/auth/auth';
+import axios from 'axios';
 
 export default {
   name: 'CarShareInformationComponent',
@@ -62,7 +63,7 @@ export default {
         input_coord: 'WGS84',
       };
       try {
-        const response = await authAxios.get(apiUrl, {
+        const response = await axios.get(apiUrl, {
           params,
           headers: {
             Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`, 
