@@ -15,8 +15,17 @@
             />
             <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
           </div>
-          <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
-          <CarShareInformationComponent v-if="selectedCar" :car="selectedCar" id="carShareInformationComponent"/>
+          <!-- <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/> -->
+          
+          <CarShareInformationComponent 
+            v-if="selectedCar" 
+            :car="selectedCar" 
+            id="carShareInformationComponent"
+            @click="handleCarClick"
+          />
+
+          <LoginModalView v-if="showLoginModal" @close="showLoginModal = false" />
+
           <div v-if="searchResults.length > 0" class="address-list">
             <ul>
               <li v-for="(result, index) in searchResults" :key="index" @click="selectAddress(result)" class="search-item">
@@ -32,12 +41,15 @@
 
 <script>
 import axios from "axios";
-import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue'
+import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
+import LoginModalView from '../../../views/LoginModalView.vue';
+import { authAxios } from "../../../store/auth/auth";
 
 export default {
   name: "KakaoMap",
   components: {
       CarShareInformationComponent,
+      LoginModalView
   },
 
   data() {
@@ -92,6 +104,18 @@ export default {
     // 차량 목록 가져오기
     this.fetchCarList();
   },
+  mounted() {
+        // localStorage에서 memberId 확인
+        const memberId = localStorage.getItem("memberId");
+
+        // memberId가 없으면 로그인 모달을 띄운다.
+        if (!memberId) {
+            this.showLoginModal = true;
+        } else {
+            // memberId가 있으면 정상적으로 경로 등록 화면을 로드
+            this.fetchCarList();
+        }
+    },
 
   methods: {
     // 카카오 지도 API를 사용하여 주소 가져오기
@@ -107,7 +131,8 @@ export default {
         const response = await axios.get(apiUrl, {
           params,
           headers: {
-            Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`, 
+            // Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`, 
+            Authorization: `KakaoAK 363140f5c664f7b3b3e29d2cbf81a108`, 
           },
         });
         this.address = response.data.documents[0];  
@@ -118,27 +143,43 @@ export default {
 
     // 차량 목록 데이터 백엔드에 요청
     async fetchCarList() {
-      try {
-        const response = await axios.get("http://localhost:8080/api/carshare/registration/available-list");
-        if (response.status === 200 && response.data) {
-          this.carList = response.data;
+  try {
+    // const response = await authAxios.get("/api/carshare/registration/available-list");
+    const response = await axios.get("http://localhost:8080/api/carshare/registration/available-list");
+    if (response.status === 200 && response.data) {
+      this.carList = response.data;
 
-          if(!window.kakao || !window.kakao.maps) {
-              this.waitForKakaoMap().then(() => {
-                  this.carList.forEach(car => {
-                      this.createCarMarker(car.latitudePl, car.longitudePl, car);
-                  });
-              });
-          } else {
-              this.carList.forEach(car => {
-                  this.createCarMarker(car.latitudePl, car.longitudePl, car);
-              });
-          }
-        }
-      } catch (error) {
-        console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.', error);
+      if (!window.kakao || !window.kakao.maps) {
+        this.waitForKakaoMap().then(() => {
+          this.carList.forEach(car => {
+            this.createCarMarker(car.latitudePl, car.longitudePl, car);
+          });
+        });
+      } else {
+        this.waitForKakaoMap().then(() => {
+          this.carList.forEach(car => {
+            this.createCarMarker(car.latitudePl, car.longitudePl, car);
+          });
+        });
       }
-    },
+    }
+  } catch (error) {
+    console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.');
+    
+    if (error.response) {
+      // 서버 응답이 있지만 오류가 발생한 경우
+      console.error('응답 오류:', error.response.data);
+      console.error('응답 상태 코드:', error.response.status);
+    } else if (error.request) {
+      // 요청이 보내졌으나 응답을 받지 못한 경우
+      console.error('응답 없음:', error.request);
+    } else {
+      // 요청을 보내는 과정에서 다른 오류가 발생한 경우
+      console.error('요청 오류:', error.message);
+    }
+  }
+},
+
 
     // 카카오 맵 로드 대기 함수 추가
     waitForKakaoMap() {
@@ -158,7 +199,8 @@ export default {
 
       const script = document.createElement("script");
       script.id = "kakao-map-script";
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      // script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=09502adbac4fa761abc3729739a5f256`;
       script.onload = () => kakao.maps.load(this.initMap);
       document.head.appendChild(script);
     },
@@ -259,7 +301,8 @@ export default {
           const response = await axios.get(apiUrl, {
           params,
           headers: {
-              Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`,
+              // Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`,
+              Authorization: `KakaoAK 363140f5c664f7b3b3e29d2cbf81a108`,
           },
       });
 
@@ -491,7 +534,7 @@ width: 50px;
 @media screen and (max-width: 600px) {
 
 .search-container {
-  width: 85%;
+  width: 100vw;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -499,7 +542,7 @@ width: 50px;
 }
 
 .address-list {
-  width: 80%;
+  width: 73%;
 }
 
 .result-container {
@@ -511,11 +554,54 @@ width: 50px;
 
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: 80px;
+right: 35px;
+top: 800px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
+}
+
+#carShareInformationComponent {
+  width: 100vw;
+}
+
+}
+
+@media screen and (max-height: 670px){
+
+.current-location-btn {
+position: absolute;
+right: 60px;
+top: 540px;
+cursor: pointer;
+z-index: 15;
+width: 40px;
+}
+
+}
+
+@media screen and (max-height: 896px) and  (min-width: 414px){
+
+.current-location-btn {
+position: absolute;
+right: 45px;
+top: 760px;
+cursor: pointer;
+z-index: 15;
+width: 50px;
+}
+
+}
+
+@media screen and (max-height: 844px) and  (min-width: 439px){
+
+.current-location-btn {
+position: absolute;
+right: 80px;
+top: 400px;
+cursor: pointer;
+z-index: 15;
+width: 510px;
 }
 
 }

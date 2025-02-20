@@ -2,8 +2,8 @@
     <div class="taxi-share-list">
         <div class="max-w-md mx-auto p-4">
             <!-- 헤더 -->
-            <h1>택시 같이 타요!</h1>
-            <p>어디서 출발하시나요?</p>
+            <h1>{{ $t('context.shareTaxi') }}</h1>
+            <p id="content">{{ $t('context.whereAreUGoing') }}</p>
 
             <!-- 출발지, 도착지, 날짜 선택 -->
             <div class="search-container">
@@ -16,7 +16,7 @@
                         {{ departure }}
                     </span>
                     <span v-else>
-                        출발지 선택
+                        {{ $t('context.selectDepartureLocation') }}
                     </span>
                 </button>
 
@@ -29,7 +29,7 @@
 
             <!-- 로딩 상태 -->
             <div v-if="loading" class="text-center text-gray-500 my-4">
-                🚖 데이터를 불러오는 중...
+                {{ $t('context.loading') }}
             </div>
 
             <!-- 에러 메시지 -->
@@ -66,11 +66,13 @@
             <!-- rideList가 비어 있을 경우 슬픈 아이콘과 함께 모달 표시 -->
             <div v-else class="no-rides-modal">
                 <font-awesome-icon :icon="['fas', 'face-frown']" class="sad-icon" />
-                <p>선택하신 날짜와 출발지 근처에 택시 공유가 없습니다.</p>
-                <p>직접 호스트가 되어 동승자를 모집해보세요!</p>
+                <p>{{ $t('context.noTaxi') }}</p>
+                <p>{{ $t('context.withUs') }}</p>
+                <!-- <p>선택하신 날짜와 출발지 근처에<br> 이용 가능한 택시 공유가 업습니다.</p>
+                <p>직접 택스 공유 호스트가 되어<br> 동승자를 모집해보세요!</p> -->
                 <!-- 리스트 이동 버튼 -->
                 <div class="mg-t-60">
-                    <button class="move-button" @click="goToRegist">택시 공유 호스트되기</button>
+                    <button class="move-button" @click="goToRegist">{{ $t('context.becomeATaxiShareHost') }}</button>
                 </div>
             </div>
 
@@ -98,6 +100,7 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted, computed, watchEffect } from "vue";
 import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
 import PlaceSearchModal from "./PlaceSearchModal.vue";
 import TaxiShareJoinModal from "./TaxiShareJoinModal.vue";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -145,7 +148,9 @@ const fetchTaxiList = async () => {
     errorMessage.value = "";
 
     try {
-        const url = `https://api.hifive5.shop/api/taxi/list?pickupTime=${selectedDate.value}`;
+        // const url = `/api/taxi/list?pickupTime=${selectedDate.value}`;
+        // const url = `https://api.hifive5.shop/api/taxi/list?pickupTime=${selectedDate.value}`;
+        const url =`http://localhost:8080/api/taxi/list?pickupTime=${selectedDate.value}`
 
         const requestBody = departureLat.value && departureLng.value ? {
             lat: departureLat.value,
@@ -236,17 +241,21 @@ onMounted(() => {
     margin-bottom: 80px;
 }
 
+#content {
+    font-size: 13px;
+}
+
 /* 📌 모바일 화면에서 크기 자동 조정 */
 @media (max-width: 768px) {
     .taxi-share-list {
-        width: 90%;
+        width: 85%;
         padding: 15px;
         margin-top: 140px;
     }
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -437,12 +446,12 @@ h1 {
     /* 아이콘 크기 크게 */
     color: #ff6347;
     /* 슬픈 아이콘 색상 */
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     /* 아이콘과 텍스트 간의 간격 */
 }
 
 .no-rides-modal p {
-    font-size: 16px;
+    font-size: 13px;
     /* 텍스트 크기 조정 */
     line-height: 1.5;
     /* 텍스트 간의 줄 간격 */
@@ -453,23 +462,23 @@ h1 {
 }
 
 .mg-t-60 {
-    margin-top: 60px;
+    margin-top: 50px;
 }
 
 .move-button {
-    padding: 14px 28px;
+    padding: 10px 28px;
     /* 버튼 패딩 조정 */
-    background-color: #007bff;
+    background-color: #FF6347;
     /* 파란색 배경 */
     color: white;
     /* 텍스트 색상 */
     border: none;
     border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
+    font-weight: bold;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    /* 버튼 배경 색상 전환 */
+    width: 100%;
 }
 
 .move-button:hover {

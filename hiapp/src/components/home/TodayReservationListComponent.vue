@@ -1,9 +1,14 @@
 <template>
   <div class="today-reservation-container">
     <div class="box">
+      <div class="login-status">
+        <div v-if="!memberId"><strong>{{$t('home.mainTitle')}}</strong></div>
+        <div v-else><strong id="nickname">{{nickname }}님, {{$t('home.welcom')}}</strong></div>
+      </div>
+
       <div class="tabs">
-        <button @click="changeContent('left')" :class="{ active: activeTab === 'left' }">택시 예약 내역</button>
-        <button @click="changeContent('right')" :class="{ active: activeTab === 'right' }">차량 예약 내역</button>
+        <button @click="changeContent('left')" :class="{ active: activeTab === 'left' }">{{ $t('home.taxiRegiList') }}</button>
+        <button @click="changeContent('right')" :class="{ active: activeTab === 'right' }">{{ $t('home.carRegiList') }}</button>
       </div>
       <div class="content">
         <TodayTaxiListComponent v-if="activeTab === 'left'" />
@@ -26,6 +31,8 @@ export default {
   data() {
     return {
       activeTab: 'left', 
+      memberId: localStorage.getItem('memberId'), 
+      nickname: localStorage.getItem('nickname'), 
     };
   },
   methods: {
@@ -53,6 +60,12 @@ export default {
   justify-content: space-between;
   padding: 20px;
   position: relative;
+}
+
+.login-status {
+  position: absolute;
+  top: -90px; 
+  left: 3px;
 }
 
 .tabs {

@@ -1,7 +1,7 @@
 <template>
   <div class="driving-info">
     <div class="max-w-md mx-auto p-4">
-      <span id="car-info">차량 정보</span>
+      <span id="car-info">운행 정보</span>
       <hr class="divider-top"> 
       <div v-if="drivingInfo && Object.keys(drivingInfo).length > 0">
         <div class="driver-img-wrapper">
@@ -14,7 +14,7 @@
         <p>✔ 총인원 : {{ drivingInfo.passengersNum }}명</p>
         <p>✔ 잔여석 : {{ drivingInfo.leftoverNum }}명</p>
       </div>
-      <hr class="divider-bottom"> 
+      <hr class="divider-bottom"> <br>
     </div>
 
     <div v-if="isModalOpen" class="modal-overlay" @click="closeImageModal">
@@ -127,9 +127,11 @@ export default {
 
   methods: {
     async fetchDrivingInfo(driverId, carShareRegiId) {
+      // const url = `/api/carshare/registration/driving-information`;
       const url = `http://localhost:8080/api/carshare/registration/driving-information`;
       try {
-        const response = await axios.get(url, {
+        // const response = await  authAxios.get(url, {
+          const response = await axios.get(url, {
           params: {
             memberId: driverId,
             carShareRegiId: carShareRegiId 
@@ -195,7 +197,8 @@ export default {
 
       const script = document.createElement("script");
       script.id = "kakao-map-script";
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      // script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_JS_KEY}`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=09502adbac4fa761abc3729739a5f256`;
       script.onload = () => kakao.maps.load(this.initMap);
       document.head.appendChild(script);
     },
@@ -289,7 +292,7 @@ export default {
 }
 
 #driver-nickname {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #5d5d5d;
@@ -316,7 +319,7 @@ export default {
   justify-content: center;
   align-items: center;
   color: #eaeaea;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 20px;
 }
 .modal-overlay {
@@ -360,7 +363,7 @@ p, h2 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 

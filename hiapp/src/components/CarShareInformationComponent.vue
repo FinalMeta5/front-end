@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { authAxios } from '../store/auth/auth';
 import axios from 'axios';
 
 export default {
@@ -127,7 +128,7 @@ export default {
   position: absolute;
   display: inline-block;
   white-space: nowrap;
-  top: -118px;
+  top: -110px;
   left: 48px;
   font-size: 25px;
   font-weight: bold;
@@ -135,10 +136,10 @@ export default {
 
 #date {
   position: absolute;
-  top: -110px;
-  right: 71px;
+  top: -99px;
+  right: 61px;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 #pl1, #pl2 {
@@ -185,17 +186,52 @@ export default {
   top: 44px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 400px) {
 
   #driver-nickname {
-    font-size: 22px;
-    top: -100px;
+    font-size: 20px;
+    top: -95px;
+    margin-left: -10px;
   }
 
   #date {
-    top: -93px;
-    right: 59px;
+    top: -87px;
+    right: 50px;
     font-size: 12px;
+  }
+
+  #start {
+    margin-top: 9px;
+    font-size: 12px;
+  }
+
+  #end {
+    margin-top: -7px;
+    font-size: 12px;
+  }
+
+  #pl1 {
+    font-size: 16px;
+  }
+
+  #pl2 {
+    font-size: 12px;
+  }
+
+  #ds1 {
+    font-size: 16px;
+    /* margin-top: 10px; */
+  }
+
+  #ds2 {
+    font-size: 12px;
+  }
+
+  #ds1, #ds2 {
+  position: absolute;
+  white-space: nowrap;
+  bottom: -95px;
+  left: 83px;
 }
 }
 </style>

@@ -27,6 +27,15 @@ main {
     margin-top: 130px;
 }
 
+.titleH3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    position: relative;
+    /* ✅ 부모 요소를 기준으로 이동 */
+    margin-top: 130px;
+    margin-bottom: 6px;
+}
+
 .view-context-contain {
     display: flex;
     flex-direction: column;
@@ -47,6 +56,18 @@ main {
     width: 100%;
     height: 100%;
     margin-bottom: 4rem;
+}
+
+.view-context-contain5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 480px;
+    height: 100%;
+    margin-bottom: 100px;
+    margin-top: 10px;
 }
 
 .context2 {

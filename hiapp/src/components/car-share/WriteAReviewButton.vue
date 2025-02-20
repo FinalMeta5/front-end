@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="goToCarRegi" class="car-regi-btn">{{$t('mypage.registerCar')}}</button>
+        <button @click="goToWriteReviewPage" class="car-regi-btn">차량 등록하기</button>
 
         <!-- ✅ 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" 
@@ -16,13 +16,14 @@
 <script>
 import { ref, nextTick } from "vue";
 import { useRouter } from "vue-router";
+import { authAxios } from "../../store/auth/auth";
 import axios from 'axios';
 import { useAuthState } from "../../store/auth/auth";
 import LoginModalView from "../../views/LoginModalView.vue";
 import ErrorModal from "../../components/error-modal/ErrorModal.vue";
 
 export default {
-    name: "CarRegiButton",
+    name: "WriteAReviewButton",
     components: {
         LoginModalView,
         ErrorModal,
@@ -36,7 +37,7 @@ export default {
         const { isAuthenticated } = useAuthState();
 
         // ✅ 차량 등록 요청 함수
-        const goToCarRegi = async () => {
+        const goToWriteReviewPage = async () => {
             if (!isAuthenticated.value) {
                 showLoginModal.value = true;
                 pendingAction.value = goToCarRegi;
@@ -120,15 +121,13 @@ export default {
 
 <style scoped>
 .car-regi-btn {
-    width: 100%;
-    display: block;
-    text-align: left;
-    padding: 12px;
-    background-color: #fff;
-    border: 1px solid #eee;
-    margin-bottom: 8px;
+    background-color: #4192ff;
+    color: white;
+    font-weight: bold;
+    font-family: fantasy;
+    border-radius: 10px;
     cursor: pointer;
-    border-radius: 8px;
-    font-size: 14px;
+    width: 22rem;
+    height: 50px;
 }
 </style>

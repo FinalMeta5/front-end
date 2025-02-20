@@ -73,16 +73,27 @@
         <AlertModal :isVisible="showModal" :missingFields="missingFields" @close="showModal = false" />
         <!-- 🚨 차량 번호 중복 시 모달 창-->
         <ErrorModal v-model:show="showErrorModal" :message="errorMessage"/>
+        <!-- 차량 등록 성공 모달 -->
+        <SuccessModal
+            v-if="showSuccessModal"
+            title="✅ 차량 등록 성공!"
+            textLine1="차량이 성공적으로 등록되었습니다."
+            textLine2="마이페이지에서 차량 정보를 확인하세요."
+            close="확인"
+            @close="closeSuccessModal"
+        />
     </div>
 </template>
 
 <script setup>
-import { ref, watch} from 'vue';
+import { nextTick, ref, watch} from 'vue';
+import { authAxios } from "../../store/auth/auth";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 import AlertModal from "../../components/check-modal/AlertModal.vue";
 import ErrorModal from '../error-modal/ErrorModal.vue';
+import SuccessModal from '../modal/SuccessModal.vue';
 import { useRouter } from "vue-router"; // ✅ router 추가
 const router = useRouter();
 const carNumber = ref("");
@@ -105,7 +116,8 @@ const carDescription = ref('');
 const maxPassengers = ref(4);
 const fileName = ref('');
 
-const showModal = ref(false); // ✅ 모달 표시 여부
+const showModal = ref(false);
+const showSuccessModal = ref(false);
 const missingFields = ref([]); // ✅ 누락된 필드 저장
 
 
@@ -222,10 +234,13 @@ const registerCar = async () => {
             }
         });
 
-        console.log("✅ 차량 등록 성공:", response.data);
-        alert("🚗 차량이 성공적으로 등록되었습니다!");
+        console.log("✅ 차량 등록 성공!");
+        showSuccessModal.value = true; // ✅ 성공 모달 표시
+        await nextTick();
         resetForm();
-        router.push("/mypage");
+        setTimeout(() => {
+            router.push("/mypage");
+        }, 1500); // 1.5초 후 페이지 이동
 
     } catch (error) {
         console.error("❌ 차량 등록 실패:", error);
@@ -268,4 +283,5 @@ const resetForm = () => {
     @import "../../assets/style/top-bottom-nav-mobile.css";
     @import "../../style.css";
     @import "../../assets/style/CarRegistraion.css";
+
 </style>

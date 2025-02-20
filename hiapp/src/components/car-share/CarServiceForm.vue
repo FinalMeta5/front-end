@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { authAxios } from "../../store/auth/auth";
 import axios from 'axios';
 
 export default {

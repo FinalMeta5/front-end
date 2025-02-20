@@ -18,7 +18,7 @@
         </div>
         <h2 id="driver-nickname">{{ driverInfo.nickname }}님의 정보</h2>
         <p id="driver-age">✔ 만 {{ driverInfo.age }}세 {{ driverInfo.gender === 'M' ? '남자' : driverInfo.gender === 'W' ? '여자' : '정보 없음' }}</p>
-        <p>✔  평균 평점 {{ driverRating }}점</p>
+        <p>✔ 평균 평점 {{ driverRating == undefined ? driverRating + '점' : '없음' }}</p>
         <p id="driver-criminal">✔  범죄기록 인증 {{ driverInfo.criminalStatus == 'N' ? '보류' :  driverInfo.criminalStatus == 'Y' ? '완료 ' : '정보 없음' }}</p>
         <p id="driver-criminal">✔  차량등록 인증 완료</p>
       </div>
@@ -63,9 +63,11 @@ export default {
   },
   methods: {
     async fetchDriverInfo(driverId) {
+      // const url = `/api/carshare/registration/driver-information/${driverId}`;
       const url = `http://localhost:8080/api/carshare/registration/driver-information/${driverId}`;
 
       try {
+        // const response = await  authAxios.get(url);
         const response = await axios.get(url);
         this.driverInfo = response.data;
         console.log(this.driverInfo);
@@ -75,9 +77,11 @@ export default {
       }
     },
     async fetchDriverRating(driverId) {
+      // const url = `/api/carshare/registration/rating/${driverId}`;
       const url = `http://localhost:8080/api/carshare/registration/rating/${driverId}`;
 
       try {
+        // const response = await  authAxios.get(url);
         const response = await axios.get(url);
         this.driverRating = response.data;
       } catch (error) {
@@ -186,7 +190,7 @@ export default {
   text-align: left;
   color: #5d5d5d;
   margin-left: 5px;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -213,11 +217,11 @@ p, h2 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 #driver-nickname {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #5d5d5d;

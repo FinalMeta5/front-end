@@ -6,7 +6,7 @@
             <p v-else-if="errorMessage">{{ errorMessage }}</p>
 
             <div v-else-if="detail" class="modal-text">
-                <div id="destination"><b>도착&emsp;{{ detail.destination }}</b></div>
+                <div id="destination"><b>도착지 : {{ detail.destination }}</b></div>
                 <h2 class="modal-title">{{ detail.pickupTime }}&nbsp;{{ detail.pickupTimeOnly }}&ensp;출발</h2>
                 <div :class="['time-negotiation', detail.timeNego === 'true' ? 'possible' : 'impossible']">{{
                     detail.timeNego
@@ -37,13 +37,15 @@
         </div>
         <!-- 로그인 모달 -->
         <LoginModalView v-if="showLoginModal" @close="closeLoginModal" />
+
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, defineEmits } from "vue";
+import { ref, onMounted, defineProps, defineEmits, nextTick } from "vue";
 import axios from "axios";
 import LoginModalView from "../../views/LoginModalView.vue";
+import Swal from 'sweetalert2';
 
 // 부모에게 받은 props
 const props = defineProps<{ taxiShareId: number | null }>();
@@ -71,7 +73,7 @@ const fetchTaxiDetail = async () => {
     errorMessage.value = "";
 
     try {
-        const response = await axios.get(`https://api.hifive5.shop/api/taxi/detail/${props.taxiShareId}`);
+        const response = await axios.get(`http://localhost:8080/api/taxi/detail/${props.taxiShareId}`);
         detail.value = response.data;
         console.log(response.data);
     } catch (error) {
@@ -112,7 +114,11 @@ const joinApply = async () => {
         });
 
         if (response.status === 201) {
-            alert("🚖택시 공유 신청이 완료되었습니다! \n (캐시 🪙2 차감)");
+            Swal.fire({
+                icon: 'success',
+                title: '🚖택시 공유 신청이 완료되었습니다!',
+                text: '(캐시 🪙2 차감)',
+            });
         } else {
             alert("택시 공유 신청이 정상적으로 처리되지 않았습니다.");
         }
@@ -159,6 +165,10 @@ const deletePost = async () => {
 </script>
 
 <style scoped>
+#destination, .modal-title {
+    font-size:15px;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;

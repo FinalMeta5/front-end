@@ -30,7 +30,7 @@ let isRefreshing = false; // 현재 토큰 재발급 중인지 여부
 let refreshQueue = []; // 재발급 동안 대기 중인 요청들을 모아두는 배열
 
 const authAxios = axios.create({
-  baseURL: "http://localhost:8080", // 실제 백엔드 주소로 교체해야함.
+  baseURL: "https://api.hifive5.shop", // 실제 백엔드 주소로 교체해야함.
   withCredentials: true,
 });
 
@@ -108,7 +108,8 @@ async function login(email, password) {
   try {
     // 서버 로그인 요청
     const response = await axios.post(
-      "http://localhost:8080/api/member/login",
+      "https://api.hifive5.shop/api/member/login",
+      // "http://localhost:8080/api/member/login",
       {
         email: email,
         password: password,
@@ -166,6 +167,7 @@ async function logout() {
 async function refreshAccessToken() {
   try {
     const response = await axios.post(
+      // "https://api.hifive5.shop/api/member/reissue"
       "http://localhost:8080/api/member/reissue"
     );
     const newToken = response.headers["accesstoken"];

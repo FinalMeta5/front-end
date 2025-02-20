@@ -101,13 +101,13 @@ onMounted(() => {
 @import "../../style.css";
 @import "../../assets/style/phone-main-view-common.css";
 .titleH1 {
-  text-align: left;
+  /* text-align: left; */
   width: 90%;
-  font-size: 1.5rem;
-  padding-left: 15px;
-  margin-left: 0px;
-  margin-top: 150px;
+  font-size: 24px;
+  /* margin-left: 300px; */
+  margin-top: 180px;
   margin-bottom: 30px;
+  font-weight: bold;
 }
 
 .credit-container {

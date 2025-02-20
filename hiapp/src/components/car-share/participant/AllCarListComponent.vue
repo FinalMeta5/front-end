@@ -41,7 +41,8 @@ export default {
     };
   },methods: {
     fetchCarList() {
-      axios.get('http://localhost:8080/api/carshare/registration/all-list')  // 백엔드 API 주소로 변경
+      // authAxios.get('/api/carshare/registration/all-list')  
+      axios.get('http://localhost:8080/api/carshare/registration/all-list')
         .then(response => {
           this.carList = response.data;
         })

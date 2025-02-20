@@ -1,6 +1,6 @@
 <template>
   <div class="phone-main-screen">
-    <h1 class="titleH2">차량 공유 서비스 등록</h1>
+    <h1 class="titleH3">차량 공유 서비스 등록</h1>
         <div class="view-context-contain">
           <div>
             <!-- 출발지 입력 -->
@@ -285,8 +285,9 @@ export default {
 }
 
 .final-addr{
-  font-weight: bold;
+  font-weight: 300;
   font-size: 0.1rem;
+  align-self: center;
 }
 
 .loca-mark{
@@ -331,11 +332,12 @@ export default {
   margin-bottom: 15px;
   background: #f3f3f3;
   border-radius: 10px;
-  padding: 12px;
+  padding: 10px;
   display: flex;
   align-items: center;
-  height: 4rem;
+  height: 3rem;
   gap: 20px;
+  justify-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -343,7 +345,7 @@ export default {
   flex: 1;
   border: none;
   background: transparent;
-  padding: 10px;
+  padding: 6px;
   font-size: 16px;
   outline: none;
   color: #333;
@@ -415,11 +417,12 @@ export default {
 
 .address-info {
   margin-top: 20px;
-  padding: 15px;
+  padding: 10px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 80%;
 }
 
 .address-info p {
@@ -431,8 +434,8 @@ export default {
 }
 
 .next-button {
-  width: 80%;
-  padding: 12px;
+  width: 50%;
+  padding: 10px;
   background: #7f8790;
   color: #fff;
   border: none;

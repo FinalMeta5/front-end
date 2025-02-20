@@ -1,5 +1,5 @@
 <template>
-  <button @click="goToCarSearch" class="car-search-btn">차량 조회</button>
+  <button @click="goToCarSearch" class="car-search-btn">{{ $t('mypage.selectCarList') }}</button>
 
   <!-- ✅ 로그인 모달 -->
   <LoginModalView
@@ -15,7 +15,8 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 import { useAuthState } from "../../store/auth/auth";
 import LoginModalView from "../../views/LoginModalView.vue";
 import ErrorModal from "../../components/error-modal/ErrorModal.vue";

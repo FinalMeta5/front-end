@@ -63,9 +63,11 @@ export default {
   },
   methods: {
     async fetchCarInfo(driverId) {
+      // const url = `/api/carshare/registration/car-information/${driverId}`;
       const url = `http://localhost:8080/api/carshare/registration/car-information/${driverId}`;
   
       try {
+        // const response = await  authAxios.get(url);
         const response = await axios.get(url);
         this.carInfo = response.data;  
       } catch (error) {
@@ -194,7 +196,7 @@ export default {
 }
 
 #driver-nickname {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #5d5d5d;
@@ -208,7 +210,7 @@ p, h2 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 @media (max-width: 480px) { 

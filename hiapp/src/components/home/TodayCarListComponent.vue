@@ -3,19 +3,18 @@
     <!-- 로딩 화면 -->
     <div v-if="isLoading" class="loading">
       <div class="spinner"></div>
-      <div class="loading-message">오늘의 예약 내역을 불러오는 중 .. </div>
     </div>
 
     <!-- 예약 내역이 없는 경우 -->
     <div v-else-if="todayParticipationList && todayParticipationList.length === 0">
-      <div class="message">오늘은 예약 내역이 없습니다.</div>
+      <div class="message">{{$t('context.noReservationsToday')}}</div>
       <img src="http://ifh.cc/g/KAROcS.png" alt="이미지" class="image" />
-      <div class="subtitle">여러 사람과 함께 차량을 이용해 보세요</div>
+      <div class="subtitle">{{$t('context.shareACarService')}}</div>
     </div>
 
     <!-- 예약 내역이 있는 경우 -->
     <div v-else>
-      <div class="message">오늘의 예약 내역</div>
+      <div class="message">{{ $t('context.todayReservations') }}</div>
       <div class="detail-info-wrapper">
         <div v-for="item in todayParticipationList" :key="item.carShareRegiId">
           <DetailInfoComponent
@@ -33,27 +32,26 @@
 
     <!-- 하단 버튼들 (로딩이 끝난 후) -->
     <div v-if="!isLoading" class="button-container">
-      <button class="today-button" @click="goToCarShareRegistration1">서비스 등록하기</button>
-      <button class="today-button" @click="goToCarShareRegistration2">서비스 이용하기</button>
+      <CarShareServiceRegiButton/>
+      <button class="today-button" @click="goToCarShareRegistration2">{{ $t('button.UseService') }}</button>
     </div>
 
     <!-- 모달 창 (선택된 예약 항목의 탑승 신청/취소 버튼들) -->
     <transition name="modal">
     <div v-if="selectedCar" class="modal-overlay">
     <div class="modal-content">
-      <!-- 오른쪽 상단의 X 아이콘 -->
       <span class="modal-close" @click="closeModal">&times;</span>
       <div class="modal-buttons">
         <div class="ride" @click="updateStateOK(selectedCar.carShareJoinId)">
           <div class="b">
-            <img class="moving-image1" src="http://ifh.cc/g/4DpadZ.png" alt="움직이는 이미지">
-            <span id="map-btn">탑승 신청</span>
+            <img class="moving-image1" src="https://ifh.cc/g/AhHHf8.png" alt="움직이는 이미지">
+            <span id="map-btn1">탑승 신청</span>
           </div>
         </div>
         <div class="unride" @click="updateStateNO(selectedCar.carShareJoinId)">
           <div class="b">
-            <img class="moving-image2" src="http://ifh.cc/g/p1xNCK.png" alt="움직이는 이미지">
-            <span id="map-btn">탑승 취소</span>
+            <img class="moving-image2" src="https://ifh.cc/g/1CcglF.png" alt="움직이는 이미지">
+            <span id="map-btn2">탑승 취소</span>
           </div>
         </div>
       </div>
@@ -79,7 +77,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 import DetailInfoComponent from "./DetailInfoComponent.vue";
 import SuccessModal from "../modal/SuccessModal.vue";  
 import FailModal from "../modal/FailModal.vue";  
@@ -122,59 +121,88 @@ export default {
       this.fetchTodayParticipationList();
     },
     async updateStateOK(carShareJoinId) {
+    const currentTime = new Date();
+    const pickupTime = new Date(this.selectedCar.pickupDate);
+    const timeDifference = (pickupTime - currentTime) / (1000 * 60 * 60); // 시간 차이 계산 (분으로 나누고 다시 시간으로 변환)
+
+    if (timeDifference < 1) {
       this.closeModal();
-      try {
-        const response = await axios.put(
-          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
-        );
-        console.log("상태 변경 응답:", response.data);
-        if (response.data === 1) {
-          this.modalTitleS = '💡';
-          this.modalTextLine1S = '탑승 신청이 완료되었습니다';
-          this.modalTextLine2S = '약속 시간에 맞춰 출발지에 도착해주세요';
-          this.closeS = '확인';
-          this.showSuccessModal = true;
-        } else {
-          this.modalTitleF = '🚨';
-          this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
-          this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
-          this.closeF = '확인';
-          this.showFailModal = true;
-        }
-      } catch (error) {
-        console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.modalTitleF = '🚨';
+      this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+      this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+      this.closeF = '확인';
+      this.showFailModal = true;
+      return;
+    }
+
+    this.closeModal();
+    try {
+      const response = await  axios.put(
+        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-ok`
+      );
+      console.log("상태 변경 응답:", response.data);
+      if (response.data === 1) {
+        this.modalTitleS = '💡';
+        this.modalTextLine1S = '탑승 신청이 완료되었습니다';
+        this.modalTextLine2S = '약속 시간에 맞춰 출발지에 도착해주세요';
+        this.closeS = '확인';
+        this.showSuccessModal = true;
+      } else {
+        this.modalTitleF = '🚨';
+        this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+        this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+        this.closeF = '확인';
         this.showFailModal = true;
       }
-    },
-    async updateStateNO(carShareJoinId) {
+    } catch (error) {
+      console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.showFailModal = true;
+    }
+  },
+  async updateStateNO(carShareJoinId) {
+    const currentTime = new Date();
+    const pickupTime = new Date(this.selectedCar.pickupDate);
+    const timeDifference = (pickupTime - currentTime) / (1000 * 60 * 60); // 시간 차이 계산
+
+    if (timeDifference < 1) {
       this.closeModal();
-      try {
-        const response = await axios.put(
-          `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-no`
-        );
-        console.log("상태 변경 응답:", response.data);
-        if (response.data === 1) {
-          this.modalTitleS = '💡';
-          this.modalTextLine1S = '탑승 취소가 완료되었습니다';
-          this.modalTextLine2S = '취소 상태에서는 차량 탑승이 불가능합니다';
-          this.closeS = '확인';
-          this.showSuccessModal = true;
-        } else {
-          this.modalTitleF = '🚨';
-          this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
-          this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
-          this.closeF = '확인';
-          this.showFailModal = true;
-        }
-      } catch (error) {
-        console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.modalTitleF = '🚨';
+      this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+      this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+      this.closeF = '확인';
+      this.showFailModal = true;
+      return;
+    }
+
+    // API 호출 등 상태 변경 로직
+    this.closeModal();
+    try {
+      const response = await  axios.put(
+        `http://localhost:8080/api/carshare/registration/${carShareJoinId}/state-no`
+      );
+      console.log("상태 변경 응답:", response.data);
+      if (response.data === 1) {
+        this.modalTitleS = '💡';
+        this.modalTextLine1S = '탑승 취소가 완료되었습니다';
+        this.modalTextLine2S = '취소 상태에서는 차량 탑승이 불가능합니다';
+        this.closeS = '확인';
+        this.showSuccessModal = true;
+      } else {
+        this.modalTitleF = '🚨';
+        this.modalTextLine1F = '탑승 1시간 전까지만 변경이 가능합니다';
+        this.modalTextLine2F = '노쇼 시 서비스 이용에 제한이 있을 수 있습니다';
+        this.closeF = '확인';
         this.showFailModal = true;
       }
-    },
+    } catch (error) {
+      console.error("상태 변경 요청에 오류가 발생했습니다:", error);
+      this.showFailModal = true;
+    }
+  },
     async fetchTodayParticipationList() {
       this.isLoading = true;
       try {
-        const response = await axios.get(
+        const response = await  axios.get(
           `http://localhost:8080/api/carshare/registration/today-list?userId=${this.userId}`
         );
         this.todayParticipationList = Array.isArray(response.data)
@@ -192,13 +220,6 @@ export default {
       const hours = date.getHours().toString().padStart(2, '0');
       const minutes = date.getMinutes().toString().padStart(2, '0');
       return `${hours}:${minutes}`;
-    },
-    goToCarShareRegistration1() {
-      if (this.$router) {
-        this.$router.push('/car-share/service/registration/first');
-      } else {
-        console.error('Router is not defined');
-      }
     },
     goToCarShareRegistration2() {
       if (this.$router) {
@@ -222,6 +243,9 @@ export default {
 }
 .b {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .today-car-container {
   text-align: center;
@@ -257,9 +281,9 @@ export default {
 }
 .ride {
   width: 80%;
-  height: 50px;
-  background-color: #4192FF;
-  border: 1px solid #4192FF;
+  height: 140px;
+  /* background-color: #4192FF; */
+  border: 2px solid #004AAD;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -267,9 +291,9 @@ export default {
 }
 .unride {
   width: 80%;
-  height: 50px;
-  background-color: #4192FF;
-  border: 1px solid #4192FF;
+  height: 140px;
+  /* background-color: #4192FF; */
+  border: 2px solid #737373;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -287,6 +311,9 @@ export default {
   margin-bottom: 8px;
   font-size: 13px;
 }
+.moving-image1, .moving-image2 {
+  transform: rotate(45deg);
+}
 img {
   width: 20%;
   vertical-align: middle;
@@ -303,16 +330,21 @@ img {
   height: 100%;
   border-radius: 10px;
 }
-#map-btn {
+#map-btn1, #map-btn2 {
   width: 100%;
-  color: #ffffff;
   font-size: 18px;
   cursor: pointer;
   text-align: center;
   text-transform: uppercase;
-  background-color: #4192FF;
   border: none;
   position: relative;
+  margin-bottom: 10px;
+}
+#map-btn1 {
+  color: #004AAD;
+}
+#map-btn2 {
+  color: #737373;
 }
 .button {
   display: inline-block;
@@ -385,7 +417,7 @@ img {
 
 .modal-buttons {
   display: flex;
-  justify-content: space-around; /* 또는 space-between, center 등 원하는 정렬 방식 사용 */
+  gap: 10px;
   align-items: center;
   margin: 20px 0; /* 필요에 따라 여백 추가 */
 }
@@ -395,5 +427,11 @@ img {
 }
 .modal-enter, .modal-leave-to {
   opacity: 0;
+}
+
+@media (max-width:380) {
+  .modal-content {
+    width: 100px;
+  }
 }
 </style>
