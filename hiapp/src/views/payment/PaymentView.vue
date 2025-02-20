@@ -3,7 +3,7 @@
     <div class="view-context-contain">
       <div class="wrapper">
         <div class="box-section">
-          <h1>결제</h1>
+          <h1 id="title">크레딧 결제</h1><br>
 
           <!-- 결제수단 선택 영역 -->
           <div
@@ -43,7 +43,7 @@
             >
               <!-- 계좌이체 아이콘 -->
               <img
-                src="https://ifh.cc/g/5CWbH4.png"
+                src="https://ifh.cc/g/D32hAA.png"
                 alt="계좌이체 아이콘"
                 class="button-icon"
               />
@@ -108,7 +108,7 @@
             >
               <!-- 문화상품권 아이콘 -->
               <img
-                src="https://ifh.cc/g/C6DPKv.png"
+                src="https://ifh.cc/g/44R6Zj.png"
                 alt="문화상품권 아이콘"
                 class="button-icon"
               />
@@ -260,7 +260,12 @@ export default {
 .wrapper {
   width: 80%;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 150px;
+}
+
+#title {
+  font-size:25px;
+  margin-bottom: 20px;
 }
 
 .box-section {
@@ -282,14 +287,38 @@ export default {
   font-weight: 700;
 }
 
+#payment-method {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px; /* 버튼들 사이에 간격 추가 */
+}
+
+button {
+  display: flex;
+  flex-direction: column; /* 아이콘과 텍스트를 수직으로 배치 */
+  align-items: center; /* 중앙 정렬 */
+  height: 100px;
+}
+
+button span {
+  margin-top: 5px; /* 텍스트와 아이콘 사이 간격 */
+  font-size: 14px;
+}
+
+button svg, button img {
+  width: 24px; /* 아이콘 크기 조정 */
+  height: 24px;
+}
+
 /* 결제하기 버튼 */
 .button {
   color: #f9fafb;
-  background-color: #3182f6;
-  margin: 30px 15px 0px 15px;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 18px;
+  background-color: #878787;
+  margin-top: 20px;
+  font-size: 18px;
+  /* font-weight: 600; */
+  line-height: 22px;
   white-space: nowrap;
   text-align: center;
   cursor: pointer;
@@ -298,7 +327,8 @@ export default {
   text-decoration: none;
   border-radius: 7px;
   padding: 11px 16px;
-  width: 250px;
+  width: 100%;
+  height: 45px;
 }
 
 .button:hover {
@@ -315,8 +345,8 @@ input:disabled {
 #payment-method {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 10px;
+  justify-content: center;
+  gap: 10px; /* 버튼들 사이에 간격 추가 */
 }
 
 /* 공통 버튼 스타일 */
@@ -326,7 +356,7 @@ input:disabled {
   justify-content: center;
   font-weight: 600;
   font-size: 17px;
-  border: 1px solid #000000;
+  border: 2px solid #878787;
   border-radius: 7px;
   background-color: #ffffff;
   cursor: pointer;
@@ -338,8 +368,8 @@ input:disabled {
 
   box-sizing: border-box;
   white-space: nowrap;
-  color: #000000;
-  margin-top: 20px;
+  color: #878787;
+  margin-top: 0px;
 }
 
 .select-button.active {
@@ -352,8 +382,8 @@ input:disabled {
 
 /* 아이콘 이미지 */
 .button-icon {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   margin-right: 6px;
   vertical-align: middle;
 }

@@ -425,4 +425,10 @@ export default {
 .search-icon img:active {
     transform: scale(0.9);
 }
+
+@media (max-width: 375px) {
+    .path-view main-wrapper {
+        width: 90%;
+    }
+}
 </style>

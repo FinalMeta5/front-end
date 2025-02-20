@@ -15,7 +15,7 @@
             />
             <img id="searchicon" src="https://ifh.cc/g/zDdsL2.png" />
           </div>
-          <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/>
+          <!-- <img class="current-location-btn" src="https://ifh.cc/g/nArvhn.png" @click="moveToCurrentLocation" :style="{ bottom: currentLocationButtonBottom }"/> -->
           
           <CarShareInformationComponent 
             v-if="selectedCar" 
@@ -43,6 +43,7 @@
 import axios from "axios";
 import CarShareInformationComponent from '../../../components/CarShareInformationComponent.vue';
 import LoginModalView from '../../../views/LoginModalView.vue';
+import { authAxios } from "../../../store/auth/auth";
 
 export default {
   name: "KakaoMap",
@@ -142,29 +143,43 @@ export default {
 
     // 차량 목록 데이터 백엔드에 요청
     async fetchCarList() {
-      try {
-        const response = await authAxios.get("/api/carshare/registration/available-list");
-        if (response.status === 200 && response.data) {
-          this.carList = response.data;
+  try {
+    // const response = await authAxios.get("/api/carshare/registration/available-list");
+    const response = await axios.get("http://localhost:8080/api/carshare/registration/available-list");
+    if (response.status === 200 && response.data) {
+      this.carList = response.data;
 
-          if(!window.kakao || !window.kakao.maps) {
-              this.waitForKakaoMap().then(() => {
-                  this.carList.forEach(car => {
-                      this.createCarMarker(car.latitudePl, car.longitudePl, car);
-                  });
-              });
-          } else {
-            this.waitForKakaoMap().then(() => {
-              this.carList.forEach(car => {
-                this.createCarMarker(car.latitudePl, car.longitudePl, car);
-              });
+      if (!window.kakao || !window.kakao.maps) {
+        this.waitForKakaoMap().then(() => {
+          this.carList.forEach(car => {
+            this.createCarMarker(car.latitudePl, car.longitudePl, car);
           });
-          }
-        }
-      } catch (error) {
-        console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.', error);
+        });
+      } else {
+        this.waitForKakaoMap().then(() => {
+          this.carList.forEach(car => {
+            this.createCarMarker(car.latitudePl, car.longitudePl, car);
+          });
+        });
       }
-    },
+    }
+  } catch (error) {
+    console.error('탑승 가능한 차량 목록을 가져오는 중 오류가 발생했습니다.');
+    
+    if (error.response) {
+      // 서버 응답이 있지만 오류가 발생한 경우
+      console.error('응답 오류:', error.response.data);
+      console.error('응답 상태 코드:', error.response.status);
+    } else if (error.request) {
+      // 요청이 보내졌으나 응답을 받지 못한 경우
+      console.error('응답 없음:', error.request);
+    } else {
+      // 요청을 보내는 과정에서 다른 오류가 발생한 경우
+      console.error('요청 오류:', error.message);
+    }
+  }
+},
+
 
     // 카카오 맵 로드 대기 함수 추가
     waitForKakaoMap() {
@@ -539,8 +554,8 @@ width: 50px;
 
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: -10px;
+right: 35px;
+top: 800px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
@@ -552,14 +567,42 @@ width: 50px;
 
 }
 
-@media screen and (max-height: 70px) {
+@media screen and (max-height: 670px){
+
 .current-location-btn {
 position: absolute;
-right: 50px;
-bottom: 60px;
+right: 60px;
+top: 540px;
+cursor: pointer;
+z-index: 15;
+width: 40px;
+}
+
+}
+
+@media screen and (max-height: 896px) and  (min-width: 414px){
+
+.current-location-btn {
+position: absolute;
+right: 45px;
+top: 760px;
 cursor: pointer;
 z-index: 15;
 width: 50px;
 }
+
+}
+
+@media screen and (max-height: 844px) and  (min-width: 439px){
+
+.current-location-btn {
+position: absolute;
+right: 80px;
+top: 400px;
+cursor: pointer;
+z-index: 15;
+width: 510px;
+}
+
 }
 </style>

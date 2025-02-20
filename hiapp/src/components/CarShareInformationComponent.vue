@@ -28,6 +28,7 @@
 
 <script>
 import { authAxios } from '../store/auth/auth';
+import axios from 'axios';
 
 export default {
   name: 'CarShareInformationComponent',
@@ -62,7 +63,7 @@ export default {
         input_coord: 'WGS84',
       };
       try {
-        const response = await authAxios.get(apiUrl, {
+        const response = await axios.get(apiUrl, {
           params,
           headers: {
             Authorization: `KakaoAK ${import.meta.env.VITE_KAKAO_MAP_API_KEY}`, 
@@ -127,7 +128,7 @@ export default {
   position: absolute;
   display: inline-block;
   white-space: nowrap;
-  top: -118px;
+  top: -110px;
   left: 48px;
   font-size: 25px;
   font-weight: bold;
@@ -135,10 +136,10 @@ export default {
 
 #date {
   position: absolute;
-  top: -110px;
-  right: 71px;
+  top: -99px;
+  right: 61px;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 #pl1, #pl2 {
@@ -225,5 +226,12 @@ export default {
   #ds2 {
     font-size: 12px;
   }
+
+  #ds1, #ds2 {
+  position: absolute;
+  white-space: nowrap;
+  bottom: -95px;
+  left: 83px;
+}
 }
 </style>

@@ -42,8 +42,11 @@
         this.error = null;
   
         try {
-        const response = await  authAxios.get(
-          `/api/carshare/registration/past-list?userId=${this.userId}`
+        // const response = await  authAxios.get(
+        //   `/api/carshare/registration/past-list?userId=${this.userId}`
+        // );
+        const response = await axios.get(
+          `http://localhost:8080/api/carshare/registration/past-list?userId=${this.userId}`
         );
         console.log("data : ", response.data);
           if (response.status === 200) {

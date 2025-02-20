@@ -16,6 +16,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { authAxios } from "../../store/auth/auth";
+import axios from 'axios';
 import { useAuthState } from "../../store/auth/auth";
 import LoginModalView from "../../views/LoginModalView.vue";
 import ErrorModal from "../../components/error-modal/ErrorModal.vue";
@@ -53,8 +54,8 @@ export default {
 
       try {
         console.log(`📡 요청: GET /api/car-registration/member/${memberId}`);
-        const response = await authAxios.get(
-          `/api/car-registration/member/${memberId}`,
+        const response = await axios.get(
+          `http://localhost:8080/api/car-registration/member/${memberId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

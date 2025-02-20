@@ -70,7 +70,7 @@ async function onFindEmailClick() {
 
   try {
     const response = await axios.post(
-      "https://api.hifive5.shop/api/member/find-email",
+      "http://api.hifive5.shop/api/member/find-email",
       {
         name: name.value,
         phone: phone.value,
